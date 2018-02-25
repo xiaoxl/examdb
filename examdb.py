@@ -14,11 +14,11 @@ if __name__ == '__main__':
                    lmodern=False,
                    page_numbers=False
                    )
-    #    doc.documentclass = Command(
-    #        'documentclass',
-    #        options=['11pt'],
-    #        arguments=['exam'],
-    #    )
+    doc.packages.append(Package('amssymb, amsfonts, latexsym, verbatim, xspace, setspace,tikz,multicol'))
+    doc.packages.append(Command('usetikzlibrary','plotmarks'))
+    doc.packages.append(Command('singlespacing'))
+    doc.packages.append(Command('parindent 0ex'))
+
 
     with doc.create(Section('dddd')):
         doc.append('111')
@@ -27,16 +27,9 @@ if __name__ == '__main__':
         doc.append(Math(data=['F=',q1],inline=1))
     #        env=Env
 
-    doc.packages.append(Package('amssymb, amsfonts, latexsym, verbatim, xspace, setspace,tikz,multicol'))
-
-    doc.packages.append(Command('usetikzlibrary','plotmarks'))
-
-    doc.packages.append(Command('singlespacing'))
-
-    doc.packages.append(Command('parindent 0ex'))
 
     #    doc.packages.append(Package('geometry',
     #        options=['a6paper', 'showframe']))
 
     doc.generate_tex()
-#    doc.generate_pdf(compilers = ('latexmk',[]),clean_tex=False)
+    # doc.generate_pdf(clean_tex=False)
