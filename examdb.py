@@ -84,11 +84,10 @@ if __name__ == '__main__':
 
     doc.append(Command('newcommand',Arguments(Command('boxwidth'),'0.8cm')))
 
-    doc.append(NoEscape(r'''
-    This exam contains \numpages\ pages (including this cover page) and \numquestions\ problems.  Check to see if any pages are missing.  Enter all requested information on the top of this page, and put your initials on the top of every page, in case the pages become separated.\\
-    You may \textbf{NOT} use your books, notes, or any calculator on this exam.\\
-    You are required to show your work on each problem on this exam.  The following rules apply:\\
-    '''))
+    with open('book_note_cal_work_nnny.head','r') as file:
+        content=file.read()
+
+    doc.append(NoEscape(content))
     #
     with doc.create(MiniPage(width='3.7in',pos='t')) as minipage:
         minipage.append(Command('vspace','0pt'))
