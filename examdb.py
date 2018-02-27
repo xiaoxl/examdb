@@ -84,10 +84,12 @@ if __name__ == '__main__':
 
     doc.append(Command('newcommand',Arguments(Command('boxwidth'),'0.8cm')))
 
-    with open('book_note_cal_work_nnny.head','r') as file:
-        content=file.read()
+    with open('book_note_cal_work.head','r') as file:
+        con=file.read()
+        content=con.split('<__|__>')
 
-    doc.append(NoEscape(content))
+
+    doc.append(NoEscape(content[0]))
     #
     with doc.create(MiniPage(width='3.7in',pos='t')) as minipage:
         minipage.append(Command('vspace','0pt'))
