@@ -1,0 +1,32 @@
+[{
+  "question" : [
+    "asdfasdfsa_var0_",
+    "asdfasdfsa_var0_",
+    "asfasfa_var2_asafdsa."
+    ],
+  "part":[
+    ["asdfasdfsa_var0_",
+      "asdfasdfsa_var0_",
+      "asfasfa_var2_asafdsa."],
+    ["asdfasdfsa_var0_",
+      "asdfasdfsa_var0_",
+      "asfasfa_var2_asafdsa."]
+  ],
+  "solution" : [
+    [ "_var1_ asdfsf",
+      "asdfasdfsa_var0_",
+      "asdfasdfsa_var0_",
+      "asfasfa_var2_asafdsa."],
+    [ "_var1_ asdfsf",
+      "asdfasdfsa_var0_",
+      "asdfasdfsa_var0_",
+      "asfasfa_var2_asafdsa."]
+    ],
+  "varchange": [
+    "var0=random.randint(2,5)",
+    "var1=var0-2",
+    "var2=var1+var0"
+  ],
+  "tag" : []
+}
+]

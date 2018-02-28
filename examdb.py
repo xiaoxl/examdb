@@ -2,20 +2,23 @@ from pylatex import Document, Section, Subsection, Package, Command, Math,MiniPa
 from pylatex.lists import List,Itemize,Enumerate
 from pylatex.utils import italic, NoEscape
 from pylatex.base_classes.command import Arguments,CommandBase
-from pylatex.base_classes.latex_object import LatexObject
+# from pylatex.base_classes.latex_object import LatexObject
 from pylatex.base_classes.containers import *
+import json
+from pprint import pprint
 import random
 
-class QParts(Environment):
+
+class Env_Parts(Environment):
     _latex_name='parts'
 
-class QPart(CommandBase):
+class Com_Part(CommandBase):
     _latex_name = 'part'
 
-class Questions(Environment):
+class Env_Questions(Environment):
     _latex_name='questions'
 
-class LatexQuestion(CommandBase):
+class Com_Question(CommandBase):
     _latex_name='question'
 
 class LatexFulsh(Environment):
@@ -39,8 +42,8 @@ if __name__ == '__main__':
     # packages and some basic settings
     doc.packages.append(Package('amssymb, amsfonts, latexsym, verbatim, xspace, setspace,tikz,multicol,amsmath,multirow'))
     doc.packages.append(Package('geometry','margin=1in'))
-    doc.packages.append(Command('usetikzlibrary','plotmarks'))
 
+    doc.packages.append(Command('usetikzlibrary','plotmarks'))
     doc.packages.append(Command('singlespacing'))
     doc.packages.append(Command('parindent 0ex'))
 
@@ -71,7 +74,7 @@ if __name__ == '__main__':
 
     with doc.create(LatexFulsh()) as fulsh:
         with fulsh.create(LatexTabular(arguments=NoEscape(r'p{2.8in} r l'))) as tabs:
-            with open('head.head','r') as file:
+            with open('edb_head/head.head','r') as file:
                 header=file.read().split('<__|__>')
                 tabs.append(NoEscape(header[0]))
         fulsh.append(NoEscape(r'\\'))
@@ -80,7 +83,7 @@ if __name__ == '__main__':
     doc.append(Command('newcommand',Arguments(Command('boxwidth'),'0.8cm')))
 
     # draw statemnts, from book_note_cal_work.head, instructions for students
-    with open('book_note_cal_work.head','r') as file:
+    with open('edb_head/book_note_cal_work.head','r') as file:
         con=file.read()
         content=con.split('<__|__>')
 
@@ -107,31 +110,39 @@ if __name__ == '__main__':
 
 
 
-    with open('problems.db','r') as file:
-        cont=file.read().split('<__|__>')
-        problems=cont[0]
-        solution=cont[1]
-        length=len(cont)
-        for i in range(length-2):
-            # rep=cont[i+2]+r', temp=var'+str(i)
-            exec(cont[i+2])
+    with open('problemdb.json','r') as data_file:
+        content=json.loads(data_file.read())
+
+
+        k=0
+
+        question='\n'.join(content[k]["question"])
+        parts=content[k]["part"]
+        number_of_parts=len(parts)
+        if number_of_parts>1:
+            pass
+        solution='\n'.join(content[k]['solution'][0])
+        varchange=content[k]['varchange']
+        tag=content[k]['tag']
+        for i in range(len(varchange)):
+            exec(varchange[i])
             exec('temp=var'+str(i))
-            problems=problems.replace('_var'+str(i)+'_',str(temp))
+            question=question.replace('_var'+str(i)+'_',str(temp))
             solution=solution.replace('_var'+str(i)+'_',str(temp))
 
 
 
 
-    with doc.create(Questions()) as question:
-        question.append(LatexQuestion())
-        with question.create(QParts()) as inside:
-            inside.append(QPart(options=3))
-            inside.append(NoEscape(problems))
+    with doc.create(Env_Questions()) as question:
+        question.append(Com_Question())
+        with question.create(Env_Parts()) as inside:
+            inside.append(Com_Part(options=3))
+            inside.append(NoEscape(question))
             inside.append(NoEscape(solution))
-            inside.append(QPart(options=3))
+            inside.append(Com_Part(options=3))
             inside.append(NoEscape(r'dfasfsafsafsadfasd'))
 
-            inside.append(QPart(options=3))
+            inside.append(Com_Part(options=3))
             inside.append(NoEscape(r'dfasfsafsafsadfasd'))
 
             inside.append(Command('newpage'))
