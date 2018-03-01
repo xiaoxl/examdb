@@ -9,16 +9,16 @@ from pprint import pprint
 import random
 
 
-class Env_Parts(Environment):
+class EnvParts(Environment):
     _latex_name='parts'
 
-class Com_Part(CommandBase):
+class ComPart(CommandBase):
     _latex_name = 'part'
 
-class Env_Questions(Environment):
+class EnvQuestions(Environment):
     _latex_name='questions'
 
-class Com_Question(CommandBase):
+class ComQuestion(CommandBase):
     _latex_name='question'
 
 class LatexFulsh(Environment):
@@ -133,16 +133,16 @@ if __name__ == '__main__':
 
 
 
-    with doc.create(Env_Questions()) as question:
-        question.append(Com_Question())
-        with question.create(Env_Parts()) as inside:
-            inside.append(Com_Part(options=3))
+    with doc.create(EnvQuestions()) as question:
+        question.append(ComQuestion())
+        with question.create(EnvParts()) as inside:
+            inside.append(ComPart(options=3))
             inside.append(NoEscape(question))
             inside.append(NoEscape(solution))
-            inside.append(Com_Part(options=3))
+            inside.append(ComPart(options=3))
             inside.append(NoEscape(r'dfasfsafsafsadfasd'))
 
-            inside.append(Com_Part(options=3))
+            inside.append(ComPart(options=3))
             inside.append(NoEscape(r'dfasfsafsafsadfasd'))
 
             inside.append(Command('newpage'))
