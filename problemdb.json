@@ -1,8 +1,8 @@
 [{
   "question" : [
     "asdfasdfsa_var0_",
-    "asdfasdfsa_var0_",
-    "asfasfa_var2_asafdsa."
+    "asdfasdfsa $_var0_$, \\begin{equation}sdfsfnd{dsfad}",
+    "\\end{equation}asfasfa_var2_asafdsa.\\[dsfad\\]"
     ],
   "part":[
     ["asdfasdfsa_var0_",
@@ -12,6 +12,7 @@
       "asdfasdfsa_var0_",
       "asfasfa_var2_asafdsa."]
   ],
+  "point":[1,2],
   "solution" : [
     [ "_var1_ asdfsf",
       "asdfasdfsa_var0_",
@@ -27,6 +28,66 @@
     "var1=var0-2",
     "var2=var1+var0"
   ],
-  "tag" : []
-}
+  "tag" : [],
+  "_id": "hohoh"
+},
+  {
+    "question" : [
+      "asdfasdfsa_var0_",
+      "asdfasdfsa $_var0_$, \\begin{equation}sdfsfnd{dsfad}",
+      "\\end{equation}asfasfa_var2_asafdsa.\\[dsfad\\]"
+    ],
+    "part":[
+      ["asdfasdfsa_var0_",
+        "asdfasdfsa_var0_",
+        "asfasfa_var2_asafdsa."],
+      ["asdfasdfsa_var0_",
+        "asdfasdfsa_var0_",
+        "asfasfa_var2_asafdsa."]
+    ],
+    "point":[1,2],
+    "solution" : [
+      [ "_var1_ asdfsf",
+        "asdfasdfsa_var0_",
+        "asdfasdfsa_var0_",
+        "asfasfa_var2_asafdsa."],
+      [ "_var1_ asdfsf",
+        "asdfasdfsa_var0_",
+        "asdfasdfsa_var0_",
+        "asfasfa_var2_asafdsa."]
+    ],
+    "varchange": [
+      "var0=random.randint(2,5)",
+      "var1=var0-2",
+      "var2=var1+var0"
+    ],
+    "tag" : [],
+    "_id": "hohoh"
+  },
+  {
+    "question" : [
+      "asdfasdfsa_var0_",
+      "asdfasdfsa $_var0_$, \\begin{equation}sdfsfnd{dsfad}",
+      "\\end{equation}asfasfa_var2_asafdsa.\\[dsfad\\]"
+    ],
+    "part":[
+      ["asdfasdfsa_var0_",
+        "asdfasdfsa_var0_",
+        "asfasfa_var2_asafdsa."]
+    ],
+    "point":[3],
+    "solution" : [
+      [ "_var1_ asdfsf",
+        "asdfasdfsa_var0_",
+        "asdfasdfsa_var0_",
+        "asfasfa_var2_asafdsa."]
+    ],
+    "varchange": [
+      "var0=random.randint(2,5)",
+      "var1=var0-2",
+      "var2=var1+var0"
+    ],
+    "tag" : [],
+    "_id": "hohoh"
+  }
 ]
