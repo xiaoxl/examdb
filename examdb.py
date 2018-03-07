@@ -14,7 +14,7 @@ import random
 from examcls import *
 
 from LatexSnippt import *
-
+from QuestionModule import *
 
 
 class EnvParts(Environment):
@@ -47,62 +47,93 @@ if __name__ == '__main__':
     doc.packages.append(Package('amssymb, amsfonts, latexsym, verbatim, xspace, setspace,tikz,multicol,amsmath,multirow'))
     doc.packages.append(Package('geometry','margin=1in'))
 
-    filehead=ExamCls()
-    filehead.fillFilehead()
-    doc.append(filehead)
+    __class__=r'Math 9C: Calculus'
+    __term__=r'2018W'
+    __examnum__=r'Final'
+    __date__=r'03/23/2018'
+    __timelimit__=r'180min'             
 
+    doc.preamble.append(Command('usetikzlibrary','plotmarks'))
+    doc.preamble.append(Command('singlespacing'))
+    doc.preamble.append(Command('parindent 0ex'))
 
+    # course configurations
+    doc.preamble.append(Command('newcommand',Arguments(Command('class'),NoEscape(__class__))))
+    doc.preamble.append(Command('newcommand',Arguments(Command('term'),NoEscape(__term__))))
+    doc.preamble.append(Command('newcommand',Arguments(Command('examnum'),NoEscape(__examnum__))))
+    doc.preamble.append(Command('newcommand',Arguments(Command('examdate'),NoEscape(__date__))))
+    doc.preamble.append(Command('newcommand',Arguments(Command('timelimit'),NoEscape(__timelimit__))))
 
+    # document starts
+    # some formation setting
+    doc.append(Command('pagestyle','head'))
+    doc.append(Command('firstpageheader',Arguments('', '', '')))
 
-    # temp=QuestionModule()
-    # doc.append(temp.dumpQuestion())
-    #
-    #
-    # temp=QuestionModule()
-    # with open('problemdb.txt','w') as data_file:
-    #     # content=json.loads(data_file.read())
-    #     # data=[]
-    #     # for i in range(len(content)):
-    #     #     data.append(content[i])
-    #     # temp.loadJSON(data[0])
-    #     # temp.saveJSON('js.txt')
-    #     data={
-    #         "question":["\begin{ddd}$fffff$\end{ddd}",
-    #                     "sadfasdf"],
-    #         "solution":"asdfasfsa$_var0_$"
-    #     }
-    #     json.dump(data,data_file)
+    # draw header, from head.head file
+    doc.append(Command('runningheader',Arguments(Command('class'),NoEscape(r'\examnum\ - Page \thepage\ of \numpages'))))
+    doc.append(Command('runningheadrule'))
+
+    with doc.create(LatexFulsh()) as fulsh:
+        with fulsh.create(LatexTabular(arguments=NoEscape(r'p{2.8in} r l'))) as tabs:
+            with open('edb_setting/header.cfg','r') as file:
+                header=file.read().split('<__|__>')
+                tabs.append(NoEscape(header[0]))
+        fulsh.append(NoEscape(r'\\'))
+
+    doc.append(Command('rule',options='1ex',arguments=Arguments(Command('textwidth'),'.1pt')))
+    doc.append(Command('newcommand',Arguments(Command('boxwidth'),'0.8cm')))
+
+    # draw statemnts, from coverpage.cfg, instructions for students
+    with open('edb_setting/coverpage.cfg','r') as file:
+        con=file.read()
+        content=con.split('<__|__>')
+
+    doc.append(NoEscape(content[0]))
+    with doc.create(MiniPage(width='3.7in',pos='t')) as minipage:
+        minipage.append(Command('vspace','0pt'))
+        with minipage.create(Itemize()) as items:
+            for itemcont in content[1:]:
+                items.add_item(NoEscape(itemcont))
+
+        minipage.append(NoEscape(r'Do not write in the table to the right.'))
+
+    # draw the score table
+    doc.append(Command('hfill'))
+    with doc.create(MiniPage(width='2.3in',pos='t')) as minipage:
+        minipage.append(Command('vspace','0pt'))
+        minipage.append(Command('gradetablestretch','2'))
+        minipage.append(Command('vqword','Problem'))
+        minipage.append(Command('addpoints'))
+        # grade table setting
+        gradetablesetting='v'
+        # gradetablesetting='v][page'
+        minipage.append(Command('gradetable',options=NoEscape(gradetablesetting)))
+
+    doc.append(Command('newpage'))
+    doc.append(Command('addpoints'))
+
 
     with open('problemdb.json','r') as file:
         questionDB=json.loads(file.read())
-        question=QuestionModule()
-        question.loadJSON(questionDB[0])
 
-    # s=question.getEverything()
+        # question.loadJSON(questionDB[0])
+    #
 
     with doc.create(EnvQuestions()):
         for i in range(3):
+            question=QuestionModule()
+            question2=QuestionModule()
             question.loadJSON(questionDB[i])
-            s=question.dumps()
-            doc.append(NoEscape(s))
-    # doc.append(NoEscape(s))
+
+            question.saveJSON("problem"+str(i)+".txt")
+            question.loadQuestion('problem'+str(i)+'.txt')
+            with open('problem'+str(i)+'.txt') as file:
+                j2=json.loads(file.read())
+                question2.loadJSON(j2)
+                doc.append(NoEscape(question2.dumps()))
 
 
 
 
-    # with doc.create(EnvQuestions()) as question:
-    #     question.append(ComQuestion())
-    #     with question.create(EnvParts()) as inside:
-    #         inside.append(ComPart(options=3))
-    #         inside.append(NoEscape(question))
-    #         inside.append(NoEscape(solution))
-    #         inside.append(ComPart(options=3))
-    #         inside.append(NoEscape(r'dfasfsafsafsadfasd'))
-    #
-    #         inside.append(ComPart(options=3))
-    #         inside.append(NoEscape(r'dfasfsafsafsadfasd'))
-    #
-    #         inside.append(Command('newpage'))
 
     doc.generate_tex()
-    # doc.generate_pdf(clean_tex=False)

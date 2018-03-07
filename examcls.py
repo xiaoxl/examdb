@@ -4,7 +4,8 @@ from pylatex.utils import italic, NoEscape
 from pylatex.base_classes.command import Arguments,CommandBase
 from pylatex.base_classes.containers import *
 from LatexSnippt import *
-
+from pylatex.utils import *
+from pylatex import *
 
 class LatexFulsh(Environment):
     _latex_name='flushright'
@@ -21,35 +22,36 @@ class ExamCls(LatexSnippt):
     __date__=r'03/23/2018'
     __timelimit__=r'180min'
 
-    def set_class(self,var):
-        __class__=var
-
-    def set_term(self,term):
-        __term__=term
-
-    def set_examnum(self,var):
-        __examnum__=var
-
-    def set_date(self,var):
-        __date__=var
-
-    def set_timelimit(self,var):
-        __timelimit__=var
+    # preamble=[]
+    # def set_class(self,var):
+    #     __class__=var
+    #
+    # def set_term(self,term):
+    #     __term__=term
+    #
+    # def set_examnum(self,var):
+    #     __examnum__=var
+    #
+    # def set_date(self,var):
+    #     __date__=var
+    #
+    # def set_timelimit(self,var):
+    #     __timelimit__=var
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def fillFilehead(self):
-        self.packages.append(Command('usetikzlibrary','plotmarks'))
-        self.packages.append(Command('singlespacing'))
-        self.packages.append(Command('parindent 0ex'))
+        self.preamble.append(Command('usetikzlibrary','plotmarks'))
+        self.preamble.append(Command('singlespacing'))
+        self.preamble.append(Command('parindent 0ex'))
 
     # course configurations
-        self.packages.append(Command('newcommand',Arguments(Command('class'),NoEscape(self.__class__))))
-        self.packages.append(Command('newcommand',Arguments(Command('term'),NoEscape(self.__term__))))
-        self.packages.append(Command('newcommand',Arguments(Command('examnum'),NoEscape(self.__examnum__))))
-        self.packages.append(Command('newcommand',Arguments(Command('examdate'),NoEscape(self.__date__))))
-        self.packages.append(Command('newcommand',Arguments(Command('timelimit'),NoEscape(self.__timelimit__))))
+        self.preamble.append(Command('newcommand',Arguments(Command('class'),NoEscape(self.__class__))))
+        self.preamble.append(Command('newcommand',Arguments(Command('term'),NoEscape(self.__term__))))
+        self.preamble.append(Command('newcommand',Arguments(Command('examnum'),NoEscape(self.__examnum__))))
+        self.preamble.append(Command('newcommand',Arguments(Command('examdate'),NoEscape(self.__date__))))
+        self.preamble.append(Command('newcommand',Arguments(Command('timelimit'),NoEscape(self.__timelimit__))))
 
     # document starts
     # some formation setting
@@ -62,12 +64,6 @@ class ExamCls(LatexSnippt):
 
         with self.create(LatexFulsh()) as fulsh:
             with fulsh.create(LatexTabular(arguments=NoEscape(r'p{2.8in} r l'))) as tabs:
-                # header=r'''\textbf{\class} & \textbf{Name (Print):} & \makebox[1.9in]{\hrulefill}\\
-                #         \textbf{\term} &&\ \
-                #         \textbf{\examnum} &\textbf{Discussion TA:}&\makebox[1.9in]{\hrulefill}\ \
-                #         \textbf{\examdate} &&\ \
-                #         \textbf{Time Limit: \timelimit} &\textbf{Discussion time:}&\makebox[1.9in]{\hrulefill}'''
-                # tabs.append(NoEscape(header))
                 with open('edb_setting/header.cfg','r') as file:
                     header=file.read().split('<__|__>')
                     tabs.append(NoEscape(header[0]))
@@ -103,5 +99,11 @@ class ExamCls(LatexSnippt):
             minipage.append(Command('gradetable',options=NoEscape(gradetablesetting)))
 
         self.append(Command('newpage'))
-        self.append(Command('addpoints'))
 
+    def dumps(self):
+
+        content = self.dumps_content()
+        if not content.strip() and self.omit_if_empty:
+            return ''
+
+        return content
