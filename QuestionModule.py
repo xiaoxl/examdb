@@ -9,7 +9,7 @@ import pylatex.config as cf
 # from json import *
 import random
 import json
-import LatexSnippt
+from examDB.latexSnippt import LatexSnippt
 
 from parser import *
 

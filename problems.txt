@@ -1,0 +1,370 @@
+% \setcounter{section}{5}
+%
+\subsection{Introduction to Double integral}
+\subsection{The double integral over a rectangle}
+ \setcounter{subsection}{1}
+
+
+
+\subsubsection{Key ideas}
+Compare to the integrals for one-variable functions and differentiations for multivariable functions.
+
+
+\subsubsection{Double integrals}
+    \begin{defn}
+    The volume of the region above region $R$ and under the graph of a nonnegative function $f$ is called the \textbf{(double) integral} of $f$ over $R$ and is denoted by
+    \[\iint_Rf(x,y)\,dA\quad\text{or}\quad \iint_Rf(x,y)\,dx\,dy.\]
+    \end{defn}
+
+    \begin{question}$R$ is a rectangular box with vertices $(0,0)$, $(0,1)$, $(1,0)$, $(1,1)$. $f(x,y)=2$ is a constant function defined on $R$.
+\[\iint_Rf(x.y)\,dA\]
+\end{question}
+\begin{solution}
+The base is a square with each side$=1$. The function is a constant function. Therefore the region above R and under $f$ is a cube whose base is a square with each side$=1$ and height is $2$. Its volume is $1\times1\times2=2$. Then
+\[\iint_R2\,dA=2.\]
+
+\begin{tikzpicture}
+  \begin{axis}[domain=0:1,y domain=0:1,view={120}{45},xlabel=$x$, ylabel=$y$, zlabel=$z$]
+    \addplot3[surf,opacity=0.2,samples=15] {2};
+    \addplot3[fill=orange,opacity=0.2]
+coordinates{
+(0,0,0)
+(0,1,0)
+(1,1,0)
+(1,0,0)
+};
+%     \addplot3[fill=green,opacity=0.2]
+% coordinates{
+% (0,0,0)
+% (1,0,0)
+% (1,0,2)
+% (0,0,2)
+% };
+% \addplot3[fill=red,opacity=0.1]
+% coordinates{
+% (0,0,0)
+% (0,1,0)
+% (0,1,2)
+% (0,0,2)
+% };
+\addplot3 coordinates{(1,1,0) (1,1,2)};
+  \end{axis}
+\end{tikzpicture}
+
+
+
+\end{solution}
+
+
+\vskip 5cm
+\begin{question}$R$ is a rectangular box with vertices $(0,0)$, $(0,1)$, $(1,0)$, $(1,1)$. $f(x,y)=1-x$ is function defined on $R$.
+\[\iint_Rf(x.y)\,dA\]
+\end{question}
+\begin{solution}
+The base is a square with each side$=1$. The function gives the top color plane in the graph. Therefore the region above R and under $f=1-x$ is a fallen cylinder whose base is a triangle and height is $1$. Its volume is $(1\times1)/2\times1=1/2$. Then
+\[\iint_R(1-x)\,dA=\frac12.\]
+\begin{tikzpicture}
+  \begin{axis}[domain=0:1,y domain=0:1, zmin=0, zmax=1,view={120}{45},xlabel=$x$, ylabel=$y$, zlabel=$z$]
+    \addplot3[surf,opacity=0.5,samples=15] {1-x};
+%     \addplot3[fill=orange,opacity=0.2]
+% coordinates{
+% (0,0,0)
+% (0,1,0)
+% (1,1,0)
+% (1,0,0)
+% };
+%     \addplot3[fill=green,opacity=0.2]
+% coordinates{
+% (0,0,0)
+% (1,0,0)
+% (1,0,2)
+% (0,0,2)
+% };
+% \addplot3[fill=red,opacity=0.1]
+% coordinates{
+% (0,0,0)
+% (0,1,0)
+% (0,1,2)
+% (0,0,2)
+% };
+% \addplot3 coordinates{(1,1,0) (1,1,2)};
+  \end{axis}
+\end{tikzpicture}
+\end{solution}
+
+
+    \newpage
+
+% \subsubsection{The Slice Method / Cavalieri's Principle}
+%     \begin{thm}
+%     [Cavalieri's Principle] Let $S$ be a solid and, for $x$ with $a\leq x\leq b$, let $P_x$ be a family of parallel planes such that
+%     \begin{enumerate}
+%         \item $S$ lies between $P_a$ and $P_b$,
+%         \item The area of the slice of $S$ cut by $P_x$ is $A(x)$.
+%     \end{enumerate}
+%     Then the volume of $S$ is equal to
+%     \[\int_a^bA(x)\,dx.\]
+%     \end{thm}
+
+
+
+% \begin{question1}
+
+% Using Cavalieri's principle, compute the volume of the structure. Each cross section is a rectangle of length 4 and width 2.
+
+% \includegraphics[scale=0.8]{pics/5_1.png}
+
+% \end{question1}
+% \begin{solution1}
+% This can be solved directly by the principle. The area of each vertical slicing is $4\times2=8$. The height is $7$. Then the volume is \[\int_0^78\,dx=56.\]
+% \end{solution1}
+
+\subsubsection{Riemann sum}
+Consider a closed rectangle $R=[a,b]\times [c,d]$. Let $f(x,y)$ be a function defined on $R$.
+\begin{enumerate}
+    \item Slice $R$ into pieces:
+    \[a=x_0<x_1<\ldots<x_n=b,\quad c=y_0<y_1<\ldots<y_n=d\]
+    and \[x_{j+1}-x_j=\frac{b-a}{n},\quad y_{k+1}-y_k=\frac{d-c}{n}.\]
+    Each small rectangle look like $[x_j,x_{j+1}]\times [y_k,y_{k+1}]$. Denote its area by $\Delta A$.
+    \item Choose a random point $c_{jk}=(x^*_{jk},y^*_{jk})$ in each rectangle $[x_j,x_{j+1}]\times [y_k,y_{k+1}]$.
+    \item Compute \[S_n=\sum^{n-1}_{j,k=0}f(c_{j,k})\Delta x\Delta y=\sum^{n-1}_{j,k=0}f(c_{j,k})\Delta A,\]
+    where
+    \[\Delta x=x_{j+1}-x_j=\frac{b-a}{n},\quad \Delta y=y_{k+1}-y_k=\frac{d-c}{n},\]
+    and $\Delta A=\Delta x\Delta y.$
+    \item $S_n$ is called a \textbf{Riemann sum} for $f$.
+\end{enumerate}
+
+\begin{defn}
+If $S_n$ converges to a limit $S$ as $n\rightarrow \infty$ and if $S$ is independent of choice of those random points, we say that $f$ is \textbf{integrable} over $R$ and we write
+\[\iint_Rf(x,y)\,dA,\quad\iint_Rf(x,y)\,dx\,dy,\quad\text{or}\quad \iint_Rf\,dx\,dy\] for the limit $S$.
+\end{defn}
+
+
+\subsubsection{Some properties}
+\begin{enumerate}
+    \item Linearity:
+    \[\iint_R [f(x,y)+g(x,y)]\,dA=\iint_Rf(x,y)\,dA+\iint_Rg(x,y)\,dA.\]
+        \item Homogeneity:
+    \[\iint_R cf(x,y)\,dA=c\iint_Rf(x,y)\,dA,\quad \text{for any constant }c.\]
+    \item Monotonicity: If $f(x,y)\geq g(x,y)$, then
+    \[\iint_Rf(x,y)\,dA\geq\iint_Rg(x,y)\,dA.\]
+    \item Additivity: If $R_i$, $i=1,\ldots,m$ are pairwise disjooint rectangles such that $f$ is bounded and integrable over each $R_i$, and if $Q=R_1\cup R_2\cup\ldots\cup R_m$ is a rectangle, then $f:Q\rightarrow\fR$ is integrable over $Q$ and
+    \[\iint_Qf(x,y)\,dA=\sum_{i=1}^m\iint_{R_i}f(x,y)\,dA.\]
+\end{enumerate}
+
+
+
+
+\subsubsection{Iterated integrals}
+
+
+
+\begin{thm}[Fubini's Theorem]Let $f$ be a continuous function with a rectangular domain $R=[a,b]\times [c,d]$. Then
+\[\int_a^b\left[\int_c^df(x,y)\,dy\right]\,dx=\int_c^d\left[\int_a^bf(x,y)\,dx\right]\,dy=\iint_Rf(x,y)\,dA.\]
+
+\end{thm}
+\bigskip
+\begin{corollary}
+[A trick]Let $f(x,y)$ be a product of a function of $x$ and a function of $y$. That is, $f(x,y)=g(x)h(y)$. Let $R$ be a rectangular domain $R=[a,b]\times [c,d]$. Then \[\iint_Rg(x)h(y)\,dA=\left(\int_a^bg(x)\,dx\right)\left(\int_c^dh(y)\,dy\right)\]
+\end{corollary}
+
+\bigskip
+
+
+
+\begin{question}
+\[\iint_R(x^2+y^2)\,dx\,dy\]where $R=[-1,1]\times[0,1]$.
+\end{question}
+\begin{solution}
+{\color{red}{(You don't need to draw graph here. But it is better to know what the region look like.)}}
+\[\begin{tikzpicture}
+\begin{axis}[
+	xmin=-2,   xmax=2,
+	ymin=-1,   ymax=2,
+	extra x ticks={-1,1},
+	extra y ticks={0,1},
+	extra tick style={grid=major},
+	scale=0.5,
+	xlabel=$x$, ylabel=$y$	]
+\addplot[fill=blue,opacity=0.2] coordinates{(-1,0)(-1,1)(1,1)(1,0)(-1,0)};
+\end{axis}
+\end{tikzpicture}\]
+$R$ is the shaded region above. We can setup the formula directly.\[\iint_R(x^2+y^2)\,dx\,dy=\int_{0}^1\int_{-1}^1(x^2+y^2)\,dx\,dy=\int_{-1}^1\int_0^1(x^2+y^2)\,dy\,dx.\]
+Evaluate:\[
+\begin{split}
+    \int_{0}^1\int_{-1}^1(x^2+y^2)\,dx\,dy&=\int_0^1\left.\left(\frac{x^3}{3}+y^2x\right)\right\rvert_{x=-1}^{x=1}\,dy\\&=\int_0^1\left((\frac{1}{3}+y^2)-(-\frac{1}{3}-y^2)\right)\,dy=\int_0^1\left(\frac{2}{3}+2y^2\right)\,dy\\
+    &=\left.\left(\frac23y+2\frac{y^3}{3}\right)\right\rvert_0^1=\frac43.
+\end{split}\]
+\end{solution}
+
+
+
+\newpage
+\begin{question}
+\[\iint_R\cos(x)\sin(y)\,dx\,dy\]where $R=[0,\pi/2]\times[0,\pi/2]$.
+\end{question}
+\begin{solution}
+{\color{red}{(You don't need to draw graph here. But it is better to know what the region look like.)}}
+\[\begin{tikzpicture}
+\begin{axis}[
+	xmin=-1,   xmax=2,
+	ymin=-1,   ymax=2,
+	extra x ticks={0,1.57},
+	extra x tick labels={$0$,$\frac{\pi}{2}$},
+	extra y ticks={0,1.57},
+	extra y tick labels={$0$,$\frac{\pi}{2}$},
+	extra tick style={grid=major},
+	scale=0.5,
+	xlabel=$x$, ylabel=$y$]
+\addplot[fill=blue,opacity=0.2] coordinates{(0,0)(0,1.57)(1.57,1.57)(1.57,0)(0,0)};
+\end{axis}
+\end{tikzpicture}\]
+$R$ is the shaded region above. We can setup the formula directly.\[\iint_R\cos(x)\sin(y)\,dx\,dy=\int_{0}^{\pi/2}\int_{0}^{\pi/2}\cos(x)\sin(y)\,dx\,dy=\int_{0}^{\pi/2}\int_{0}^{\pi/2}\cos(x)\sin(y)\,dy\,dx.\]
+Evaluate: since the integrand is a product of a function of $x$ and a function of $y$, and the region is a rectangle region, we can apply the trick to solve it.\[
+\begin{split}
+    \int_{0}^{\pi/2}\int_{0}^{\pi/2}\cos(x)\sin(y)\,dx\,dy&=\int_{0}^{\pi/2}\cos(x)\,dx\int_{0}^{\pi/2}\sin(y)\,dy\\
+    &=\left(\left.\sin(x)\right\rvert_{0}^{\pi/2}\right)\left(\left.-\cos(y)\right\rvert_{0}^{\pi/2}\right)=1.
+\end{split}\]
+\end{solution}
+
+
+\vskip 9cm
+
+\begin{question}
+Evaluate the following integral if $R = [0, 1] \times [0, 1]$ and $m,n>0$.
+ \[\iint_R(2x^my^n)\,dx\,dy\]
+\end{question}
+\begin{solution}
+{\color{red}{(You don't need to draw graph here. But it is better to know what the region look like.)}}
+\[\begin{tikzpicture}
+\begin{axis}[
+	xmin=-1,   xmax=2,
+	ymin=-1,   ymax=2,
+	extra x ticks={0,1},
+	extra y ticks={0,1},
+	extra tick style={grid=major},
+	scale=0.5,
+	xlabel=$x$, ylabel=$y$]
+\addplot[fill=blue,opacity=0.2] coordinates{(0,0)(0,1)(1,1)(1,0)(0,0)};
+\end{axis}
+\end{tikzpicture}\]
+$R$ is the shaded region above. We can setup the formula directly.\[\iint_R(2x^my^n)\,dx\,dy=\int_{0}^{1}\int_{0}^{1}(2x^my^n)\,dx\,dy=\int_{0}^{1}\int_{0}^{1}(2x^my^n)\,dy\,dx.\]
+Evaluate: since the integrand is a product of a function of $x$ and a function of $y$, and the region is a rectangle region, we can apply the trick to solve it.\[
+\begin{split}
+    \int_{0}^{1}\int_{0}^{1}(2x^my^n)\,dx\,dy&=2\int_{0}^{1}x^m\,dx\int_{0}^{1}y^n\,dy\\
+    &=2\left(\left.\frac{x^{m+1}}{m+1}\right\rvert_{0}^{1}\right)\left(\left.\frac{y^{n+1}}{n+1}\right\rvert_{0}^{1}\right)=\frac{2}{(m+1)(n+1)}.
+\end{split}\]
+\end{solution}
+
+
+
+\newpage
+
+
+
+\begin{question}
+Evaluate the following integral if $R = [0,9] \times [-1, 1]$.
+ \[\iint_R\frac{yx^3}{y^2+2}\,dy\,dx.\]
+\end{question}
+\begin{solution}
+{\color{red}{(You don't need to draw graph here. But it is better to know what the region look like.)}}
+\[\begin{tikzpicture}
+\begin{axis}[
+	xmin=-1,   xmax=10,
+	ymin=-2,   ymax=2,
+	extra x ticks={0,9},
+	extra y ticks={-1,1},
+	extra tick style={grid=major},
+	scale=0.5,
+	xlabel=$x$, ylabel=$y$]
+\addplot[fill=blue,opacity=0.2] coordinates{(0,-1)(9,-1)(9,1)(0,1)(0,-1)};
+\end{axis}
+\end{tikzpicture}\]
+$R$ is the shaded region above. We can setup the formula directly.\[\iint_R\frac{yx^3}{y^2+2}\,dx\,dy=\int_{-1}^{1}\int_{0}^{9}\frac{yx^3}{y^2+2}\,dx\,dy=\int_{0}^{9}\int_{-1}^{1}\frac{yx^3}{y^2+2}\,dy\,dx.\]
+Evaluate: since the integrand is a product of a function of $x$ and a function of $y$, and the region is a rectangle region, we can apply the trick to solve it.\[
+\begin{split}
+    \int_{-1}^{1}\int_{0}^{9}\frac{yx^3}{y^2+2}\,dx\,dy&=\int_{0}^{9}x^3\,dx\int_{-1}^{1}\frac{y}{y^2+2}\,dy\\
+    &=\left(\left.\frac{x^{4}}{4}\right\rvert_{0}^{9}\right)\left(\left.\frac12\ln(y^2+2)\right\rvert_{-1}^{1}\right)=0.
+\end{split}\]
+\end{solution}
+
+\vskip 9cm
+
+
+
+\begin{question}
+Evaluate the following integral if $R = [0, 1] \times [0, 1]$.
+ \[\iint_R2ye^{xy}\,dA.\]
+\end{question}
+\begin{solution}
+{\color{red}{(You don't need to draw graph here. But it is better to know what the region look like.)}}
+\[\begin{tikzpicture}
+\begin{axis}[
+	xmin=-1,   xmax=2,
+	ymin=-1,   ymax=2,
+	extra x ticks={0,1},
+	extra y ticks={0,1},
+	extra tick style={grid=major},
+	scale=0.5,
+	xlabel=$x$, ylabel=$y$]
+\addplot[fill=blue,opacity=0.2] coordinates{(0,0)(0,1)(1,1)(1,0)(0,0)};
+\end{axis}
+\end{tikzpicture}\]
+$R$ is the shaded region above. We can setup the formula directly.\[\iint_R2ye^{xy}\,dx\,dy=\int_{0}^{1}\int_{0}^{1}2ye^{xy}\,dx\,dy=\int_{0}^{1}\int_{0}^{1}2ye^{xy}\,dy\,dx.\]
+{\color{red}{(Note that this integrand is not a product of a function of $x$ and a function of $y$. Therefore you cannot apply the trick to solve it.)}}
+% since the integrand is a product of a function of $x$ and a function of $y$, and the region is a rectangle region, we can apply the trick to solve it.
+\[\begin{split}
+    \int_{0}^{1}\int_{0}^{1}2ye^{xy}\,dx\,dy&=\int_{0}^{1}\left[\int_0^12ye^{xy}\,dx\right]\,dy=\int_0^1\left.\left(2e^{xy}\right)\right\rvert_{0}^1\,dy\\
+    &=\int_0^1(2e^y-2)\,dy=2e^y\rvert_0^1-2y\rvert_0^1=2e-4.
+\end{split}\]
+
+
+
+\begin{remark}
+This problem can be solved using the formula $\iint dy dx$. The computation is harder. You can try it as an exercise.
+\end{remark}
+\end{solution}
+\newpage
+
+
+\begin{question}
+Sketch the solid whose volume is given by
+\[\int_0^1\int_0^1(3-x-y)\,dy\,dx.\]
+\end{question}
+\begin{solution}
+From the formula, the top cover should be the surface $z=3-x-y$, the lower bound should be the $xy$-plane, and the boundaries are $0\leq x\leq1$ and $0\leq y\leq 1$. The region are shown like this:
+\[\begin{tikzpicture}
+  \begin{axis}[domain=0:1,y domain=0:1, zmin=0, zmax=3,view={120}{45},xlabel=$x$, ylabel=$y$, zlabel=$z$]
+    \addplot3[surf,opacity=0.8,samples=15](x,y,3-x-y);
+    \addplot3 coordinates {(1,1,0)(1,1,1)};
+  \end{axis}
+\end{tikzpicture}\]
+\end{solution}
+
+\vskip 9cm
+
+\begin{question}
+Compute the volume of the solid bounded by the $xz$-plane, the $yz$-plane, the $xy$-plane, the planes $x = 1$ and $y = 1$, and the surface $z = 2x^2 + 9y^4$.
+\end{question}
+\begin{solution}
+Sketch the region. $xz$-plane is $y=0$. $yz$-plane is $x=0$. $xy$-plane is $z=0$. So the region is bounded by $0\leq x\leq 1$, $0\leq y\leq 1$ and $0\leq z\leq 2x^2+9y^4$. It is shown below.
+\[\begin{tikzpicture}
+  \begin{axis}[domain=0:1,y domain=0:1, zmin=0, zmax=12,view={120}{45},xlabel=$x$, ylabel=$y$, zlabel=$z$]
+    \addplot3[surf,opacity=0.8,samples=15](x,y,2*x^2+9*y^4);
+    \addplot3[opacity=0.2,fill=blue] coordinates {(0,0,0)(0,1,0)(1,1,0)(1,0,0)};
+    \addplot3[opacity=0.2,fill=green] coordinates {(0,0,0)(0,1,0)(0,1,12)(0,0,12)};
+    \addplot3[opacity=0.2,fill=green] coordinates {(1,0,0)(1,1,0)(1,1,12)(1,0,12)};
+    \addplot3[opacity=0.2,fill=orange] coordinates {(0,0,0)(1,0,0)(1,0,12)(0,0,12)};
+    \addplot3[opacity=0.2,fill=orange] coordinates {(0,1,0)(1,1,0)(1,1,12)(0,1,12)};
+  \end{axis}
+\end{tikzpicture}\]
+
+Then the volume of the bounded region is
+\[\begin{split}
+    \int_{0}^1\int_0^1(2x^2+9y^4)\,dx\,dy&=\int_{0}^1\int_0^12x^2\,dx\,dy+\int_{0}^1\int_0^19y^4\,dx\,dy\\
+    &=\int_0^12x^2\,dx\int_{0}^11\,dy+\int_0^11\,dx\int_{0}^19y^4\,dy=\frac{2}{3}+\frac{9}{5}=\frac{37}{15}.
+\end{split}\]
+\clearpage
+\end{solution}
+
+\clearpage

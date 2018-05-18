@@ -1,7 +1,6 @@
 [{
-  "question" : ["Determine the convergence or divergence for the \textbf{sequence}. If convergent, evaluate the limit."    ],
-  "part":[["\[\{a_n\}=\left\{\cos(2n\pi)\frac{n^2+1}{3n^2+5}\right\}\]"],["\[\{a_n\}=\left\{\left(\frac{3+2n}{2n}\right)^n\right\}\]"]
-  ],
+  "question" : ["Determine the convergence or divergence for the  ."    ],
+  "part":[[" "],[" "]  ],
   "point":[5,5],
   "solution" : [
      "",""

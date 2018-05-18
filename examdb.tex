@@ -52,7 +52,7 @@ You are required to show your work on each problem on this exam.  The following 
 %
 \item%
 
-Please cross (or erase) \textbf{everything} you don't want. If both the correct solution and the wrong solution appear simutanously, we will just grade the wrong one.
+Please cross (or erase) \textbf{everything} you don't want. If both the correct solution and the wrong solution appear simultaneously, we will just grade the wrong one.
 %
 \item%
 
@@ -75,48 +75,84 @@ Do not write in the table to the right.%
 \newpage%
 \addpoints%
 \begin{questions}%
-\question[1]%
-aa12345%
-\begin{solution}%
-bb222%
-\end{solution}%
-%
 \question%
-second0
-asdfasdfsa $0$, \begin{equation}sdfsfnd{dsfad}
-\end{equation}asfasfa0asafdsa.\[dsfad\]\begin{parts}%
-\part[1]%
-asdfasdfsa0
-asdfasdfsa0
-asfasfa0asafdsa.%
-\begin{solution}%
-0 asdfsf
-asdfasdfsa0
-asdfasdfsa0
-asfasfa0asafdsa.%
-\end{solution}%
-\part[2]%
-asdfasdfsa0
-asdfasdfsa0
-asfasfa0asafdsa.%
-\begin{solution}%
-0 asdfsf
-asdfasdfsa0
-asdfasdfsa0
-asfasfa0asafdsa.%
-\end{solution}%
-\end{parts}%
+
+Evaluate
+\[\int_0^2\int_0^3\int_{-\sqrt{9-x^2}}^{\sqrt{9-x^2}}\,dy\,dz\,dx.\]
 %
-\question[3]%
-third
-asdfasdfsa $0$, \begin{equation}sdfsfnd{dsfad}
-\end{equation}asfasfa0asafdsa.\[dsfad\]%
 \begin{solution}%
-0 asdfsf
-asdfasdfsa0
-asdfasdfsa0
-asfasfa0asafdsa.%
-\end{solution}%
+
+\[\begin{split}
+    \int_0^2\int_0^3\int_{-\sqrt{9-x^2}}^{\sqrt{9-x^2}}\,dy\,dz\,dx=&\int_0^2\int_0^3y\rvert_{-\sqrt{9-x^2}}^{\sqrt{9-x^2}}\,dz\,dx=\int_0^2\int_0^32{\sqrt{9-x^2}}\,dz\,dx\\
+    =&\int_0^2\left.2{\sqrt{9-x^2}}\cdot z\right\rvert_0^3\,dx=\int_0^22{\sqrt{9-x^2}}\cdot3\,dx\\
+    =&\int_0^26\sqrt{9-x^2}\,dx=\left.3\left(x\sqrt{9-x^2}+9\arcsin(\frac{x}{3})\right)\right\rvert_0^2\\
+    =&3\left(2\sqrt5+9\arcsin(\frac23)\right).
+\end{split}\]
+\begin{remark}
+We can directly solve the integral using calculus techniques. However sometimes we need to recognize the region based on the formula. We take this as an example.
+
+First we try to understand the region. It is: $-\sqrt{9-x^2}\leq y\leq\sqrt{9-x^2}$, $0\leq z\leq 3$ and $0\leq x\leq 2$. Since $z$ part has nothing to do with $x$ and $y$, we can first focus on $xy$-plane and see what it looks like. Here we have a curve $x^2+y^2=9$. For each $0\leq x\leq 2$, $-\sqrt{9-x^2}\leq y\leq\sqrt{9-x^2}$. Then we have the following region:
+\[\begin{tikzpicture}
+\begin{axis}[scale=0.8,
+axis equal,
+axis lines=middle,
+xmin=-4, xmax=4, ymin=-4, ymax=4,xlabel=$x$, ylabel=$y$
+]
+\addplot[name path=top,samples=300,domain=-3:3] (x,{sqrt(9-x^2)});
+\addplot[name path=but,samples=300,domain=-3:3] (x,{-sqrt(9-x^2)});
+\addplot[fill=blue,opacity=0.4]fill between[of=top and but, soft clip={domain=0:2}];
+\draw[dashed] (2,-2.5)--(2,2.5);
+\end{axis}
+\end{tikzpicture}\]
+When considering $z$, since $z$ is not involving, we simply move the shaded region from $z=0$ to $z=3$. We get
+\[
+\begin{tikzpicture}
+\begin{axis}[ticks=none,
+scale=0.8,
+view={120}{45},
+axis lines=middle,
+xmin=-4, xmax=4, ymin=-4, ymax=4, zmin=0,zmax=4,
+xlabel=$x$, zlabel=$z$
+]
+\addplot[name path=top,samples=300,domain=-3:3] (x,{sqrt(9-x^2)});
+\addplot[name path=but,samples=300,domain=-3:3] (x,{-sqrt(9-x^2)});
+\draw[fill=blue,opacity=0.2] plot[smooth,samples=100,domain=0:2] (\x,-{sqrt(9-(\x)*(\x))}) --
+    plot[smooth,samples=100,domain=2:0] (\x,{sqrt(9-(\x)*(\x))});
+\draw node[above left]at (0,4,0){$y$};
+
+\draw[dashed] (2,-2.5)--(2,2.5);
+\end{axis}
+\end{tikzpicture}\Rightarrow
+\begin{tikzpicture}
+\begin{axis}[scale=0.8,ticks=none,
+view={120}{45},
+axis lines=middle,
+xmin=-4, xmax=4, ymin=-4, ymax=4, zmin=0,zmax=4,
+xlabel=$x$,
+]
+\addplot[name path=top,samples=300,domain=-3:3] (x,{sqrt(9-x^2)});
+\addplot[name path=but,samples=300,domain=-3:3] (x,{-sqrt(9-x^2)});
+\draw[fill=blue,opacity=0.2] plot[smooth,samples=100,domain=0:2] (\x,-{sqrt(9-(\x)*(\x))}) --
+    plot[smooth,samples=100,domain=2:0] (\x,{sqrt(9-(\x)*(\x))});
+\draw[dashed] (2,-2.5)--(2,2.5);
+
+\draw node[left]at (0,0,4){$z$};
+\draw node[above left]at (0,4,0){$y$};
+
+\addplot3[samples y=1,domain=-3:3,dashed] (x,{sqrt(9-x^2)},3);
+\addplot3[name path=but,samples y=1,domain=-3:3,dashed] (x,{-sqrt(9-x^2)},3);
+\draw[fill=blue,opacity=0.2] plot[smooth,samples=100,domain=0:2] (\x,-{sqrt(9-(\x)*(\x))},3) --
+    plot[smooth,samples=100,domain=2:0] (\x,{sqrt(9-(\x)*(\x))},3);
+\draw[dashed] (2,-2.5,3)--(2,2.5,3);
+\draw[dashed] (0,-3,3)--(0,3,3);
+\draw[dashed] (0,-3,0)--(0,-3,3);
+\draw[dashed] (0,3,0)--(0,3,3);
+\draw[dashed] (2,{-sqrt(5)},0)--(2,{-sqrt(5)},3);
+\draw[dashed] (2,{sqrt(5)},0)--(2,{sqrt(5)},3);
+\end{axis}
+\end{tikzpicture}\]
+\end{remark}
 %
+\end{solution}%
 \end{questions}%
 \end{document}
