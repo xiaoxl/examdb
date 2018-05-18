@@ -1,24 +1,16 @@
-from pylatex.base_classes import Environment, Command, Container, LatexObject, UnsafeCommand, CommandBase
-from pylatex.base_classes.command import Arguments,CommandBase
-from pylatex.package import Package
-from pylatex.utils import dumps_list, rm_temp_dir, NoEscape
-import pylatex.config as cf
-from pylatex.document import Document
-# from json import *
-import random
-import json
-import json
-from pprint import pprint
-import random
+# from pylatex.base_classes import Environment, Command, Container, LatexObject, UnsafeCommand, CommandBase
+# from pylatex.base_classes.command import Arguments,CommandBase
+# from pylatex.package import Package
+from pylatex.utils import NoEscape
+# import pylatex.config as cf
+# from pylatex.document import Document
+# import json
 from examcls import *
 from tinydb import TinyDB, Query
-import re
+# import re
 from examDB.latexSnippt import LatexSnippt
 from examDB.dbOP import dbOp
-# from examcls import *
-
-# from LatexSnippt import LatexSnippt
-# from QuestionModule import *
+import difflib
 
 
 class EnvParts(Environment):
@@ -41,15 +33,29 @@ class ComQuestion(CommandBase):
 if __name__ == '__main__':
     # Basic document
 
-    dbname='examdb'
-    dbOp.insertdata(dbOp,'problems.txt',dbname)
+    dbname='examdb.json'
+    filename='problems.txt'
+    # dbOp.insertdata(filename,dbname)
 
 
-    db=TinyDB(dbname+'.json')
+    db=TinyDB(dbname)
 
+    # A=db.get(doc_id=40)["question"]
+    # print(A)
+    # B=db.get(doc_id=32)["question"]
+    # print(B)
+    print(dbOp.compare_item(dbOp,db,32,40))
+    # p={"haha":"haha",
+    #    "d":"211",
+    #    "ff":[22,33]}
+
+    # db.insert(p)
+
+
+    #
     q=LatexSnippt()
     # with q.create(EnvQuestions()):
-    question=db.get(doc_id=15)
+    question=db.get(doc_id=6)
     q.append(Command('question'))
     q.append(NoEscape(question["question"]))
     num_sol=len(question["solutions"])
@@ -57,9 +63,9 @@ if __name__ == '__main__':
         with q.create(EnvSolutions()):
             q.append(NoEscape(sol))
 
-    print(q.dumps())
-
-
+    # print(q.dumps())
+    #
+    #
 
     #
     #
@@ -171,8 +177,7 @@ if __name__ == '__main__':
     # #         #     doc.append(NoEscape(question2.dumps()))
     #
     #
-    # # with open('problem0.txt','r') as dd:
-    # #     doc.append(NoEscape(dd.read()))
+    # #
     #
     #
     # doc.generate_tex()
