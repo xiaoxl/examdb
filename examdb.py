@@ -4,7 +4,7 @@
 from pylatex.utils import NoEscape
 # import pylatex.config as cf
 # from pylatex.document import Document
-# import json
+import json
 from examcls import *
 from tinydb import TinyDB, Query
 # import re
@@ -40,11 +40,34 @@ if __name__ == '__main__':
 
     db=TinyDB(dbname)
 
+    # p={"question":"sss",
+    #    "ff":"22"}
+    #
+    # db.insert(p)
+    # db.insert(p)
+    # db.insert(p)
+    # db.insert(p)
+    # db.insert(p)
+    # db.update({"d2d":33},doc_ids=[1])
+
+    # print(db.get(doc_id=1)["d2d2"])
+
+
+    dbOp.CheckSimilarity(db)
+    # dbOp.CheckDuplicate(db)
+    # dbOp.RemoveDuplicate(db)
+    print(db.all())
+
+    print(len(db.all()))
+
+
+    # print(json.dumps(db.get(doc_id=1)))
+
     # A=db.get(doc_id=40)["question"]
     # print(A)
     # B=db.get(doc_id=32)["question"]
     # print(B)
-    print(dbOp.compare_item(dbOp,db,32,40))
+    # print(dbOp.compare_item(dbOp,db,32,40))
     # p={"haha":"haha",
     #    "d":"211",
     #    "ff":[22,33]}
@@ -53,15 +76,15 @@ if __name__ == '__main__':
 
 
     #
-    q=LatexSnippt()
-    # with q.create(EnvQuestions()):
-    question=db.get(doc_id=6)
-    q.append(Command('question'))
-    q.append(NoEscape(question["question"]))
-    num_sol=len(question["solutions"])
-    for sol in question["solutions"]:
-        with q.create(EnvSolutions()):
-            q.append(NoEscape(sol))
+    # q=LatexSnippt()
+    # # with q.create(EnvQuestions()):
+    # question=db.get(doc_id=6)
+    # q.append(Command('question'))
+    # q.append(NoEscape(question["question"]))
+    # num_sol=len(question["solutions"])
+    # for sol in question["solutions"]:
+    #     with q.create(EnvSolutions()):
+    #         q.append(NoEscape(sol))
 
     # print(q.dumps())
     #
