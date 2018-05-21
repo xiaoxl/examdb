@@ -11,7 +11,7 @@
 # from examDB.latexSnippt import LatexSnippt
 # from examDB.dbOP import dbOp
 # import difflib
-from examDB.mydb import MyDB
+from examdb.MyDB import MyDB
 #
 # class EnvParts(Environment):
 #     _latex_name='parts'
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     # db.check_duplicate()
     # db.remove_duplicate()
     #
-    j=db.search(Query().tags.any(["6.1"]))
+    j=db.search(Query().tags.any(["general"]))
     print(db.output_latex(j))
     # str=db.output_latex(db.all())
     # print(str)

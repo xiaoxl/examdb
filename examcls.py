@@ -3,7 +3,7 @@ from pylatex.lists import List,Itemize,Enumerate
 from pylatex.utils import italic, NoEscape
 from pylatex.base_classes.command import Arguments,CommandBase
 from pylatex.base_classes.containers import *
-from examDB.latexSnippt import LatexSnippt
+from examdb.LatexSnippt import LatexSnippt
 from pylatex.utils import *
 from pylatex import *
 
