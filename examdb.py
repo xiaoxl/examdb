@@ -1,32 +1,33 @@
-# from pylatex.base_classes import Environment, Command, Container, LatexObject, UnsafeCommand, CommandBase
-# from pylatex.base_classes.command import Arguments,CommandBase
-# from pylatex.package import Package
-from pylatex.utils import NoEscape
-# import pylatex.config as cf
-# from pylatex.document import Document
-import json
-from examcls import *
-from tinydb import TinyDB, Query
-# import re
-from examDB.latexSnippt import LatexSnippt
-from examDB.dbOP import dbOp
-import difflib
-
-
-class EnvParts(Environment):
-    _latex_name='parts'
-
-class ComPart(CommandBase):
-    _latex_name = 'part'
-
-class EnvQuestions(Environment):
-    _latex_name='questions'
-
-class EnvSolutions(Environment):
-    _latex_name='solution'
-
-class ComQuestion(CommandBase):
-    _latex_name='question'
+# # from pylatex.base_classes import Environment, Command, Container, LatexObject, UnsafeCommand, CommandBase
+# # from pylatex.base_classes.command import Arguments,CommandBase
+# # from pylatex.package import Package
+# from pylatex.utils import NoEscape
+# # import pylatex.config as cf
+# # from pylatex.document import Document
+# import json
+# from examcls import *
+# from tinydb import TinyDB, Query
+# # import re
+# from examDB.latexSnippt import LatexSnippt
+# from examDB.dbOP import dbOp
+# import difflib
+from examDB.mydb import MyDB
+#
+# class EnvParts(Environment):
+#     _latex_name='parts'
+#
+# class ComPart(CommandBase):
+#     _latex_name = 'part'
+#
+# class EnvQuestions(Environment):
+#     _latex_name='questions'
+#
+# class EnvSolutions(Environment):
+#     _latex_name='solution'
+#
+# class ComQuestion(CommandBase):
+#     _latex_name='question'
+from tinydb import Query
 
 
 
@@ -38,29 +39,33 @@ if __name__ == '__main__':
     # dbOp.insertdata(filename,dbname)
 
 
-    db=TinyDB(dbname)
+    db=MyDB(dbname)
 
-    # p={"question":"sss",
-    #    "ff":"22"}
+    # db.import_from_latex(filename,["change of variables","multi variables","integration"],"MVC_10B_Integration")
     #
-    # db.insert(p)
-    # db.insert(p)
-    # db.insert(p)
-    # db.insert(p)
-    # db.insert(p)
-    # db.update({"d2d":33},doc_ids=[1])
 
+    user=Query()
+    #
+    # db.check_duplicate()
+    # db.remove_duplicate()
+    #
+    j=db.search(Query().tags.any(["6.1"]))
+    print(db.output_latex(j))
+    # str=db.output_latex(db.all())
+    # print(str)
     # print(db.get(doc_id=1)["d2d2"])
+    #
+    #
+    # dbOp.CheckSimilarity(db)
+    # # dbOp.CheckDuplicate(db)
+    # # dbOp.RemoveDuplicate(db)
+    # print(db.all())
+    #
+    # print(len(db.all()))
+    #
 
-
-    dbOp.CheckSimilarity(db)
-    # dbOp.CheckDuplicate(db)
-    # dbOp.RemoveDuplicate(db)
-    print(db.all())
-
-    print(len(db.all()))
-
-
+    # res=dbOp.SortSimilar(db.all())
+    # print(res)
     # print(json.dumps(db.get(doc_id=1)))
 
     # A=db.get(doc_id=40)["question"]

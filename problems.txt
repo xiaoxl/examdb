@@ -1,271 +1,376 @@
 
-\setcounter{section}{5}
-\setcounter{subsection}{4}
-\subsection{The Triple integral}
 
-\subsubsection{Key ideas}
-Describe the region, and use the description to set up the iterated integral.
+
+\setcounter{section}{6}
+\setcounter{subsection}{1}
+\subsection{The change of variables theorem}
+
+\begin{defn}[Jacobian]
+Let $T:D^*\subset \fR^2\rightarrow \fR^2$ be given by $x=x(u,v)$ and $y=y(u,v)$. The \textbf{Jacobian} (or \textbf{Jacobian determinant}) of $T$, written $\partial(x,y)/\partial (u,v)$ is the determinant of the derivative matrix:
+\[\dfrac{\partial(x,y)}{\partial(u,v)}=\det\mat{\dfrac{\partial x}{\partial u}&\dfrac{\partial x}{\partial v}\\\dfrac{\partial y}{\partial u}&\dfrac{\partial y}{\partial v}}=\dfrac{\partial x}{\partial u}\dfrac{\partial y}{\partial v}-\dfrac{\partial x}{\partial v}\dfrac{\partial y}{\partial u}.\]
+\end{defn}
+
 
 \begin{question}
-Evaluate
-\[\iiint_{[0,1]\times[0,1]\times[0,1]}e^{x+y+z}\,dx\,dy\,dz.\]
+Find the jacobian determinant of
+\[x=r\cos(\theta),\quad y=r\sin(\theta).\]
+\end{question}
+\begin{proof}
+[Solve]
+\[\dfrac{\partial(x,y)}{\partial(r,\theta)}=\dfrac{\partial x}{\partial r}\dfrac{\partial y}{\partial \theta}-\dfrac{\partial x}{\partial \theta}\dfrac{\partial y}{\partial r}=\cos(\theta)r\cos(\theta)-(-r\sin(\theta))\sin(\theta)=r.\]
+\end{proof}
+
+\begin{thm}
+[Change of variables of double integrals] Let $T:D^*\rightarrow D$ is a one-to-one and onto map from $D^*$ to $D$. Then for any integrable function $f:D\rightarrow \fR$, we have
+\[\iint_Df(x,y)\,dx\,dy=\iint_{D^*}f(x(u,v),y(u,v))\left|\dfrac{\partial(x,y)}{\partial(u,v)}\right|\,du\,dv.\]
+\end{thm}
+
+\begin{thm}
+[Polar coordinates]
+\[\iint_Df(x,y)dxdy=\iint_{D^*}f(r\cos(\theta),r\sin(\theta))rdrd\theta.\]
+\end{thm}
+
+
+\begin{question}
+Compute the area of the parallelogram bounded by $y=2x$, $y=\frac{1}{2}x$, $y=2x-3$ and $y=\frac{1}{2}x+\frac{3}{2}$.
 \end{question}
 \begin{solution}
-Since the region is a rectangular box, and the function is the product of a function of $x$, a function of $y$ and a function of $z$, we can apply the trick.
-\[\begin{split}
-    \iiint_{[0,1]\times[0,1]\times[0,1]}e^{x+y+z}\,dx\,dy\,dz&=\int_0^1\int_0^1\int_0^1e^xe^ye^z\,dx\,dy\,dz\\
-    &=\int_0^1e^x\,dx\int_0^1e^y\,dy\int_0^1e^z\,dz=\left.\left(e^x\right)\right\rvert_0^1\left.\left(e^y\right)\right\rvert_0^1\left.\left(e^z\right)\right\rvert_0^1\\
-    &=(e-1)(e-1)(e-1)=(e-1)^3.
-\end{split}\]
-\begin{remark}
-The region is a rectangular box. There is no need to draw it since it is very simple to understand.
-\end{remark}
+Draw the four lines below:
+\[\begin{tikzpicture}
+\begin{axis}[axis lines=middle,axis equal,scale=0.8,ticks=none,
+xmin=-1,xmax=3.5,ymin=-1,ymax=3.5]
+\addplot[smooth] {2*x}  node[left]at(1.5,3) {$y=2x$};
+\addplot[smooth] {x/2}node[below]at(3,1.5) {$y=\frac{x}{2}$};
+\addplot[smooth] {2*x-3}node[right] at(1.2,-0.7){$y=2x-3$};
+\addplot[smooth] {x/2+3/2}node[above] at(-0.6,1.2){$y=\frac{x}{2}+\frac32$};
+\draw node[black] at(1.5,1.5){$D$};
+\addplot[fill=blue,opacity=0.2] coordinates{(0,0)(2,1)(3,3)(1,2)};
+\end{axis}
+\end{tikzpicture}\]
+The region $D$ is bounded by $y=2x$, $y=2x-3$, $y=\frac{x}{2}$ and $y=\frac{x}{2}+\frac32$. Then the region $D$ is bounded by $y-2x=0$, $y-2x=-3$, $y-\frac{x}{2}=0$ and $y-\frac{x}{2}=\frac{3}{2}$. In other words, the region $D$ is described by
+\[-3\leq y-2x\leq 0,\quad 0\leq y-\frac{x}{2}\leq \frac32.\]
+Let $u=y-2x$, $v=y-\frac{x}{2}$. Then the region $D$ is described by $-3\leq u\leq 0$ and $0\leq v\leq \frac32$.
+Apply the change-of-variable formula: \[u=-2x+y,\ v=-\frac12x+y\quad\Rightarrow \quad x=-\frac{2}{3}u+\frac23v,\ y=-\frac13u+\frac43v.\]
+The jacobian is
+\[\dfrac{\partial(x,y)}{\partial(u,v)}=\det\mat{\dfrac{\partial x}{\partial u}&\dfrac{\partial x}{\partial v}\\\dfrac{\partial y}{\partial u}&\dfrac{\partial y}{\partial v}}=\det\mat{-\dfrac23&\dfrac23\\-\dfrac13&\dfrac43}=-\frac23.\]
+Then \[\text{the area}=\iint_D\,dx\,dy=\int_{v=0}^{v=3/2}\int_{u=-3}^{u=0}\left\lvert-\frac{2}{3}\right\rvert\,du\,dv=\frac{2}{3}\times3\times \frac32=3.\]
 \end{solution}
 
 
-
-
-\vskip 9cm
-
-\begin{question}
-Evaluate
-\[\iiint_{[0,2]\times[0,2]\times[0,2]}x^2\,dx\,dy\,dz.\]
-\end{question}
-\begin{solution}
-Since the region is a rectangular box, and the function is the product of a function of $x$, a function of $y$ and a function of $z$, we can apply the trick.
-\[\begin{split}
-    \iiint_{[0,2]\times[0,2]\times[0,2]}x^2\,dx\,dy\,dz&=\int_0^2\int_0^2\int_0^2x^2\,dx\,dy\,dz=\int_0^2x^2\,dx\int_0^2\,dy\int_0^2\,dz\\
-    =&\left(\left.\frac{x^3}{3}\right\rvert_0^2\right)\left(\left.y\right\rvert_0^2\right)\left(\left.z\right\rvert_0^2\right)=\frac{8}{3}\cdot2\cdot2=\frac{32}{3}.
-\end{split}\]
-\begin{remark}
-The region is a rectangular box. There is no need to draw it since it is very simple to understand.
-\end{remark}
-\end{solution}
 \newpage
-
-
 \begin{question}
-Evaluate
-\[\int_0^2\int_0^3\int_{-\sqrt{9-x^2}}^{\sqrt{9-x^2}}\,dy\,dz\,dx.\]
+Let $D$ be the region bounded by $x-y=1$, $x-y=-1$, $x+y=1$ and $x+y=-1$. Evaluate \[\iint_{D}{(x+y)^2}{e^{x^2-y^2}}\,dx\,dy.\]
 \end{question}
 \begin{solution}
+Draw the four lines below:
+\[\begin{tikzpicture}
+\begin{axis}[axis lines=middle,axis equal,scale=0.8,ticks=none,
+xmin=-1.5,xmax=1.5,ymin=-1.5,ymax=1.5]
+\addplot[smooth] {x-1}  node[font=\tiny]at(1.3,0.7) {$x-y=1$};
+\addplot[smooth] {x+1}node[font=\tiny]at(0.7,1.2) {$x-y=-1$};
+\addplot[smooth] {-x-1}node[font=\tiny] at(0.7,-1.2){$x+y=-1$};
+\addplot[smooth] {-x+1}node[font=\tiny] at(-0.7,1.2){$x+y=1$};
+\draw node[black] at(0.1,0.1){$D$};
+\addplot[fill=blue,opacity=0.2] coordinates{(1,0)(0,1)(-1,0)(0,-1)};
+\end{axis}
+\end{tikzpicture}\]
+The region $D$ is bounded by $x-y=1$, $x-y=-1$, $x+y=1$ and $x+y=-1$. Then the region $D$ is described by
+\[-1\leq x-y\leq 1,\quad -1\leq x+y\leq 1.\]
+Let $u=x+y$, $v=x-y$. Then $D$ can be described by $-1\leq u\leq 1$, $-1\leq v\leq 1$. Apply the change-of-variable formula:
+\[u=x+y,\ v=x-y\quad\Rightarrow \quad x=\frac12u+\frac12v,\ y=\frac12u-\frac12v.\]
+The jacobian is
+\[\dfrac{\partial(x,y)}{\partial(u,v)}=\det\mat{\dfrac{\partial x}{\partial u}&\dfrac{\partial x}{\partial v}\\\dfrac{\partial y}{\partial u}&\dfrac{\partial y}{\partial v}}=\det\mat{\dfrac12&\dfrac12\\\dfrac12&-\dfrac12}=-\frac12.\]
+Then
 \[\begin{split}
-    \int_0^2\int_0^3\int_{-\sqrt{9-x^2}}^{\sqrt{9-x^2}}\,dy\,dz\,dx=&\int_0^2\int_0^3y\rvert_{-\sqrt{9-x^2}}^{\sqrt{9-x^2}}\,dz\,dx=\int_0^2\int_0^32{\sqrt{9-x^2}}\,dz\,dx\\
-    =&\int_0^2\left.2{\sqrt{9-x^2}}\cdot z\right\rvert_0^3\,dx=\int_0^22{\sqrt{9-x^2}}\cdot3\,dx\\
-    =&\int_0^26\sqrt{9-x^2}\,dx=\left.3\left(x\sqrt{9-x^2}+9\arcsin(\frac{x}{3})\right)\right\rvert_0^2\\
-    =&3\left(2\sqrt5+9\arcsin(\frac23)\right).
+    \iint_{D}{(x+y)^2}{e^{x^2-y^2}}\,dx\,dy=&\int_{v=-1}^{v=1}\int_{u=-1}^{u=1}u^2e^{uv}\left\lvert-\frac12\right\rvert\,du\,dv\\
+    =&\frac12\int_{-1}^1\int_{-1}^1u^2e^{uv}\,dv\,du=\frac12\int_{-1}^1\intvert{u^2\frac{e^{uv}}{u}}_{v=-1}^{v=1}\,du\\
+    =&\frac{1}{2}\int_{-1}^1\para{ue^u-ue^{-u}}\,du=\frac12\intvert{\para{ue^u-e^u+ue^{-u}+e^{-u}}}_{-1}^1=2e^{-1}.
 \end{split}\]
-% \begin{remark}
-% We can directly solve the integral using calculus techniques. However sometimes we need to recognize the region based on the formula. We take this as an example.
+\end{solution}
 
-% First we try to understand the region. It is: $-\sqrt{9-x^2}\leq y\leq\sqrt{9-x^2}$, $0\leq z\leq 3$ and $0\leq x\leq 2$. Since $z$ part has nothing to do with $x$ and $y$, we can first focus on $xy$-plane and see what it looks like. Here we have a curve $x^2+y^2=9$. For each $0\leq x\leq 2$, $-\sqrt{9-x^2}\leq y\leq\sqrt{9-x^2}$. Then we have the following region:
-% \[\begin{tikzpicture}
-% \begin{axis}[scale=0.8,
-% axis equal,
-% axis lines=middle,
-% xmin=-4, xmax=4, ymin=-4, ymax=4,xlabel=$x$, ylabel=$y$
-% ]
-% \addplot[name path=top,samples=300,domain=-3:3] (x,{sqrt(9-x^2)});
-% \addplot[name path=but,samples=300,domain=-3:3] (x,{-sqrt(9-x^2)});
-% \addplot[fill=blue,opacity=0.4]fill between[of=top and but, soft clip={domain=0:2}];
-% \draw[dashed] (2,-2.5)--(2,2.5);
-% \end{axis}
-% \end{tikzpicture}\]
-% When considering $z$, since $z$ is not involving, we simply move the shaded region from $z=0$ to $z=3$. We get
+
+\vskip 10cm
+
+% \begin{question}
+% Evaluate
 % \[
-% \begin{tikzpicture}
-% \begin{axis}[ticks=none,
-% scale=0.8,
-% view={120}{45},
-% axis lines=middle,
-% xmin=-4, xmax=4, ymin=-4, ymax=4, zmin=0,zmax=4,
-% xlabel=$x$, zlabel=$z$
-% ]
-% \addplot[name path=top,samples=300,domain=-3:3] (x,{sqrt(9-x^2)});
-% \addplot[name path=but,samples=300,domain=-3:3] (x,{-sqrt(9-x^2)});
-% \draw[fill=blue,opacity=0.2] plot[smooth,samples=100,domain=0:2] (\x,-{sqrt(9-(\x)*(\x))}) --
-%     plot[smooth,samples=100,domain=2:0] (\x,{sqrt(9-(\x)*(\x))});
-% \draw node[above left]at (0,4,0){$y$};
+%   \int_{0}^1\int_{y=x^{2/5}}^1e^{y^6}xdydx.
+% \]
+% \end{question}
 
-% \draw[dashed] (2,-2.5)--(2,2.5);
-% \end{axis}
-% \end{tikzpicture}\Rightarrow
-% \begin{tikzpicture}
-% \begin{axis}[scale=0.8,ticks=none,
-% view={120}{45},
-% axis lines=middle,
-% xmin=-4, xmax=4, ymin=-4, ymax=4, zmin=0,zmax=4,
-% xlabel=$x$,
-% ]
-% \addplot[name path=top,samples=300,domain=-3:3] (x,{sqrt(9-x^2)});
-% \addplot[name path=but,samples=300,domain=-3:3] (x,{-sqrt(9-x^2)});
-% \draw[fill=blue,opacity=0.2] plot[smooth,samples=100,domain=0:2] (\x,-{sqrt(9-(\x)*(\x))}) --
-%     plot[smooth,samples=100,domain=2:0] (\x,{sqrt(9-(\x)*(\x))});
-% \draw[dashed] (2,-2.5)--(2,2.5);
-
-% \draw node[left]at (0,0,4){$z$};
-% \draw node[above left]at (0,4,0){$y$};
-
-% \addplot3[samples y=1,domain=-3:3,dashed] (x,{sqrt(9-x^2)},3);
-% \addplot3[name path=but,samples y=1,domain=-3:3,dashed] (x,{-sqrt(9-x^2)},3);
-% \draw[fill=blue,opacity=0.2] plot[smooth,samples=100,domain=0:2] (\x,-{sqrt(9-(\x)*(\x))},3) --
-%     plot[smooth,samples=100,domain=2:0] (\x,{sqrt(9-(\x)*(\x))},3);
-% \draw[dashed] (2,-2.5,3)--(2,2.5,3);
-% \draw[dashed] (0,-3,3)--(0,3,3);
-% \draw[dashed] (0,-3,0)--(0,-3,3);
-% \draw[dashed] (0,3,0)--(0,3,3);
-% \draw[dashed] (2,{-sqrt(5)},0)--(2,{-sqrt(5)},3);
-% \draw[dashed] (2,{sqrt(5)},0)--(2,{sqrt(5)},3);
-% \end{axis}
-% \end{tikzpicture}\]
-% \end{remark}
+\begin{question}
+Let $\mathcal D$ be the region bounded by $x+y=1$, $x+y=4$, $y=2x$ and $y=x$. Evaluate \[\iint_{D}(x+y)\,dx\,dy\].
+\end{question}
+\begin{solution}
+Draw the lines below:
+\[\begin{tikzpicture}
+\begin{axis}[axis lines=middle,axis equal,scale=0.8,ticks=none,
+xmin=-1,xmax=4,ymin=-1,ymax=4]
+\addplot[smooth] {1-x}  node[font=\tiny]at(1.1,-0.5) {$x+y=1$};
+\addplot[smooth] {4-x}node[font=\tiny]at(3,1) {$x+y=4$};
+\addplot[smooth] {2*x}node[font=\tiny] at(1.6,3.2){$y=2x$};
+\addplot[smooth] {x}node[font=\tiny] at(3,3){$y=x$};
+\draw node[black] at(1.4,1.8){$D$};
+\addplot[fill=blue,opacity=0.2] coordinates{(0.5,0.5)(2,2)(4/3,8/3)(1/3,2/3)};
+\end{axis}
+\end{tikzpicture}\]
+The region $D$ is bounded by $x+y=1$, $x+y=4$, $y=2x$ and $y=x$. The the region $D$ is described by
+\[1\leq x+y\leq 4,\quad 1\leq\frac{y}{x}\leq 2.\]
+Let $u=x+y$, $v=\frac{y}{x}$. Then $D$ can be described by $1\leq u\leq 4$, $1\leq v\leq 2$. Apply the change-of-variable formula:
+\[u=x+y,\ v=\frac{y}{x}\quad\Rightarrow \quad x=\frac{u}{1+v},\ y=\frac{uv}{1+v}.\]
+Then
+\[\frac{\partial x}{\partial u}=\frac{1}{1+v},\quad \frac{\partial x}{\partial v}=\frac{-u}{(1+v)^2},\quad \frac{\partial y}{\partial u}=\frac{v}{1+v},\quad \frac{\partial y}{\partial v}=\frac{u}{(1+v)^2}.\]
+The jacobian is
+\[\dfrac{\partial(x,y)}{\partial(u,v)}=\det\mat{\dfrac{\partial x}{\partial u}&\dfrac{\partial x}{\partial v}\\\dfrac{\partial y}{\partial u}&\dfrac{\partial y}{\partial v}}=\frac{u}{(1+v)^2}.\]
+Then
+\[    \iint_{D}(x+y)\,dx\,dy=\int_{v=1}^{v=2}\int_{u=1}^{u=4}u\frac{u}{(1+v)^2}\,du\,dv=\int_{1}^{2}\int_{1}^{4}\frac{u^2}{(1+v)^2}\,du\,dv.\]
+Note that here the integrend is separable, and the domain is rectangular. Therefore
+\[   \int_{1}^{2}\int_{1}^{4}\frac{u^2}{(1+v)^2}\,du\,dv=\int_1^2\frac{1}{(v+1)^2}\,dv\int_1^4u^2\,du=\frac16\cdot 21=\frac72.\]
 \end{solution}
 
 
 
-\vskip 9cm
+\newpage
+\begin{remark}
+\color{red}
+There is a theorem that when computing integral, you can ignore finite many of vaules and the answer won't be changed. This means that when changing variables, if on finite many points the change-of-variable map is not one-to-one or onto, it actually doesn't matter. Therefore if using polar coordinates, cylinderical coordinates and spherical coordinates, and there are finite of problematic points like $r=0$, $\theta=2\pi$, it doesn't matter in this case. In the following class, we won't pay much attention to these points when setting up formulas using these coordinates.
+\end{remark}
 
 
 
 \begin{question}
-Evaluate
-\[\int_0^1\int_0^x\int_0^y\,dz\,dy\,dx.\]
+Let $D$ be the unit disk: $x^2+y^2\leq1$. Evaluate
+\[\iint_De^{x^2+y^2}\,dx\,dy.\]
 \end{question}
 \begin{solution}
+    Use polar coordinates. Let $x=r\cos\theta$, $y=r\sin\theta$. Then $D$ is $0\leq r\leq 1$ and $0\leq\theta<2\pi$. Then
+    \[\begin{split}
+        \iint_De^{x^2+y^2}\,dx\,dy=&\int_0^{2\pi}\int_0^1e^{r^2}r\,dr\,d\theta=\int_0^{2\pi}d\theta\int_0^1e^rr\,dr\\
+        =&2\pi\intvert{\frac{e^{r^2}}{2}}_0^1=\pi(e-1).
+    \end{split}\]
+\end{solution}
+
+
+
+\vskip 7cm
+
+\begin{question}
+Let $D$ be the unit disk: $x^2+y^2\leq4$. Evaluate
+\[\iint_D{(x^2+y^2)^{3/2}}\,dx\,dy.\]
+\end{question}
+\begin{solution}
+        Use polar coordinates. Let $x=r\cos\theta$, $y=r\sin\theta$. Then $D$ is $0\leq r\leq2$ and $0\leq\theta<2\pi$. Then
+    \[
+        \iint_D(x^2+y^2)^{3/2}\,dx\,dy=\int_0^{2\pi}\int_0^2(r^2)^{3/2}r\,dr\,d\theta=\int_0^{2\pi}d\theta\int_0^2r^4\,dr=2\pi\intvert{\frac{r^5}{5}}_0^2=\frac{64\pi}{5}
+  \]
+\end{solution}
+
+
+
+\newpage
+\begin{question}
+Use double integrals to find the area inside the curve $r=1+\sin\theta.$
+\end{question}
+\begin{solution}
+        Let the region be denoted by $D$. Then using polar coordinates, the region is described by $0\leq r\leq 1+\sin\theta$, and $0\leq\theta\leq2\pi$. So the area is
+        \[\begin{split}
+            \iint_D\,dx\,dy=&\iint_Dr\,dr\,d\theta=\int_0^{2\pi}\int_0^{1+\sin\theta}r\,dr\,d\theta=\int_0^{2\pi}\intvert{\frac{r^2}{2}}_0^{1+\sin\theta}\,d\theta\\
+            =&\int_0^{2\pi}\frac{1}{2}(1+\sin\theta)^2\,d\theta=\frac12\int_0^{2\pi}\para{\frac{1-\cos(2\theta)}{2}+2\sin\theta+1}\,d\theta\\
+            =&\frac12\intvert{\para{\frac32\theta+(-2\cos\theta)-\frac14\sin(2\theta)}}_0^{2\pi}=\frac{3\pi}{2}.
+        \end{split}\]
+\end{solution}
+
+\vskip 10cm
+
+
+\begin{defn}[Jacobian]
+Let $T:W^*\subset \fR^3\rightarrow \fR^3$ be given by $x=x(u,v,w)$, $y=y(u,v,w)$ and $z=z(u,v,w)$. The \textbf{Jacobian} of $T$, written $\partial(x,y,z)/\partial (u,v,w)$ is the determinant of the derivative matrix:
+\[\dfrac{\partial(x,y,z)}{\partial(u,v,w)}=\det\mat{\dfrac{\partial x}{\partial u}&\dfrac{\partial x}{\partial v}&\dfrac{\partial x}{\partial w}\\\dfrac{\partial y}{\partial u}&\dfrac{\partial y}{\partial v}&\dfrac{\partial y}{\partial w}\\\dfrac{\partial z}{\partial u}&\dfrac{\partial z}{\partial v}&\dfrac{\partial z}{\partial w}}.\]
+Note that the $3$-dimensional determinant is defined to be
+\[\det\mat{a&b&c\\r&s&t\\x&y&z}=asz+btx+cry-aty-brz-csx.\]
+\end{defn}
+
+
+\begin{question}
+Shows that the Jacobian of
+\[x=r\cos(\theta),\quad y=r\sin(\theta),\quad z=z.\]
+is $r$.
+\end{question}
+\begin{solution}
+        \[\begin{split}
+            \dfrac{\partial(x,y,z)}{\partial(r,\theta,z)}=\det\mat{\dfrac{\partial x}{\partial r}&\dfrac{\partial x}{\partial \theta}&\dfrac{\partial x}{\partial z}\\\dfrac{\partial y}{\partial r}&\dfrac{\partial y}{\partial \theta}&\dfrac{\partial y}{\partial z}\\\dfrac{\partial z}{\partial r}&\dfrac{\partial z}{\partial \theta}&\dfrac{\partial z}{\partial z}}=\det\mat{\cos\theta&-r\sin\theta&0\\
+            \sin\theta&r\cos\theta&0\\
+            0&0&1}=r\cos^2\theta+r\sin^2\theta=r.
+        \end{split}\]
+\end{solution}
+
+\newpage
+
+\begin{question}
+Shows that the Jacobian of
+\[x=r\sin(\phi)\cos(\theta),\quad y=r\sin(\phi)\sin(\theta),\quad z=r\cos(\phi)\]
+is $-r^2\sin(\phi)$.
+\end{question}
+\begin{solution}
+        \[\begin{split}
+            \dfrac{\partial(x,y,z)}{\partial(r,\theta,\phi)}=&\det\mat{\dfrac{\partial x}{\partial r}&\dfrac{\partial x}{\partial \theta}&\dfrac{\partial x}{\partial \phi}\\\dfrac{\partial y}{\partial r}&\dfrac{\partial y}{\partial \theta}&\dfrac{\partial y}{\partial \phi}\\\dfrac{\partial z}{\partial r}&\dfrac{\partial z}{\partial \theta}&\dfrac{\partial z}{\partial \phi}}=\det\mat{\sin\phi\cos\theta&-r\sin\phi\sin\theta&r\cos\phi\cos\theta\\
+            \sin\phi\sin\theta&r\sin\phi\cos\theta&r\cos\phi\sin\theta\\
+            \cos\phi&0&-r\sin\phi}\\
+            =&-r^2\sin^3\phi\cos^2\theta-r^2\sin\phi\cos^2\phi\sin^2\theta-r^2\sin\phi\cos^2\phi\cos^2\theta-r^2\sin^3\phi\sin^2\theta\\
+            =&-r^2\sin^3\phi(\cos^2\theta+\sin^2\theta)-r^2\sin\phi\cos^2\phi(\sin^2\theta+\cos^2\theta)\\
+            =&-r^2\sin\phi(\sin^2\phi+\cos^2\phi)=-r^2\sin\phi.
+        \end{split}\]
+\end{solution}
+\vskip 10cm
+
+
+
+\begin{thm}
+[Change of variables of triple integrals] Let $T:W^*\rightarrow W$ is a one-to-one and onto map from $W^*$ to $W$. Then for any integrable function $f:W\rightarrow \fR$, we have
 \[\begin{split}
-  \int_0^1\int_0^x\int_0^y\,dz\,dy\,dx=&\int_0^1\int_0^xz\rvert_0^y\,dy\,dx=\int_0^1\int_0^xy\,dy\,dx\\
-  =&\int_0^1\left.\frac{y^2}{2}\right\rvert_0^x\,dx=\int_0^1\frac{x^2}{2}\,dx=\left.\frac{x^3}{6}\right\rvert_0^1=\frac16.
+    &\iiint_Wf(x,y,z)\,dx\,dy\,dz\\
+    =&\iiint_{W^*}f(x(u,v,w),y(u,v,w),z(u,v,w))\left|\dfrac{\partial(x,y,z)}{\partial(u,v,w)}\right|\,du\,dv\,dw.
+\end{split}\]
+\end{thm}
+\begin{thm}
+[Cylindrical coordinates]
+\[\iiint_Wf(x,y,z)\,dx\,dy\,dz=\iiint_{W^*}f(r\cos(\theta),r\sin(\theta),z)r\,dr\,d\theta\,dz.\]
+\end{thm}
+\begin{thm}
+[Spherical coordinates]
+\[\begin{split}
+    &\iiint_Wf(x,y,z)\,dx\,dy\,dz\\
+    =&\iiint_{W^*}f(r\sin(\phi)\cos(\theta),r\sin(\phi)\sin(\theta),r\cos(\phi))r^2\sin(\phi)\,dr\,d\theta\,d\phi.
+\end{split}\]
+\end{thm}
+\newpage
+\begin{question}
+Let $W$ be the cylinder $x^2+y^2\leq 4$, $8\leq z\leq 9$. Evaluate
+\[\iiint_Wze^{x^2+y^2}\,dx\,dy\,dz.\]
+\end{question}
+\begin{solution}
+    Use cylinderical coordinates. Let $x=r\cos\theta$, $y=r\sin\theta$, $z=z$. Then $W$ is
+    \[0\leq r\leq 2,\quad 0\leq\theta\leq 2\pi,\quad 8\leq z\leq 9.\]
+    Therefore
+    \[\begin{split}
+        \iiint_Wze^{x^2+y^2}\,dx\,dy\,dz=&\int_8^9\int_0^{2\pi}\int_0^2ze^{r^2}r\,dr\,d\theta\,dz\\
+        =&\int_8^9z\,dz\int_0^{2\pi}\,d\theta\int_0^{2}e^{r^2}r\,dr=\frac{17}2\para{e^4-1}\pi.
+    \end{split}\]
+\end{solution}
+\vskip 10cm
+
+\begin{question}
+Let $W$ be the solid bounded by the two spheres $x^2+y^2+z^2=a^2$ and $x^2+y^2+z^2=b^2$ where $0<b<a$. Evaluate \[\iiint_W\frac{\,dx\,dy\,dz}{(x^2+y^2+z^2)^{3/2}}.\]
+\end{question}
+\begin{solution}
+Use spherical coordiantes. Let $x=r\sin\phi\cos\theta$, $y=r\sin\phi\sin\theta$, $z=r\cos\phi$. Then $W$ is described by \[b\leq r\leq a,\quad0\leq \phi\leq\phi,\quad0\leq \theta\leq 2\pi.\]
+Then
+\[\begin{split}
+    \iiint_W\frac{\,dx\,dy\,dz}{(x^2+y^2+z^2)^{3/2}}=&\int_0^{2\pi}\int_0^{\pi}\int_b^a\frac{r^2\sin\phi}{(r^2)^{3/2}}\,dr\,d\phi\,d\theta\\
+    =&\int_0^{2\pi}\,d\theta\int_0^{\pi}\sin\phi\,d\phi\int_b^a\frac{1}{r}\,dr=4\pi\para{\ln a-\ln b}.
+\end{split}\]
+\end{solution}
+
+\newpage
+
+\begin{question}
+Let $W$ be the region within the cylinder $x^2+y^2=1$ above the $xy$-plane and below the cone $z=(x^2+y^2)^{1/2}$. Evaluate \[\iiint_Wz\,dx\,dy\,dz.\]
+\end{question}
+\begin{solution}
+Use cylinderical coordinates. Let $x=r\cos\theta$, $y=r\sin\theta$, $z=z$. The region $W$ is sketched below:
+\[\begin{tikzpicture}
+\begin{axis}[xmin=-1.1,xmax=1.1,ymin=-1.1,ymax=1.1,zmin=0,
+scale=1]
+\addplot3[opacity=0.2,surf,domain=0:1,y domain=0:360]({cos(y)},{sin(y)},x);
+\addplot3[opacity=0.4,surf,domain=0:1,y domain=0:360]({x*cos(y)},{x*sin(y)},x);
+\end{axis}
+\end{tikzpicture}\]
+Then $W$ is
+\[0\leq z\leq r,\quad 0\leq r\leq 1,\quad0\leq \theta\leq 2\pi.\]
+Therefore
+\[\begin{split}
+    \iiint_Wz\,dx\,dy\,dz=&\int_0^{2\pi}\int_0^1\int_0^rzr\,dz\,dr\,d\theta=\int_0^{2\pi}\int_0^1\intvert{\para{\frac{z^2}{2}r}}_0^r\,dr\,d\theta\\
+    =&\int_0^{2\pi}\int_0^1\frac{r^3}{2}\,dr\,d\theta=\int_0^{2\pi}\,d\theta\int_0^1\frac{r^3}{2}\,dr=\frac{\pi}{4}.
 \end{split}\]
 \end{solution}
 
 
+
+\vskip 10cm
+
+\begin{question}
+Let $W$ be the region determined by $\frac{1}{2}\leq z\leq1$ and $x^2+y^2+z^2\leq1$. Evaluate \[\iiint_W(x^2+y^2+z^2)^{-1/2}\,dx\,dy\,dz.\]
+\end{question}
+\begin{solution}
+Use cylinderical coordinates. Let $x=r\cos\theta$, $y=r\sin\theta$, $z=z$. The region $W$ is sketched below:
+\[\begin{tikzpicture}
+\begin{axis}[xmin=-1,xmax=1,ymin=-1,ymax=1,zmin=0,zmax=1,axis equal,
+scale=0.8]
+\addplot3[surf,opacity=0.2,domain=0:1,y domain=0:360]({x*cos(y)/sqrt(2)},{x*sin(y)/sqrt(2)},0.5);
+\addplot3[surf,opacity=0.3,domain=0.5:1,y domain=0:360]({sqrt(1-x^2)*cos(y)},{sqrt(1-x^2)*sin(y)},x);
+\draw[thick,dashed] (0,0,0)--(0,0,1);
+\draw[thick,dashed] (0,0,0)--(1,0,0);
+\draw[thick,dashed] (0,0,0.5)--({sqrt(0.75)},{0},0.5);
+\addplot3[thick,domain=0:90,samples y=0,dashed]({cos(x)},0,{sin(x)});
+\end{axis}
+\end{tikzpicture}\]
+The intersection (which is bounded by the dashed lines) is shown below:
+\[\begin{tikzpicture}
+\begin{axis}[axis equal,xmin=0,xmax=1,ymin=0,ymax=1,axis lines=middle,
+scale=0.6]
+\addplot[name path=top,domain=0:60]({sin(x)},{cos(x)});
+\addplot[dashed,domain=60:90]({sin(x)},{cos(x)});
+\addplot[thick,name path=but,domain=0:0.866]{0.5};
+\addplot[fill=blue,opacity=0.2] fill between[of = top and but];
+\draw[dashed](0,0.7)--({sqrt(0.51)},0.7);
+\draw node at(0.3,0.8) {$r$};
+\draw node at(0.4,0.3) {$1$};
+\draw[dashed](0,0)--({sqrt(0.51)},0.7);
+\draw[<->](0.6,0)--(0.6,0.7);
+\draw node at (0.65,0.35) {$z$};
+\draw[dashed](0,0.5)--(0,1);
+\end{axis}
+\end{tikzpicture}\]
+Then $W$ is \[0\leq r\leq \sqrt{1-z^2},\quad \frac12\leq z\leq 1,\quad 0\leq\theta\leq 2\pi.\]
+Therefore
+\[\begin{split}
+    \iiint_W(x^2+y^2+z^2)^{-1/2}\,dx\,dy\,dz=&\iiint_W\frac{1}{\sqrt{r^2+z^2}}r\,dr\,dz\,d\theta\\
+    =&\int_0^{2\pi}\int_{1/2}^1\int_0^{\sqrt{1-z^2}}\frac{1}{\sqrt{r^2+z^2}}r\,dr\,dz\,d\theta\\
+    =&\int_0^{2\pi}\int_{1/2}^1(1-z)\,dz\,d\theta\\
+    =&\int_0^{2\pi}\frac{1}{8}\,d\theta=\frac{\pi}{4}.
+\end{split}\]
+\end{solution}
 \newpage
 
 
 
 \begin{question}
-Evaluate \[\int_0^1\int_0^x\int_0^y(y+xz)\,dz\,dy\,dx.\]
+Using spherical coordinates, let $W$ be the region in the first octant of $\fR^3$, which is bounded by $\phi=\frac{\pi}{4}$, $\phi=\arctan2$ and the sphere $r=\sqrt{2}$. Compute the integral of $f(r,\phi,\theta)=\frac{1}{r}$ over $W$.
 \end{question}
 \begin{solution}
+The region $W$ is described by
+\[\frac{\pi}{4}\leq\phi\leq\arctan2,\quad 0\leq r\leq \sqrt2,\quad 0\leq\theta\leq2\pi.\]
+Therefore use spherical coordinates, we have
 \[\begin{split}
-    \int_0^1\int_0^x\int_0^y(y+xz)\,dz\,dy\,dx=&\int_0^1\int_0^x\intvert{yz+\frac{xz^2}{2}}_0^y\,dy\,dx=\int_0^1\int_0^x\para{y^2+\frac{xy^2}{2}}\,dy\,dx\\
-    =&\int_0^1\intvert{\frac{y^3}{3}+\frac{xy^3}{6}}_{y=0}^{y=x}\,dx=\int_0^1\para{\frac{x^3}{3}+\frac{x^4}{6}}\,dx\\
-    =&\intvert{\frac{x^4}{12}+\frac{x^5}{30}}_0^1=\frac{7}{60}.
+    \iiint_W\frac{1}{r}\,dx\,dy\,dz=&\iiint_W\frac{1}{r}(r^2\sin\phi)\,dr\,d\phi\,d\theta=\int_0^{2\pi}\int_0^{\sqrt2}\int_{\pi/4}^{\arctan2}\frac1r(r^2\sin\phi)\,d\phi\,dr\,d\theta\\
+    =&\int_{0}^{2\pi}\,d\theta\int_0^{\sqrt2}\frac1rr^2\,dr\int_{\pi/4}^{\arctan2}\sin\phi\,d\phi\\
+    =&\frac{\pi}{2}\para{\frac{\sqrt2}{2}-\frac{\sqrt5}{5}}.
 \end{split}\]
-\end{solution}
-
-
-\vskip 9cm
-
-
-\begin{question}
-Find the volume of the region bounded by $z=x^2+y^2$ and $z=10-x^2-2y^2$.
-\end{question}
-\begin{solution}
-First sketch the bounded region $W$.
-\[\begin{tikzpicture}
-\begin{axis}
-[
-view={120}{45},
-axis lines=middle,
-xlabel=$x$,ylabel=$y$,zlabel=$z$,
-xmin=-3,xmax=3,ymin=-3,ymax=3,zmin=0,zmax=11,scale=0.8
-]
-\addplot3[surf,blue,opacity=0.2]{x^2+y^2};
-\addplot3[surf,orange,opacity=0.2] {10-x^2-2*y^2};
-\draw (1,1,0)--(1,1,11);
-\draw[fill]  node at(1,1,2){$A$};
-\draw[fill]  node at(1,1,7){$B$};
-
-\end{axis}
+\begin{remark}
+[A trig. trick]\[\begin{tikzpicture}
+\coordinate (O)at (0,0);
+\coordinate (A)at (2,0);
+\coordinate (B)at (2,4);
+\draw (O)--(A)--(B)--(O);
+\pic [draw=red, <->,  angle eccentricity=1.5] {angle = A--O--B};
+\draw node at (0.7,0.4) {$\alpha$};
+\draw node at (1,-0.4) {$1$};
+\draw node at (2.4,2) {$2$};
+\draw node at (0.7,2.3) {$\sqrt5$};
 \end{tikzpicture}\]
-% Then slice the region and choose an order to do the iterated integral. From the graph, the best order is to first integrate it along $z$-axis. In this case choose a $(x,y)$ pair, and consider the vertical line above it (line $AB$ in the graph), the portion in the region is $x^2+y^2\leq z\leq 10-x^2-2y^2$.
-
-% After we integrate over $z$, the rest part of the computation is a double integral over the region which is the projection of the solid in $3d$ case into $xy$-plane. The intersection of two surfaces is computed by \[\begin{cases}z=x^2+y^2\\z=10-x^2-2y^2\end{cases}\quad\Rightarrow \quad \begin{cases}2x^2+3x^2=10\\z=x^2+y^2\end{cases}.\]
-% To project it to $xy$-plane we simply ignore $z$. Therefore the region for the double integral should be bounded by the curve $2x^2+3y^2=10$.
-% \[\begin{tikzpicture}
-% \begin{axis}
-% [axis lines=middle,
-% xmin=-2.5,xmax=2.5,ymin=-2,ymax=2,scale=0.8
-% ]
-% \addplot[variable=t,domain=0:360]({2.2358*cos(t)},{1.826*sin(t)});
-% % \addplot[name path=but,smooth]{-sqrt((10-2*x^2)/3)};
-% \end{axis}
-% \end{tikzpicture}\]
-% Then we can choose to integrate $y$ first. Fixing $x$, we have \[-\sqrt{\frac{10}{3}-\frac{2x^2}{3}}\leq y\leq\sqrt{\frac{10}{3}-\frac{2x^2}{3}}.\] Since $x$ is between $-\sqrt5$ and $\sqrt5$, we have
-Then choose an order to setup the iterated integral. We choose $z$ first, then $y$, then $x$. Then the region is described by $x^2+y^2\leq z\leq 10-x^2-2y^2$, $-sqrt{\frac{10}{3}-\frac{2x^2}{3}}\leq y\leq \sqrt{\frac{10}{3}-\frac{2x^2}{3}}$ and $-\sqrt5\leq x\leq \sqrt5$. Therefore we have the iterated integral
-\[\iiint_W\,dV=\int_{-\sqrt5}^{\sqrt5}\int_{-\sqrt{\frac{10}{3}-\frac{2x^2}{3}}}^{\sqrt{\frac{10}{3}-\frac{2x^2}{3}}}\int_{x^2+y^2}^{10-x^2-2y^2}\,dz\,dy\,dx.\]
-Evaluate:
-\[\begin{split}
-    \int_{-\sqrt5}^{\sqrt5}\int_{-\sqrt{\frac{10}{3}-\frac{2x^2}{3}}}^{\sqrt{\frac{10}{3}-\frac{2x^2}{3}}}\int_{x^2+y^2}^{10-x^2-2y^2}\,dz\,dy\,dx=&\int_{-\sqrt5}^{\sqrt5}\int_{-\sqrt{\frac{10}{3}-\frac{2x^2}{3}}}^{\sqrt{\frac{10}{3}-\frac{2x^2}{3}}}(10-2x^2-3y^2)\,dy\,dx\\
-    =&\int_{-\sqrt5}^{\sqrt5}\intvert{\para{10y-2x^2y-y^3}}_{-\sqrt{\frac{10}{3}-\frac{2x^2}{3}}}^{\sqrt{\frac{10}{3}-\frac{2x^2}{3}}}\,dx\\
-    =&\frac{8}{3}\sqrt{\frac{2}{3}}\int_{-\sqrt5}^{\sqrt5}\para{\sqrt{5-x^2}}^3\,dx.
-\end{split}\]
-Apply trigonometry substitution: $x=\sqrt{5}\sin\theta$. Since $x$ is moving from $-\sqrt5$ to $\sqrt5$, $\theta$ is moving from $-\pi/2$ to $\pi/2$. Then
-\[\begin{split}
-    \frac{8}{3}\sqrt{\frac{2}{3}}\int_{-\sqrt5}^{\sqrt5}\para{\sqrt{5-x^2}}^3\,dx=&\para{\frac83\sqrt{\frac23}}\int_{-\pi/2}^{\pi/2}\sqrt{5-5\sin^2\theta}^3\sqrt5\cos\theta\,d\theta\\
-    =&\para{\frac83\sqrt{\frac23}}\int_{-\pi/2}^{\pi/2}(\sqrt{5}\cos\theta)^3\sqrt5\cos\theta\,d\theta\\
-    =&\para{25\frac83\sqrt{\frac23}}\int_{-\pi/2}^{\pi/2}\cos^4\theta\,d\theta\\
-    =&\para{25\frac83\sqrt{\frac23}}\int_{-\pi/2}^{\pi/2}\para{\frac{1+\cos(2\theta)}{2}}^2\,d\theta\\
-    =&\para{25\frac83\sqrt{\frac23}}\int_{-\pi/2}^{\pi/2}\frac14+\frac12\cos(2\theta)+\frac{\cos^2(2\theta)}{4}\,d\theta\\
-    =&\para{25\frac83\sqrt{\frac23}}\int_{-\pi/2}^{\pi/2}\frac14+\frac12\cos(2\theta)+\frac{\frac{1+\cos(4\theta)}{2}}{4}\,d\theta\\
-    =&\para{25\frac83\sqrt{\frac23}}\int_{-\pi/2}^{\pi/2}\frac38+\frac12\cos(2\theta)+\frac18\cos(4\theta)\,d\theta\\
-    =&\para{25\frac83\sqrt{\frac23}}\para{\int_{-\pi/2}^{\pi/2}\frac38\,d\theta+\int_{-\pi/2}^{\pi/2}\frac12\cos(2\theta)\,d\theta+\int_{-\pi/2}^{\pi/2}\frac18\cos(4\theta)\,d\theta}\\
-    =&\para{25\frac83\sqrt{\frac23}}\para{\frac38\pi+0+0}=25\sqrt{\frac23}\pi.
-\end{split}\]
-\end{solution}
-
-
-
-
-\newpage
-
-\begin{question}
-Evaluate \[\iiint_Wz\,dx\,dy\,dz,\]
-where $W$ is the region bounded by $x=0$, $y=0$, $z=0$, $z=1$, and the cylinder $x^2+y^2=1$, with $x\geq0$ and $y\geq0$.
-\end{question}
-\begin{solution}
-First sketch the region.
-\[\begin{tikzpicture}
-\begin{axis}[view={120}{45},xlabel=$x$, ylabel=$y$,zlabel=$z$,zmin=0,zmax=1,scale=0.8]
-\addplot3[surf,opacity=0.4,domain=0:1, y domain=0:1](x,{sqrt(1-x^2)},y);
-\end{axis}
-\end{tikzpicture}\]
-Then choose an order to setup the iterated integral. We choose $y$ first, then $x$, then $z$. Then the region is described by $0\leq y\leq \sqrt{1-x^2}$, $0\leq x\leq1$ and $0\leq z\leq1$. So the iterated integral is
-\[\iiint_Wz\,dx\,dy\,dz=\int_0^1\int_0^1\int_0^{\sqrt{1-x^2}}z\,dy\,dx\,dz.\]
-Evaluate:
-\[\begin{split}
-    \int_0^1\int_0^1\int_0^{\sqrt{1-x^2}}z\,dy\,dx\,dz=&\int_0^1\int_0^1\intvert{zy}_0^{\sqrt{1-x^2}}\,dx\,dz\\
-    =&\int_0^1\int_0^1z\sqrt{1-x^2}\,dx\,dz\\
-    =&\int_0^1z\,dz\int_0^1\sqrt{1-x^2}\,dx=\frac12\cdot\frac{\pi}{4}=\frac{\pi}{8}.
-\end{split}\]
-
-\end{solution}
-\vskip 9cm
-
-\begin{question}
-Evaluate \[\iiint_W(x^2+y^2)\,dx\,dy\,dz,\]
-where $W$ is the pyramid with top vertex at $(0,0,1)$, and base vertices at $(0,0,0)$, $(1,0,0)$ and $(1,1,0)$.
-\end{question}
-\begin{solution}
-First sketch the region.
-\[\begin{tikzpicture}
-\begin{axis}[view={120}{45},xlabel=$x$, ylabel=$y$,zlabel=$z$,zmin=0,zmax=1,scale=0.8]
-\addplot3[fill=blue,opacity=0.4] coordinates {(0,0,0)(1,0,0)(0,0,1)};
-\addplot3[fill=orange,opacity=0.4] coordinates {(0,0,0)(1,1,0)(0,0,1)};
-\addplot3[fill=green,opacity=0.4] coordinates {(0,0,0)(1,0,0)(1,1,0)};
-\end{axis}
-\end{tikzpicture}\]
-Then choose an order to setup the iterated integral. We choose $z$ first, then $y$, then $x$. The region is described by $0\leq z\leq 1-x$, $0\leq y\leq x$ and $0\leq x\leq1$. So the iterated integral is
-\[\iiint_W(x^2+y^2)\,dx\,dy\,dz=\int_0^1\int_0^x\int_0^{1-x}(x^2+y^2)\,dz\,dy\,dx.\]
-Evaluate:
-\[\begin{split}
-    \int_0^1\int_0^x\int_0^{1-x}(x^2+y^2)\,dz\,dy\,dx=&\int_0^1\int_0^x\intvert{(x^2+y^2)z}_0^{1-x}\,dy\,dx\\
-    =&\int_0^1\int_0^x(x^2+y^2)(1-x)\,dy\,dx\\
-    =&\int_0^1\intvert{\para{(x^2-x^3)y+\frac{y^3}{3}(1-x)}}_0^x\,dx\\
-    =&\int_0^1\para{(x^2-x^3)+\frac{x^3}{3}(1-x)}\,dx\\
-    =&\int_0^1\para{x^2-\frac23x^3-\frac{x^4}{3}}\,dx=\frac{1}{15}.
-\end{split}\]
+Suppose we have a right triangle above. $\alpha$ is the angle where $\tan\alpha=2$. Then suppose the adjacent side is $1$. Since $\tan$ is $\dfrac{\text{the opposite side}}{\text{the adjacent side}}$, the opposite side has to be $2$. Then by Pythagoras Theorem, the hypotenuse has to be $\sqrt5$. Then by $\cos=\dfrac{\text{the adjacent side}}{\text{the hypotenuse side}}$, $\cos\alpha=\frac{1}{\sqrt5}=\frac{\sqrt5}{5}$. In other words, we get $\cos(\arctan 2)=\frac{\sqrt5}{5}$.
+\end{remark}
+\clearpage
 \end{solution}
 
 
