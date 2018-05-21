@@ -73,3 +73,5 @@ class MyDB(TinyDB):
                 with q.create(EnvSolutions()):
                     q.append(NoEscape(sol))
         return q.dumps()
+
+    # def update_tags(self,):
