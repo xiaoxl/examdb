@@ -34,23 +34,69 @@ from tinydb import Query
 if __name__ == '__main__':
     # Basic document
 
-    dbname='examdb.json'
-    filename='problems.txt'
-    # dbOp.insertdata(filename,dbname)
-
-
+    dbname='Exam.json'
     db=MyDB(dbname)
 
-    # db.import_from_latex(filename,["change of variables","multi variables","integration"],"MVC_10B_Integration")
-    #
+    filename='10B/5.1-5.2.tex'
+    db.import_from_latex_btype(filename,["5.1-5.2","rectangle region","multi variables",'double integration',"integration"],"MVC_10B_Integration")
 
-    user=Query()
-    #
-    # db.check_duplicate()
-    # db.remove_duplicate()
-    #
-    j=db.search(Query().tags.any(["general"]))
-    print(db.output_latex(j))
+    filename='10B/5.3.tex'
+    db.import_from_latex_btype(filename,["5.3","general region","multi variables",'double integration',"integration"],"MVC_10B_Integration")
+
+    filename='10B/5.4.tex'
+    db.import_from_latex_btype(filename,["5.4","general region",'change order',"multi variables",'double integration',"integration"],"MVC_10B_Integration")
+
+    filename='10B/5.5.tex'
+    db.import_from_latex_btype(filename,["5.5","general region","multi variables",'triple integration',"integration"],"MVC_10B_Integration")
+
+    filename='10B/6.1.tex'
+    db.import_from_latex_btype(filename,["6.1","maps",'coordinates',"multi variables"],"MVC_10B_Integration")
+
+    filename='10B/6.2.tex'
+    db.import_from_latex_btype(filename,["6.2","general region","change of variable formula","multi variables","multi variables integration","integration"],"MVC_10B_Integration")
+
+    filename='10B/7.1.tex'
+    db.import_from_latex_btype(filename,["7.1","parametrization","curve","path integral","path integral of functions","integration"],"MVC_10B_Integration")
+
+    filename='10B/7.2.tex'
+    db.import_from_latex_btype(filename,["7.2","parametrization","curve","path integral","path integral of vector fields","integration"],"MVC_10B_Integration")
+
+    filename='10B/7.3.tex'
+    db.import_from_latex_btype(filename,["7.3","parametrization", "surface","multi variables"],"MVC_10B_Integration")
+
+    filename='10B/7.4.tex'
+    db.import_from_latex_btype(filename,["7.4","parametrziation","surface","multi variables","surface integral of functions","integration"],"MVC_10B_Integration")
+
+    filename='10B/7.5.tex'
+    db.import_from_latex_btype(filename,["7.5","parametrziation","surface","multi variables","surface integral of functions","integration"],"MVC_10B_Integration")
+
+    filename='10B/7.6.tex'
+    db.import_from_latex_btype(filename,["7.6","parametrziation","surface","multi variables","surface integral of vector fields","integration"],"MVC_10B_Integration")
+
+    filename='10B/8.1.tex'
+    db.import_from_latex_btype(filename,["8.1","path integral of vector fields","double integral","Green's Thoerem","integration"],"MVC_10B_Integration")
+
+    filename='10B/8.2.tex'
+    db.import_from_latex_btype(filename,["8.2","path integral of vector fields","surface integral of vector fields","Stokes' Thoerem","integration"],"MVC_10B_Integration")
+
+    filename='10B/8.3.tex'
+    db.import_from_latex_btype(filename,["8.3","path integral of vector fields","conservative field","gradient field","integration"],"MVC_10B_Integration")
+
+    filename='10B/8.4.tex'
+    db.import_from_latex_btype(filename,["8.4","surface integral of vector fields","triple integral","Gauss' Theorem","Divergence Theorem","integration"],"MVC_10B_Integration")
+
+
+
+
+
+
+# user=Query()
+    # #
+    # # db.check_duplicate()
+    # # db.remove_duplicate()
+    # #
+    # j=db.search(Query().tags.any(["general"]))
+    # print(db.output_latex(j))
     # str=db.output_latex(db.all())
     # print(str)
     # print(db.get(doc_id=1)["d2d2"])
