@@ -153,10 +153,14 @@ class MyDB(TinyDB):
         with open(filename,'w') as file:
             file.write(self.output_latex(text,separate_symbol))
 
-    def update_by_id(self,filename,id):
-        with open(filename,'r') as file:
-            data=file.read()
-        json_data=json.loads(data)
+    def update_by_id_s(self,json_data,id):
+        '''
+        update the corresponding field for id
+        json_data only contains one item
+        :param json_data:
+        :param id:
+        :return:
+        '''
         if "question" in json_data:
             self.update({"question":json_data["question"]},doc_ids=[id])
         if "solutions" in json_data:
@@ -166,6 +170,18 @@ class MyDB(TinyDB):
         if "course" in json_data:
             self.update({"course":json_data["course"]},doc_ids=[id])
 
+    def update_by_id(self,filename,id):
+        '''
+        update the corresponding field for id from a file
+        json_data only contains one item
+        :param filename:
+        :param id:
+        :return:
+        '''
+        with open(filename,'r') as file:
+            data=file.read()
+        json_data=json.loads(data)
+        self.update_by_id_s(json_data,id)
 
 
 
