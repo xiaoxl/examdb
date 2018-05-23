@@ -86,6 +86,31 @@ if __name__ == '__main__':
     db.import_from_latex_btype(filename,["8.4","surface integral of vector fields","triple integral","Gauss' Theorem","Divergence Theorem","integration"],"MVC_10B_Integration")
 
 
+    q1=db.output_latex([random.choice(db.search(Query().tags.any(["5.3"])))])
+    q2=db.output_latex([random.choice(db.search(Query().tags.any(["5.5"])))])
+    q3=db.output_latex([random.choice(db.search(Query().tags.any(["6.2"])))])
+    q4=db.output_latex([random.choice(db.search(Query().tags.any(["7.1"])))])
+    q5=db.output_latex([random.choice(db.search(Query().tags.any(["7.2"])))])
+    q6=db.output_latex([random.choice(db.search(Query().tags.any(["7.5"])))])
+    q7=db.output_latex([random.choice(db.search(Query().tags.any(["7.6"])))])
+    q8=db.output_latex([random.choice(db.search(Query().tags.any(["8.1"])))])
+    q9=db.output_latex([random.choice(db.search(Query().tags.any(["8.2"])))])
+    q10=db.output_latex([random.choice(db.search(Query().tags.any(["8.4"])))])
+
+    #print(q1)
+
+    with open('exam2.txt','w') as files:
+        files.write(q1+'\n'+r' \newpage '+'\n')
+        files.write(q2+'\n'+r' \newpage '+'\n')
+        files.write(q3+'\n'+r' \newpage '+'\n')
+        files.write(q4+'\n'+r' \newpage '+'\n')
+        files.write(q5+'\n'+r' \newpage '+'\n')
+        files.write(q6+'\n'+r' \newpage '+'\n')
+        files.write(q7+'\n'+r' \newpage '+'\n')
+        files.write(q8+'\n'+r' \newpage '+'\n')
+        files.write(q9+'\n'+r' \newpage '+'\n')
+        files.write(q10+'\n'+r' \newpage '+'\n')
+
 
 
 
