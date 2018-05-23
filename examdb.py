@@ -34,7 +34,7 @@ from tinydb import Query
 if __name__ == '__main__':
     # Basic document
 
-    dbname='Exam.json'
+    dbname='Exam1.json'
     db=MyDB(dbname)
     #
     # filename='10B/5.1-5.2.tex'
@@ -86,13 +86,14 @@ if __name__ == '__main__':
     # db.import_from_latex_btype(filename,["8.4","surface integral of vector fields","triple integral","Gauss' Theorem","Divergence Theorem","integration"],"MVC_10B_Integration")
 
 
-    q=db.random_pick(["5.1-5.2","5.3",["general region","double integral"],"6.2","7.2","7.5","7.6","8.1","8.2","8.3","8.4"])
-    t=db.output_latex(q,r'\newpage')
+    tags=["5.1-5.2","5.3",["general region","double integral"],"6.2","7.2","7.5","7.6","8.1","8.2","8.3","8.4"]
+
+    db.dump_randompick("e.txt",tags,r'\newpage')
 
     #print(q1)
-
-    with open('exam2.txt','w') as files:
-        files.write(t)
+    #
+    # with open('exam2.txt','w') as files:
+    #     files.write(t)
 
 
     # db.check_duplicate()

@@ -19,18 +19,26 @@ class MyDB(TinyDB):
     def compare(self,A,B):
         return difflib.SequenceMatcher(None, A, B).ratio()
 
-    def import_from_latex_btype(self,latex_filename,input_tags=[],input_course=""):
-        ##### import from a latex file who contains \begin{question}\end{question} and \begin{solution}\end{solution}
-        ##### can add tags and courses when using the function
+    def import_from_latex_btype(self,latex_filename,input_tags=[],input_course="",separete_symbol='question'):
+        '''
+        import from a latex file who contains \begin{question}\end{question} and \begin{solution}\end{solution}
+        can add tags and courses when using the function
+        separate symbol can be changed to other than 'question' for the purpose of 'exercise' or 'example'
+        :param latex_filename:
+        :param input_tags:
+        :param input_course:
+        :param separete_symbol:
+        :return:
+        '''
 
         with open(latex_filename,'r') as file:
             data=file.read()
-        raw=re.split(r'\\begin{question}',data)
+        raw=re.split(r'\\begin{'+separete_symbol+r'}',data)
         num=len(raw)
         tags=input_tags
         course=input_course
         for i in range(num)[1:]:
-            piece=re.split(r'\\end{question}',raw[i])
+            piece=re.split(r'\\end{'+separete_symbol+r'}',raw[i])
             question=piece[0]
             solutions=re.findall(r'begin{solution}(.*?)\\end{solution}',piece[1],re.S)
             item={"question": question,
@@ -40,29 +48,12 @@ class MyDB(TinyDB):
                   }
             self.insert(item)
 
-    # def import_from_latex_qtype(self,latex_filename,input_tags=[],input_course=""):
-    #     ##### import from a latex file who contains \question and \begin{solution}\end{solution}
-    #     ##### can add tags and courses when using the function
-    #
-    #     with open(latex_filename,'r') as file:
-    #         data=file.read()
-    #     raw=re.split(r'\\question',data)
-    #     num=len(raw)
-    #     tags=input_tags
-    #     course=input_course
-    #     for i in range(num)[1:]:
-    #         piece=re.split(r'\\begin{question}',raw[i])
-    #         question=piece[0]
-    #         solutions=re.findall(r'begin{solution}(.*?)\\end{solution}',piece[1],re.S)
-    #         item={"question": question,
-    #               "solutions": solutions,
-    #               "tags":tags,
-    #               "course":course
-    #               }
-    #         self.insert(item)
 
     def check_duplicate(self):
-        ############ used to mark all duplicated entries
+        '''
+        used to mark all duplicated entries
+        :return:
+        '''
         try:
             self.update(delete("similarto"),all)
         except KeyError:
@@ -81,13 +72,21 @@ class MyDB(TinyDB):
                         self.update({"duplicate":"yes"},doc_ids=[currentjson.doc_id])
 
     def remove_duplicate(self):
-        ########### remove all entries which are marked as duplicated
+        '''
+        remove all entries which are marked as duplicated
+        :return:
+        '''
         user=Query()
         self.remove(user.duplicate=="yes")
 
     def output_latex(self,json_list,separate_symbol="\n"):
-        ########### output a LatexSnippt which contains all questions and solutions from the json_list
-        ########### the json_list don't have to be from the database, but it should have question entry (srtings) and solution entry (lists of strings)
+        '''
+        output a LatexSnippt which contains all questions and solutions from the json_list
+        the json_list don't have to be from the database, but it should have question entry (srtings) and solution entry (lists of strings)
+        :param json_list:
+        :param separate_symbol:
+        :return:
+        '''
         res=""
         if isinstance(json_list,list):
             for question in reversed(json_list):
@@ -109,19 +108,64 @@ class MyDB(TinyDB):
                     q.append(NoEscape(sol))
             res=q.dumps()+separate_symbol+'\n'
         return res
-    # def update_tags(self,):
+
 
     def random_pickone(self,tags):
+        '''
+        random pick one problem from tags.
+        if tags is a str, pick one problem from the tag.
+        if tags is a list, pick one problem which has all these tags.
+        after the problem is picked, it is sent to the currentview table.
+        :param tags:
+        :return:
+        '''
         if isinstance(tags,str):
-            return random.choice(self.search(Query().tags.any([tags])))
+            picked=random.choice(self.search(Query().tags.any([tags])))
+            currentview=self.table('currentview')
+
+            currentview.insert(picked)
+
+            return picked
         if isinstance(tags,list):
             return random.choice(self.search(Query().tags.any(tags)))
 
     def random_pick(self,tags):
+        '''
+        random pick problems from a list of tags. tags has to be a list, each entry represents a combination of tags
+        :param tags:
+        :return:
+        '''
         q=[]
         for tag in tags:
             q.append(self.random_pickone(tag))
         return q
 
-    def dump_randompick(self,filename,tags):
+    def dump_randompick(self,filename,tags,separate_symbol="\n"):
+        '''
+        random pick problems from a list of tags and write them into a file. The separation is separate_symbol which is default to '\n'
+        tags has to be a list, each entry represents a combination of tags
+        :param filename:
+        :param tags:
+        :param separate_symbol:
+        :return:
+        '''
         text=self.random_pick(tags)
+        with open(filename,'w') as file:
+            file.write(self.output_latex(text,separate_symbol))
+
+    def update_by_id(self,filename,id):
+        with open(filename,'r') as file:
+            data=file.read()
+        json_data=json.loads(data)
+        if "question" in json_data:
+            self.update({"question":json_data["question"]},doc_ids=[id])
+        if "solutions" in json_data:
+            self.update({"solutions":json_data["solutions"]},doc_ids=[id])
+        if "tags" in json_data:
+            self.update({"tags":json_data["tags"]},doc_ids=[id])
+        if "course" in json_data:
+            self.update({"course":json_data["course"]},doc_ids=[id])
+
+
+
+
