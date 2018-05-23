@@ -90,15 +90,15 @@ class MyDB(TinyDB):
         ########### the json_list don't have to be from the database, but it should have question entry (srtings) and solution entry (lists of strings)
         res=""
         if isinstance(json_list,list):
-            q=LatexSnippt()
-            for question in json_list:
+            for question in reversed(json_list):
+                q=LatexSnippt()
                 q.append(Command('question'))
                 q.append(NoEscape(question["question"]))
                 for sol in question["solutions"]:
                     with q.create(EnvSolutions()):
                         q.append(NoEscape(sol))
-                q.append(separate_symbol)
-            res=res+separate_symbol+q.dumps()
+                res=q.dumps()+'\n'+separate_symbol+'\n'+res
+
 
         elif isinstance(json_list,tinydb.database.Document):
             q=LatexSnippt()
@@ -107,7 +107,7 @@ class MyDB(TinyDB):
             for sol in json_list["solutions"]:
                 with q.create(EnvSolutions()):
                     q.append(NoEscape(sol))
-            res=q.dumps()+separate_symbol
+            res=q.dumps()+separate_symbol+'\n'
         return res
     # def update_tags(self,):
 
