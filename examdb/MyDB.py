@@ -1,9 +1,11 @@
 from tinydb import TinyDB, Query
 from tinydb.operations import delete
+import tinydb
 import re
 import json
 import difflib
 from examdb.LatexSnippt import *
+import random
 
 '''
 Based on TinyDB.
@@ -83,16 +85,43 @@ class MyDB(TinyDB):
         user=Query()
         self.remove(user.duplicate=="yes")
 
-    def output_latex(self,json_list):
+    def output_latex(self,json_list,separate_symbol="\n"):
         ########### output a LatexSnippt which contains all questions and solutions from the json_list
         ########### the json_list don't have to be from the database, but it should have question entry (srtings) and solution entry (lists of strings)
-        q=LatexSnippt()
-        for question in json_list:
+        res=""
+        if isinstance(json_list,list):
+            q=LatexSnippt()
+            for question in json_list:
+                q.append(Command('question'))
+                q.append(NoEscape(question["question"]))
+                for sol in question["solutions"]:
+                    with q.create(EnvSolutions()):
+                        q.append(NoEscape(sol))
+                q.append(separate_symbol)
+            res=res+separate_symbol+q.dumps()
+
+        elif isinstance(json_list,tinydb.database.Document):
+            q=LatexSnippt()
             q.append(Command('question'))
-            q.append(NoEscape(question["question"]))
-            for sol in question["solutions"]:
+            q.append(NoEscape(json_list["question"]))
+            for sol in json_list["solutions"]:
                 with q.create(EnvSolutions()):
                     q.append(NoEscape(sol))
-        return q.dumps()
-
+            res=q.dumps()+separate_symbol
+        return res
     # def update_tags(self,):
+
+    def random_pickone(self,tags):
+        if isinstance(tags,str):
+            return random.choice(self.search(Query().tags.any([tags])))
+        if isinstance(tags,list):
+            return random.choice(self.search(Query().tags.any(tags)))
+
+    def random_pick(self,tags):
+        q=[]
+        for tag in tags:
+            q.append(self.random_pickone(tag))
+        return q
+
+    def dump_randompick(self,filename,tags):
+        text=self.random_pick(tags)
