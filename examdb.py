@@ -90,6 +90,13 @@ if __name__ == '__main__':
 
     db.dump_randompick("e.txt",tags,r'\newpage')
 
+
+    filename='test.txt'
+    idnum=4
+    # db.display_by_id(filename,idnum)
+
+    db.update_by_id2(filename,idnum)
+
     #print(q1)
     #
     # with open('exam2.txt','w') as files:

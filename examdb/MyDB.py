@@ -153,7 +153,7 @@ class MyDB(TinyDB):
         with open(filename,'w') as file:
             file.write(self.output_latex(text,separate_symbol))
 
-    def update_by_id_s(self,json_data,id):
+    def update_by_id_s(self,json_data,idnum):
         '''
         update the corresponding field for id
         json_data only contains one item
@@ -162,15 +162,15 @@ class MyDB(TinyDB):
         :return:
         '''
         if "question" in json_data:
-            self.update({"question":json_data["question"]},doc_ids=[id])
+            self.update({"question":json_data["question"]},doc_ids=[idnum])
         if "solutions" in json_data:
-            self.update({"solutions":json_data["solutions"]},doc_ids=[id])
+            self.update({"solutions":json_data["solutions"]},doc_ids=[idnum])
         if "tags" in json_data:
-            self.update({"tags":json_data["tags"]},doc_ids=[id])
+            self.update({"tags":json_data["tags"]},doc_ids=[idnum])
         if "course" in json_data:
-            self.update({"course":json_data["course"]},doc_ids=[id])
+            self.update({"course":json_data["course"]},doc_ids=[idnum])
 
-    def update_by_id(self,filename,id):
+    def update_by_id(self,filename,idnum):
         '''
         update the corresponding field for id from a file
         json_data only contains one item
@@ -181,7 +181,47 @@ class MyDB(TinyDB):
         with open(filename,'r') as file:
             data=file.read()
         json_data=json.loads(data)
-        self.update_by_id_s(json_data,id)
+        self.update_by_id_s(json_data,idnum)
 
 
+    def display_by_id(self,filename,idnum):
+        data=self.get(doc_id=idnum)
 
+        with open(filename,'w') as file:
+            file.write(data["question"])
+            file.write('-'*30+'\n')
+            for i in data["solutions"][:-2]:
+                file.write(i)
+                file.write('='*30+'\n')
+            file.write(data["solutions"][-1]+'\n')
+            file.write('-'*30+'\n')
+            for i in data["tags"][:-2]:
+                file.write(i)
+                file.write('\n')
+            file.write(data["tags"][-1]+'\n')
+            file.write('-'*30+'\n')
+            file.write(data["course"])
+
+    def read_from_file(self,filename):
+        with open(filename,'r') as file:
+            data=file.read()
+        raw=data.split('-'*30+'\n')
+        question=raw[0]
+        s=raw[1]
+        t=raw[2]
+        course=raw[3]
+        solutions=s.split('='*30+'\n')
+        tags=t.split('\n')
+        json_data={"question":question,"solutions":solutions,"tags":tags,"course":course}
+        return json_data
+
+    def update_by_id2(self,filename,idnum):
+        '''
+        update the corresponding field for id from a file(new pattern)
+        json_data only contains one item
+        :param filename:
+        :param id:
+        :return:
+        '''
+        json_data=self.read_from_file(filename)
+        self.update_by_id_s(json_data,idnum)
