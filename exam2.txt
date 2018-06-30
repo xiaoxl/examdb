@@ -1,0 +1,350 @@
+\question%
+
+Evaluate the following integral if $R = [0,9] \times [-1, 1]$.
+ \[\iint_R\frac{yx^3}{y^2+2}\,dy\,dx.\]
+%
+\begin{solution}%
+
+{\color{red}{(You don't need to draw graph here. But it is better to know what the region look like.)}}
+\[\begin{tikzpicture}
+\begin{axis}[
+	xmin=-1,   xmax=10,
+	ymin=-2,   ymax=2,
+	extra x ticks={0,9},
+	extra y ticks={-1,1},
+	extra tick style={grid=major},
+	scale=0.5,
+	xlabel=$x$, ylabel=$y$]
+\addplot[fill=blue,opacity=0.2] coordinates{(0,-1)(9,-1)(9,1)(0,1)(0,-1)};
+\end{axis}
+\end{tikzpicture}\]
+$R$ is the shaded region above. We can setup the formula directly.\[\iint_R\frac{yx^3}{y^2+2}\,dx\,dy=\int_{-1}^{1}\int_{0}^{9}\frac{yx^3}{y^2+2}\,dx\,dy=\int_{0}^{9}\int_{-1}^{1}\frac{yx^3}{y^2+2}\,dy\,dx.\]
+Evaluate: since the integrand is a product of a function of $x$ and a function of $y$, and the region is a rectangle region, we can apply the trick to solve it.\[
+\begin{split}
+    \int_{-1}^{1}\int_{0}^{9}\frac{yx^3}{y^2+2}\,dx\,dy&=\int_{0}^{9}x^3\,dx\int_{-1}^{1}\frac{y}{y^2+2}\,dy\\
+    &=\left(\left.\frac{x^{4}}{4}\right\rvert_{0}^{9}\right)\left(\left.\frac12\ln(y^2+2)\right\rvert_{-1}^{1}\right)=0.
+\end{split}\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $D$ be the region bounded by the $y$-axis and the parabola \[x=-4y^2 + 9.\]Compute the following.
+\[\iint_Dx^3y\,dx\,dy.\]
+%
+\begin{solution}%
+
+First we need to find the bounded region.
+\[\begin{tikzpicture}
+\begin{axis}[
+axis lines=middle,
+	xmin=-1.3,   xmax=10,
+	ymin=-3,   ymax=3,
+ticks=none,
+	scale=0.9,
+	xlabel=$x$, ylabel=$y$]
+	\addplot[name path=top,domain=-3:3] (-4*x^2+9,x);
+    \draw[fill=blue,opacity=0.2]plot[smooth,samples=100,domain=-1.5:1.5](axis cs:0,\x)--plot[smooth,samples=100,domain=1.5:-1.5] (axis cs:-4*\x*\x+9,\x);
+	\draw[dashed] (axis cs:-0.5,1)--(axis cs:9,1) node[left]at(axis cs:-0.5,1){$y$} node[right] at (axis cs:0,0.7) {$x=0$} node[right] at (axis cs:5,1.3) {$x=-4y^2+9$};
+	\draw [fill] (axis cs:5,1) circle [radius=2pt] ;
+	\draw[fill] (axis cs:0,1) circle[radius=2pt];
+	\draw[fill] (axis cs:0,1.5) circle[radius=2pt] node [right] at (axis cs:0,1.8){$(0,3/2)$};
+	\draw[fill] (axis cs:0,-1.5) circle[radius=2pt]node [right] at (axis cs:0,-1.8) {$(0,-3/2)$};
+\end{axis}
+\end{tikzpicture}\]
+Then let's describe the region. Slice it horizontally. Then we first integrate $x$ from $0$ to $x=-4y^2+9$. Then integrate $y$ from $-3/2$ to $3/2$. Therefore the iterated integral should be \[\iint_Dx^3y\,dx\,dy=\int_{-3/2}^{3/2}\int_{0}^{-4y^2+9}x^3y\,dx\,dy.\]
+Evaluate: 
+\[\begin{split}
+    \int_{-3/2}^{3/2}\int_{0}^{-4y^2+9}x^3y\,dx\,dy&=\int_{-3/2}^{3/2}\left.\left(\frac{x^4}{4}y\right)\right\rvert_0^{-4y^2+9}\,dy=\int_{-3/2}^{3/2}\frac{(-4y^2+9)^4}{4}y\,dy\\
+    &=\left.-\frac{1}{32}\frac{(-4y^2+9)^5}{5}\right\rvert_{-3/2}^{3/2}=0
+\end{split}\]
+%
+\end{solution}
+\newpage
+\question%
+
+Shows that the Jacobian of 
+\[x=r\sin(\phi)\cos(\theta),\quad y=r\sin(\phi)\sin(\theta),\quad z=r\cos(\phi)\]
+is $-r^2\sin(\phi)$.
+%
+\begin{solution}%
+
+        \[\begin{split}
+            \dfrac{\partial(x,y,z)}{\partial(r,\theta,\phi)}=&\det\mat{\dfrac{\partial x}{\partial r}&\dfrac{\partial x}{\partial \theta}&\dfrac{\partial x}{\partial \phi}\\\dfrac{\partial y}{\partial r}&\dfrac{\partial y}{\partial \theta}&\dfrac{\partial y}{\partial \phi}\\\dfrac{\partial z}{\partial r}&\dfrac{\partial z}{\partial \theta}&\dfrac{\partial z}{\partial \phi}}=\det\mat{\sin\phi\cos\theta&-r\sin\phi\sin\theta&r\cos\phi\cos\theta\\
+            \sin\phi\sin\theta&r\sin\phi\cos\theta&r\cos\phi\sin\theta\\
+            \cos\phi&0&-r\sin\phi}\\
+            =&-r^2\sin^3\phi\cos^2\theta-r^2\sin\phi\cos^2\phi\sin^2\theta-r^2\sin\phi\cos^2\phi\cos^2\theta-r^2\sin^3\phi\sin^2\theta\\
+            =&-r^2\sin^3\phi(\cos^2\theta+\sin^2\theta)-r^2\sin\phi\cos^2\phi(\sin^2\theta+\cos^2\theta)\\
+            =&-r^2\sin\phi(\sin^2\phi+\cos^2\phi)=-r^2\sin\phi.
+        \end{split}\]
+%
+\end{solution}
+\newpage
+\question%
+
+Use double integrals to find the area inside the curve $r=1+\sin\theta.$
+%
+\begin{solution}%
+
+        Let the region be denoted by $D$. Then using polar coordinates, the region is described by $0\leq r\leq 1+\sin\theta$, and $0\leq\theta\leq2\pi$. So the area is
+        \[\begin{split}
+            \iint_D\,dx\,dy=&\iint_Dr\,dr\,d\theta=\int_0^{2\pi}\int_0^{1+\sin\theta}r\,dr\,d\theta=\int_0^{2\pi}\intvert{\frac{r^2}{2}}_0^{1+\sin\theta}\,d\theta\\
+            =&\int_0^{2\pi}\frac{1}{2}(1+\sin\theta)^2\,d\theta=\frac12\int_0^{2\pi}\para{\frac{1-\cos(2\theta)}{2}+2\sin\theta+1}\,d\theta\\
+            =&\frac12\intvert{\para{\frac32\theta+(-2\cos\theta)-\frac14\sin(2\theta)}}_0^{2\pi}=\frac{3\pi}{2}.
+        \end{split}\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $\textbf{c}(t)=(\cos t,3\sin t)$ for $2\pi\leq t\leq 4\pi$. Evaluate
+\[\int_{\textbf{c}}x\,dy-y\,dx.\]
+%
+\begin{solution}%
+
+The parametrization $\textbf{c}$ is $\textbf{c}(t)=(\cos(t),3\sin(t))$. Then $\textbf{c}'(t)=(-\sin t,3\cos t)$. Therefore 
+\[\begin{split}
+    \int_{\textbf{c}}x\,dy-y\,dx=&\int_{2\pi}^{4\pi}\cos t\cdot 3\cos t\,dt-3\sin t\cdot(-\sin t)\,dt=\int_{2\pi}^{4\pi}(3\cos^2t+3\sin^2t)\,dt\\
+    =&\int_{2\pi}^{4\pi}3\,dt=6\pi.
+\end{split}\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $S$ be the portion of the cone $x^2+y^2=z^2$ with $z\geq0$ that is inside the sphere $x^2+y^2+(z-1)^2=1$. Evaluate \[\iint_S\,dS.\]
+%
+\begin{solution}%
+
+First we should understand the surface $S$. The cone and the sphere are skecthed below:
+\[\begin{tikzpicture}
+\begin{axis}[axis lines=middle,xmin=-1.5,xmax=1.5,ymin=-1.5,ymax=1.5,zmin=0,zmax=1.5,
+scale=1,axis equal]
+\addplot3[surf,domain=0:360,domain y=0:360,opacity=0.2,fill=orange]({sin(x)*cos(y)},{sin(x)*sin(y)},{cos(x)+1});
+\addplot3[surf,fill=blue,domain=0:1.5,domain y=0:360,opacity=0.2]({x*cos(y)},{x*sin(y)},{x});
+\end{axis}
+\end{tikzpicture}\]
+$S$ is the portion shown below.
+\[\begin{tikzpicture}
+\begin{axis}[axis lines=middle,,xmin=-1.5,xmax=1.5,ymin=-1.5,ymax=1.5,zmin=0,zmax=1.5,
+scale=1,axis equal]
+% \addplot3[surf,domain=0:360,domain y=0:360,opacity=0.2,fill=orange]({sin(x)*cos(y)},{sin(x)*sin(y)},{cos(x)+1});
+\addplot3[surf,fill=blue,domain=0:1,domain y=0:360,opacity=0.2]({x*cos(y)},{x*sin(y)},{x});
+\end{axis}
+\end{tikzpicture}\]
+The top cycle of $S$ is the intersection of the cone and the sphere. So its equation is
+\[x^2+y^2=z^2,\quad x^2+y^2+(z-1)^2=1.\]
+Then the solution is 
+\[x^2+y^2=1,\quad z=1.\]
+Therefore the parametrization of $S$ is given by
+\[x=r\cos\theta,\quad y=r\sin\theta,\quad z=r,\quad \text{ for }0\leq r\leq1,\ 0\leq \theta \leq 2\pi.\]
+Then
+\[\textbf{T}_r=(\cos\theta,\sin\theta,1),\quad \textbf{T}_{\theta}=(-r\sin\theta,r\cos\theta,0).\]
+Therefore \[\textbf{n}=\textbf{T}_r\times\textbf{T}_{\theta}=-r\cos\theta\textbf{i}-r\sin\theta \textbf{j}+r\textbf{k}.\]
+Then 
+\[\norm{\textbf{n}}=\norm{\textbf{T}_r\times\textbf{T}_{\theta}}=\sqrt{2r^2}=\sqrt2r.\]
+Hence
+\[\iint_S\,dS=\int_0^{2\pi}\int_0^1\sqrt2r\,dr\,d\theta=\sqrt2\pi.\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $S$ be the surface defined by the parametrization $\Phi$:
+\[x=\cos(u)\sin(v),\quad y=\sin(u)\sin(v),\quad z=\cos(v)\]
+for $0\leq u\leq 2\pi$ and $0\leq v\leq \pi$. Let $\textbf{r}(x,y,z)=x\textbf{i}+y\textbf{j}+z\textbf{k}$. Evaluate \[\iint_{\Phi}\textbf{r}\cdot\,d\textbf{S}.\]
+%
+\begin{solution}%
+
+\[\textbf{T}_u=(-\sin u\sin v,\cos u\sin v,0),\quad \textbf{T}_v=(\cos u\cos v, \sin u,\cos v,-\sin v).\]
+Then 
+\[\textbf{n}=\textbf{T}_u\times \textbf{T}_v=(-\cos u\sin^2v,-\sin u\sin^2v,-\sin v\cos v).\]
+Therefore
+\[\begin{split}
+    \iint_{\Phi}\textbf{r}\cdot\,d\textbf{S}=&\int_0^{\pi}\int_0^{2\pi}\para{\cos u\sin v\cdot(-\cos u\sin^2v)+\sin u\sin v\cdot(-\sin u\sin^2v)+\cos v(-\sin v\cos v)}\,du\,dv\\
+    =&\int_0^{\pi}\int_0^{2\pi}(-\sin v)\,du\,dv=-4\pi.
+\end{split}\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $C$ be the curve formed by traveling in straight lines between the points $(-1,2)$, $(-1,-4)$, $(4,-3)$, $(4,7)$ and back to $(-1,2)$. The orientation is given by the order described above. Evaluate
+\[\int_C(2xy)\,dx+(xy^2)\,dy\]
+in two different ways.
+%
+\begin{solution}%
+
+\begin{itemize}
+    \item (Method 1: Path integral): $C$ is sketched below:
+    \[\tikz{\begin{axis}[axis equal,axis lines=middle,
+    xmin=-1.5,xmax=4.5,ymin=-4.5,ymax=8.5,ticks=none,
+    scale=0.8]
+    \addplot[-{Stealth},thick]coordinates{(-1,-4)(4,-3)};
+    \addplot[-{Stealth},thick]coordinates{(4,-3)(4,7)};
+    \addplot[-{Stealth},thick]coordinates{(4,7)(-1,2)};
+    \addplot[-{Stealth},thick]coordinates{(-1,2)(-1,-4)};
+   \draw  node at (axis cs: 1,-3) {$C_1$};
+   \draw  node at (axis cs: 5,1) {$C_2$};
+   \draw  node at (axis cs: 1,5) {$C_3$};
+   \draw  node at (axis cs: -2,-1) {$C_4$};
+   \draw  node at (axis cs: -3.5,-3) {$(-1,-4)$};
+   \draw  node at (axis cs: 6,-3) {$(4,-3)$};
+   \draw  node at (axis cs: 6,7) {$(4,7)$};
+   \draw  node at (axis cs: -3.5,2) {$(-1,2)$};
+    \end{axis}}\]
+    Evaluating path integral:
+    \begin{enumerate}
+        \item $C_1$: $x=5t-1$, $y=t-4$ for $0\leq t\leq 1$. Then
+        \[\begin{split}
+            \int_{C_1}(2xy)\,dx+(xy^2)\,dy=&\int_0^12(5t-1)(t-4)5\,dt+(5t-1)(t-4)^2\,dt=-\frac{131}{4}.
+        \end{split}\]
+        \item $C_2$: $x=4$, $y=10t-3$ for $0\leq t\leq 1$. Then
+        \[\begin{split}
+            \int_{C_2}(2xy)\,dx+(xy^2)\,dy=&\int_0^10+4(10t-3)^210\,dt=\frac{1480}{3}.
+        \end{split}\]
+        \item $C_3$: $x=-5t+4$, $y=-5t+7$ for $0\leq t\leq 1$. Then
+        \[\begin{split}
+            \int_{C_3}(2xy)\,dx+(xy^2)\,dy=&\int_0^12(-5t+4)(-5t+7)(-5)\,dt+(-5t+4)(-5t+7)^2(-5)\,dt\\
+            =&-\frac{4195}{12}.
+        \end{split}\]
+        \item $C_4$: $x=-1$, $y=2-6t$ for $0\leq t\leq 1$. Then
+        \[\begin{split}
+            \int_{C_4}(2xy)\,dx+(xy^2)\,dy=&\int_0^10+(-1)(2-6t)^2(-6)\,dt=24.
+        \end{split}\]
+    \end{enumerate}
+    Therefore 
+    \[\begin{split}
+        &\int_C(2xy)\,dx+(xy^2)\,dy\\
+        =&\int_{C_1}(2xy)\,dx+(xy^2)\,dy+\int_{C_2}(2xy)\,dx+(xy^2)\,dy+\int_{C_3}(2xy)\,dx+(xy^2)\,dy\\&+\int_{C_4}(2xy)\,dx+(xy^2)\,dy\\
+        =&-\frac{131}{4}+\frac{1480}{3}-\frac{4195}{12}+24=135.
+    \end{split}\]
+    
+    \bigskip
+    
+    \item (Method 2: Green's Theorem): Let $D$ be the region bounded by $C$. It is easy to see that the upper line ($C_3$) of $D$ is \[y=x+3\] and the bottom line ($C_1$) of $D$ is \[y=\frac15x-\frac{19}{5}.\] Then by Green's Theorem,
+    \[\begin{split}
+        \int_C(2xy)\,dx+(xy^2)\,dy=&\iint_D\para{\frac{\partial xy^2}{\partial x}-\frac{\partial 2xy}{\partial y}}\,dx\,dy=\iint_D\para{y^2-2x}\,dx\,dy\\
+        =&\int_{-1}^4\int_{\frac15x-\frac{19}{5}}^{x+3}(y^2-2x)\,dy\,dx=\int_{-1}^4\intvert{\para{\frac{y^3}{3}-2xy}}_{\frac15x-\frac{19}{5}}^{x+3}\,dx\\
+        =&\int_{-1}^4\para{\frac{(x+3)^3}{3}-2x(x+3)-\frac{\para{\frac15x-\frac{19}{5}}^3}{3}+2x\para{\frac15x-\frac{19}{5}}}\,dx\\
+        =&135.
+    \end{split}\]
+\end{itemize}
+%
+\end{solution}
+\newpage
+\question%
+
+Let $S$ be the semisphere above $z=0$: $S=\{(x,y,z):z=\sqrt{1-x^2-y^2},z\geq0\}$ with outer norm. The boundary $\partial S$ is the unit cycle $\partial S=\{(x,y,z):x^2+y^2=1,z=0\}$ with orientation induced by the orientation of $S$. Let $\textbf{F}=z\textbf{i}+x\textbf{j}+(2zx+9xy)\textbf{k}$. 
+\begin{enumerate}
+    \item Evaluate
+\[\iint_S\curl\textbf{F}\cdot\,d\textbf{S}.\]
+
+\vskip 9cm
+\item Evaluate
+\[\int_{\partial S}\textbf{F}\cdot \,d\textbf{s}.\]
+\end{enumerate}
+%
+\begin{solution}%
+
+\begin{enumerate}
+    \item \[\begin{split}
+        \nabla\times \textbf{F}=&\para{9x,-2z-9y+1,1}.
+    \end{split}\]
+    The parametrization of $S$ is \[x=x,\quad ,y=y,\quad z=\sqrt{1-x^2-y^2},\quad\text{for }x^2+y^2\leq1.\]
+    Then \[\textbf{T}_x=\para{1,0,\frac{-x}{\sqrt{1-x^2-y^2}}},\quad \textbf{T}_y=\para{0,1,\frac{-y}{\sqrt{1-x^2-y^2}}},\]
+    and\[\textbf{T}_x\times \textbf{T}_y=\para{\frac{x}{\sqrt{1-x^2-y^2}},\frac{y}{\sqrt{1-x^2-y^2}},1}.\]
+    At $x=0$, $y=0$, we have $(0,0,1)$ at $(0,0,1)$. It is an outer normal vector. Therefore the outer normal vector we need is \[\textbf{n}=\para{\frac{x}{\sqrt{1-x^2-y^2}},\frac{y}{\sqrt{1-x^2-y^2}},1}.\]
+    So\[\begin{split}
+        \iint_S\nabla\times\textbf{F}\cdot\,d\textbf{S}=&\iint_{x^2+y^2\leq 1}\para{\frac{9x^2}{\sqrt{1-x^2-y^2}}+\frac{y(-2z-9y+1)}{\sqrt{1-x^2-y^2}}+1}\,dx\,dy
+        \end{split}\]
+        Use polar coordinates on $xy$-plane: 
+        \[\begin{split}
+    &\iint_{x^2+y^2\leq 1}\para{\frac{9x^2}{\sqrt{1-x^2-y^2}}+\frac{y(-2z-9y+1)}{\sqrt{1-x^2-y^2}}+1}\,dx\,dy   \\ =&\int_0^1\int_0^{2\pi}\para{\frac{9r^2\cos^2\theta-9r^2\sin^2\theta+r\sin\theta}{\sqrt{1-r^2}}-2r\sin\theta+1}r\,d\theta\,dr\\
+        =&\int_0^1\int_0^{2\pi}\para{\frac{9r^3}{\sqrt{1-r^2}}\cos(2\theta)+\frac{r^2}{\sqrt{1-r^2}}\sin\theta-2r^2\sin\theta+r}\,d\theta\,dr=\pi.
+    \end{split}\]
+    
+    \bigskip
+    
+    \item Use cylindrical coordinates. The parametrization for $\partial S$ is\[x=\cos\theta,\quad y=\sin\theta,\quad z=0,\quad\text{for }0\leq \theta\leq2\pi.\]
+    Then
+    \[\begin{split}
+        \int_{\partial S}\textbf{F}\cdot\,d\textbf{s}=&\int_0^{2\pi}\para{z,x,2zx+9xy}\cdot(-\sin\theta,\cos\theta,0)\,d\theta\\
+        =&\int_0^{2\pi}\cos\theta\cdot\cos\theta\,d\theta=\pi.
+    \end{split}\]
+\end{enumerate}
+%
+\end{solution}
+\newpage
+\question%
+
+Determine whether $\textbf{F}(x, y) = (y^3+5)\textbf{i} + (3xy^2+5)\textbf{j}$ in the plane is the gradient of a scalar function $f$.
+%
+\begin{solution}%
+
+If $f$ exists, it should satisfy the equation
+\[\frac{\partial f}{\partial x}=y^3+5,\quad \frac{\partial f}{\partial y}=3xy^2+5+\cos x.\]
+Considering $\frac{\partial f}{\partial x}=y^3+5$, we have 
+\[f=xy^3+5x+C_1(y) \quad\text{for some function $C_1(y)$ of $y$.}\]
+Considering $\frac{\partial f}{\partial y}=3xy^2+5$, we have 
+\[f=xy^3+5y+C_2(x) \quad\text{for some function $C_2(x)$ of $x$.}\]
+Therefore $C_1(y)=5y+C$ and $C_2(x)=5x+C+C$ and 
+\[f=xy^3+5x+5y+C\quad \text{for some constant $C$}.\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $W=[0,1]\times [0,1]\times [0,1]$, and its boundary $\partial W$ oriented outward. Let $\textbf{F}=x\textbf{i}+3y\textbf{j}+2z\textbf{k}$.
+\begin{enumerate}
+    \item Evaluate\[\iiint_W(\nabla\cdot \textbf{F})dV. \]
+    \vskip 8cm
+    \item Evaluate\[\iint_{\partial W}\textbf{F}\cdot\,d\textbf{S}.\]
+\end{enumerate}
+%
+\begin{solution}%
+
+\begin{enumerate}
+    \item \[\nabla\cdot\textbf{F}=\pd{x}{x}+\pd{3y}{y}+\pd{2z}{z}=6.\]
+    Then \[\iiint_W\para{\nabla\cdot\textbf{F}}\,dV=\int_0^1\int-0^1\int_0^16\,dx\,dy\,dz=6.\]
+    \item The region and the surface is sketched below.
+    \[\tikz{\begin{axis}[axis lines=middle,axis equal,
+    xmin=0,xmax=1.5,ymin=0,ymax=1.5,zmin=0,zmax=1.5,ticks=none,view={120}{30},
+    scale=1]
+    \addplot3[samples y=0]coordinates{(0,0,0)(1,0,0)(1,1,0)(0,1,0)(0,0,0)};
+    \addplot3[samples y=0]coordinates{(0,0,1)(1,0,1)(1,1,1)(0,1,1)(0,0,1)};
+    \addplot3[samples y=0]coordinates{(0,0,0)(0,0,1)};
+    \addplot3[samples y=0]coordinates{(1,0,0)(1,0,1)};
+    \addplot3[samples y=0]coordinates{(1,1,0)(1,1,1)};
+    \addplot3[samples y=0]coordinates{(0,1,0)(0,1,1)};
+    \draw[-{Stealth},dashed](axis cs:0.5,0,0.5)--(axis cs:0.5,-0.35,0.5) node at (axis cs:0.5,-0.5,0.5){$S_1$};
+    \draw[-{Stealth},dashed](axis cs:0.5,1,0.5)--(axis cs:0.5,1.35,0.5) node at (axis cs:0.5,1.5,0.5){$S_2$};
+    \draw[-{Stealth},dashed](axis cs:1,0.5,0.5)--(axis cs:1.35,0.5,0.5) node at (axis cs:1.5,0.5,0.5){$S_3$};
+    \draw[-{Stealth},dashed](axis cs:0,0.5,0.5)--(axis cs:-0.35,0.5,0.5) node at (axis cs:-0.5,0.5,0.5){$S_4$};
+    \draw[-{Stealth},dashed](axis cs:0.5,0.5,0)--(axis cs:0.5,0.5,-0.35) node at (axis cs:0.5,0.5,-0.5){$S_6$};
+    \draw[-{Stealth},dashed](axis cs:0.5,0.5,1)--(axis cs:0.5,0.5,1.35) node at (axis cs:0.5,0.5,1.5){$S_5$};
+        \end{axis}}\]
+        The parametrization: 
+\begin{itemize}
+    \item $S_1$: $0\leq x\leq 1$, $0\leq z\leq 1$, $y=0$, $\textbf{n}=(0,-1,0)$. Then 
+    \[\iint_{S_1}\textbf{F}\cdot\,d\textbf{S}=\int_0^1\int_0^1(x,3y,2z)\cdot(0,-1,0)\,dx\,dz=0.\]
+        \item $S_2$: $0\leq x\leq 1$, $0\leq z\leq 1$, $y=1$, $\textbf{n}=(0,1,0)$. Then 
+    \[\iint_{S_2}\textbf{F}\cdot\,d\textbf{S}=\int_0^1\int_0^1(x,3y,2z)\cdot(0,1,0)\,dx\,dz=3.\]
+        \item $S_3$: $0\leq y\leq 1$, $0\leq z\leq 1$, $x=1$, $\textbf{n}=(1,0,0)$. Then 
+    \[\iint_{S_3}\textbf{F}\cdot\,d\textbf{S}=\int_0^1\int_0^1(x,3y,2z)\cdot(1,0,0)\,dy\,dz=1.\]
+        \item $S_4$: $0\leq y\leq 1$, $0\leq z\leq 1$, $x=0$, $\textbf{n}=(-1,0,0)$. Then 
+    \[\iint_{S_4}\textbf{F}\cdot\,d\textbf{S}=\int_0^1\int_0^1(x,3y,2z)\cdot(-1,0,0)\,dy\,dz=0.\]
+        \item $S_5$: $0\leq x\leq 1$, $0\leq y\leq 1$, $z=1$, $\textbf{n}=(0,0,1)$. Then 
+    \[\iint_{S_5}\textbf{F}\cdot\,d\textbf{S}=\int_0^1\int_0^1(x,3y,2z)\cdot(0,0,1)\,dx\,dy=2.\]
+        \item $S_6$: $0\leq x\leq 1$, $0\leq y\leq 1$, $z=0$, $\textbf{n}=(0,0,-1)$. Then 
+    \[\iint_{S_6}\textbf{F}\cdot\,d\textbf{S}=\int_0^1\int_0^1(x,3y,2z)\cdot(0,0,-1)\,dx\,dy=0.\]
+\end{itemize}
+Then \[\begin{split}
+    &\iint_S\textbf{F}\cdot\,d\textbf{S}\\
+    =&\iint_{S_1}\textbf{F}\cdot\,d\textbf{S}+\iint_{S_2}\textbf{F}\cdot\,d\textbf{S}+\iint_{S_3}\textbf{F}\cdot\,d\textbf{S}+\iint_{S_4}\textbf{F}\cdot\,d\textbf{S}+\iint_{S_5}\textbf{F}\cdot\,d\textbf{S}+\iint_{S_6}\textbf{F}\cdot\,d\textbf{S}\\
+    =&0+3+1+0+2+0=6.
+\end{split}\]
+\end{enumerate}
+%
+\end{solution}
+\newpage

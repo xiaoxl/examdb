@@ -1,0 +1,341 @@
+\question%
+
+Evaluate the following integral if $R = [0, 1] \times [0, 1]$.
+ \[\iint_R2ye^{xy}\,dA.\]
+%
+\begin{solution}%
+
+{\color{red}{(You don't need to draw graph here. But it is better to know what the region look like.)}}
+\[\begin{tikzpicture}
+\begin{axis}[
+	xmin=-1,   xmax=2,
+	ymin=-1,   ymax=2,
+	extra x ticks={0,1},
+	extra y ticks={0,1},
+	extra tick style={grid=major},
+	scale=0.5,
+	xlabel=$x$, ylabel=$y$]
+\addplot[fill=blue,opacity=0.2] coordinates{(0,0)(0,1)(1,1)(1,0)(0,0)};
+\end{axis}
+\end{tikzpicture}\]
+$R$ is the shaded region above. We can setup the formula directly.\[\iint_R2ye^{xy}\,dx\,dy=\int_{0}^{1}\int_{0}^{1}2ye^{xy}\,dx\,dy=\int_{0}^{1}\int_{0}^{1}2ye^{xy}\,dy\,dx.\]
+{\color{red}{(Note that this integrand is not a product of a function of $x$ and a function of $y$. Therefore you cannot apply the trick to solve it.)}}
+% since the integrand is a product of a function of $x$ and a function of $y$, and the region is a rectangle region, we can apply the trick to solve it.
+\[\begin{split}
+    \int_{0}^{1}\int_{0}^{1}2ye^{xy}\,dx\,dy&=\int_{0}^{1}\left[\int_0^12ye^{xy}\,dx\right]\,dy=\int_0^1\left.\left(2e^{xy}\right)\right\rvert_{0}^1\,dy\\
+    &=\int_0^1(2e^y-2)\,dy=2e^y\rvert_0^1-2y\rvert_0^1=2e-4.
+\end{split}\]
+
+
+
+\begin{remark}
+This problem can be solved using the formula $\iint dy dx$. The computation is harder. You can try it as an exercise.
+\end{remark}
+%
+\end{solution}
+\newpage
+\question%
+
+Evaluate the following iterated integral.
+\[\int_1^5\int_{2x}^{3x+1}\,dy\,dx.\]
+%
+\begin{solution}%
+
+\[\begin{split}
+  \int_1^5\int_{2x}^{3x+1}\,dy\,dx&=\int_1^5(y\rvert_{2x}^{3x+1})\,dx=\int_1^5(x+1)\,dx=\left.\frac{x^2}{2}+x\right\rvert_1^5=16.
+\end{split}\]
+
+\begin{remark}
+\color{black}{You don't need to draw graph here. But it is better to know what the region look like.}
+\[\begin{tikzpicture}
+\begin{axis}[
+axis lines=middle,
+	xmin=-2,   xmax=8,
+	ymin=-1,   ymax=21,
+ticks=none,
+	scale=0.9,
+	xlabel=$x$, ylabel=$y$]
+	\addplot[name path=top,domain=1:5] (x,3*x+1) node [above]at (axis cs:4,13) {$y=3x+1$};
+	\addplot[name path=but,domain=1:5] (x,2*x)node [below] at (axis cs:3,8) {$y=2x$};
+	\addplot[fill=blue,opacity=0.2] fill between[of=top and but];
+	\draw[dashed,opacity=0.8] (axis cs:1,0)--(axis cs:1,17) node[left] at (axis cs:1,13) {$x=1$};
+	\draw[dashed,opacity=0.8] (axis cs:5,0)--(axis cs:5,17) node[right] at (axis cs:5,3) {$x=5$};
+\end{axis}
+\end{tikzpicture}\]
+\end{remark}
+%
+\end{solution}
+\newpage
+\question%
+
+Let $D$ be the unit disk: $x^2+y^2\leq4$. Evaluate
+\[\iint_D{(x^2+y^2)^{3/2}}\,dx\,dy.\]
+%
+\begin{solution}%
+
+        Use polar coordinates. Let $x=r\cos\theta$, $y=r\sin\theta$. Then $D$ is $0\leq r\leq2$ and $0\leq\theta<2\pi$. Then 
+    \[
+        \iint_D(x^2+y^2)^{3/2}\,dx\,dy=\int_0^{2\pi}\int_0^2(r^2)^{3/2}r\,dr\,d\theta=\int_0^{2\pi}d\theta\int_0^2r^4\,dr=2\pi\intvert{\frac{r^5}{5}}_0^2=\frac{64\pi}{5}
+  \]
+%
+\end{solution}
+\newpage
+\question%
+
+Compute the area of the parallelogram bounded by $y=2x$, $y=\frac{1}{2}x$, $y=2x-3$ and $y=\frac{1}{2}x+\frac{3}{2}$.
+%
+\begin{solution}%
+
+Draw the four lines below:
+\[\begin{tikzpicture}
+\begin{axis}[axis lines=middle,axis equal,scale=0.8,ticks=none,
+xmin=-1,xmax=3.5,ymin=-1,ymax=3.5]
+\addplot[smooth] {2*x}  node[left]at(1.5,3) {$y=2x$};
+\addplot[smooth] {x/2}node[below]at(3,1.5) {$y=\frac{x}{2}$};
+\addplot[smooth] {2*x-3}node[right] at(1.2,-0.7){$y=2x-3$};
+\addplot[smooth] {x/2+3/2}node[above] at(-0.6,1.2){$y=\frac{x}{2}+\frac32$};
+\draw node[black] at(1.5,1.5){$D$};
+\addplot[fill=blue,opacity=0.2] coordinates{(0,0)(2,1)(3,3)(1,2)};
+\end{axis}
+\end{tikzpicture}\]
+The region $D$ is bounded by $y=2x$, $y=2x-3$, $y=\frac{x}{2}$ and $y=\frac{x}{2}+\frac32$. Then the region $D$ is bounded by $y-2x=0$, $y-2x=-3$, $y-\frac{x}{2}=0$ and $y-\frac{x}{2}=\frac{3}{2}$. In other words, the region $D$ is described by
+\[-3\leq y-2x\leq 0,\quad 0\leq y-\frac{x}{2}\leq \frac32.\]
+Let $u=y-2x$, $v=y-\frac{x}{2}$. Then the region $D$ is described by $-3\leq u\leq 0$ and $0\leq v\leq \frac32$.
+Apply the change-of-variable formula: \[u=-2x+y,\ v=-\frac12x+y\quad\Rightarrow \quad x=-\frac{2}{3}u+\frac23v,\ y=-\frac13u+\frac43v.\]
+The jacobian is
+\[\dfrac{\partial(x,y)}{\partial(u,v)}=\det\mat{\dfrac{\partial x}{\partial u}&\dfrac{\partial x}{\partial v}\\\dfrac{\partial y}{\partial u}&\dfrac{\partial y}{\partial v}}=\det\mat{-\dfrac23&\dfrac23\\-\dfrac13&\dfrac43}=-\frac23.\]
+Then \[\text{the area}=\iint_D\,dx\,dy=\int_{v=0}^{v=3/2}\int_{u=-3}^{u=0}\left\lvert-\frac{2}{3}\right\rvert\,du\,dv=\frac{2}{3}\times3\times \frac32=3.\]
+%
+\end{solution}
+\newpage
+\question%
+
+Consider the force field $\textbf{F}(x, y, z)=x\textbf{i}+y\textbf{j}+z\textbf{k}$. Compute the work done in moving a particle along the parabola $y=x^2$, $z=0$, from $x=−3$ to $x=4$.
+%
+\begin{solution}%
+
+The parametrization $\textbf{c}(t)$ of $C$ is \[x=t,\quad y=t^2,\quad z=0,\quad \text{ for }3\leq t\leq 4.\]
+Then $\textbf{c}'(t)=(1,2t,0)$. Therefore the work is 
+\[\int_C\textbf{F}\cdot\,d\textbf{s}=\int_3^4(t\cdot1+t^2\cdot 2t+0\cdot0)\,dt=\int_3^4(2t^3+t)\,dt=\left.\frac{2t^4}{4}+\frac{t^2}{2}\right\rvert_3^4=91.\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $S$ be the part of the cylinder $y^2+z^2=4$ with $x\in[0,2]$. Evaluate \[\iint_S(x+z)\,dS.\]
+%
+\begin{solution}%
+
+$S$ is $y^2+z^2=4$ with $0\leq x\leq 2$. Then the parametrization is given by
+\[x=u,\quad y=2\cos v,\quad z=2\sin v,\quad\text{ for }0\leq u\leq 2,\ 0\leq v\leq 2\pi.\]
+So\[\textbf{T}_u=(1,0,0),\quad \textbf{T}_v=(0,-2\sin v,2\cos v).\]
+Then \[\textbf{n}=\textbf{T}_u\times \textbf{T}_v=-2\cos v\textbf{j}-2\sin v\textbf{k}.\]
+Therefore
+\[\norm{\textbf{n}}=\norm{\textbf{T}_u\times\textbf{T}_v}=2.\]
+Hence 
+\[\begin{split}
+    \iint_S(x+z)\,dS=&\int_0^{2\pi}\int_0^2(u+2\sin v)\cdot2\,du\,dv\\
+    =&\int_0^{2\pi}\int_0^22u\,du\,dv+\int_0^{2\pi}\int_0^24\sin v\,du\,dv=8\pi.
+\end{split}\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $S$ be the entire surface of the solid half ball $x^2+y^2+z^2\leq1$, $z\geq 0$, with an outer normal. Evaluate
+\[\iint_S(f_1(y,z),f_2(x,z),f_3(x,y))\cdot\,d\textbf{S}.\]
+%
+\begin{solution}%
+
+% \[\tikz{\begin{axis}
+% [axis lines=middle,axis equal,ticks=none,
+% xmin=-1,xmax=1,ymin=-1,ymax=1,zmin=-1,zmax=1,
+% scale=1]
+% \addplot3[surf,fill=red,opacity=0.2,domain=0:1,domain y=0:2*pi]({x*cos(deg(y))},{x*sin(deg(y))},{sqrt(1-x^2)});
+% \addplot3[surf,fill=blue,opacity=0.2,domain=0:1,domain y=0:2*pi]({x*cos(deg(y))},{x*sin(deg(y))},{-sqrt(1-x^2)});
+%     \draw  node at (axis cs: 0.7,0.2,0.5) {$S^+$};
+%         \draw  node at (axis cs: 0.6,0.2,-0.6) {$S^-$};
+% \end{axis}}\]
+The sphere can be decomposed into two pieces. Let $S^+$ be the upper hemisphere, and $S^-$ be the bottom plane. The parametrization of $S^+$ can be
+\[x=x,\quad y=y,\quad z=\sqrt{1-x^2-y^2},\quad \text{for }x^2+y^2\leq 1.\]
+Then \[\textbf{T}_x=\para{1,0,\frac{-x}{\sqrt{1-x^2-y^2}}},\quad \textbf{T}_{y}=\para{0,1,\frac{-y}{\sqrt{1-x^2-y^2}}}.\]
+Therefore \[\textbf{T}_x\times \textbf{T}_{y}=\para{\frac{x}{\sqrt{1-x^2-y^2}},\frac{y}{\sqrt{1-x^2-y^2}},1}.\]
+Since the $z$-coordinate is $1$, the normal vector always points upwards. Then it is an outer normal vector. Therefore the normal vector we should use is
+\[\textbf{n}=\para{\frac{x}{\sqrt{1-x^2-y^2}},\frac{y}{\sqrt{1-x^2-y^2}},1}.\]
+Then \[\begin{split}
+    \iint_{S^+}\para{f_1,f_2,f_3}\cdot\,d\textbf{S}=&\iint_{x^2+y^2\leq 1}\para{f_1,f_2,f_3}\cdot\para{\frac{x}{\sqrt{1-x^2-y^2}},\frac{y}{\sqrt{1-x^2-y^2}},1}\,dx\,dy\\
+    =&\iint_{x^2+y^2\leq1}\frac{f_1(y,z)x}{\sqrt{1-x^2-y^2}}\,dx\,dy+
+    \iint_{x^2+y^2\leq1}\frac{f_2(x,z)y}{\sqrt{1-x^2-y^2}}\,dx\,dy\\
+    &+\iint_{x^2+y^2\leq1}f_3(x,y)\,dx\,dy.
+\end{split}\]
+Let us evaluate these three integrals one by one.
+\begin{enumerate}
+    \item \[\begin{split}
+        \iint_{x^2+y^2\leq1}\frac{f_1(y,z)x}{\sqrt{1-x^2-y^2}}\,dx\,dy=\int_{-1}^1\int_{-\sqrt{1-y^2}}^{\sqrt{1-y^2}}\frac{f_1(y,\sqrt{1-x^2-y^2})x}{\sqrt{1-x^2-y^2}}\,dx\,dy.
+    \end{split}\]
+    Let $u=\sqrt{1-x^2-y^2}$. Then $x^2=1-y^2-u^2$. So \[2x\,dx=dx^2=d(1-y^2-u^2)=-2u\,du.\] Then
+        \[\begin{split}
+        \int_{-1}^1\int_{-\sqrt{1-y^2}}^{\sqrt{1-y^2}}\frac{f_1(y,\sqrt{1-x^2-y^2})x}{\sqrt{1-x^2-y^2}}\,dx\,dy=&\int_{-1}^1\int_{x=-\sqrt{1-y^2}}^{x=\sqrt{1-y^2}}-\frac{f_1(y,u)}{u}u\,du\,dy\\
+        =&\int_{-1}^1\int_{x=-\sqrt{1-y^2}}^{x=\sqrt{1-y^2}}-f_1(y,u)\,du\,dy.
+    \end{split}\]
+    Let the antiderivative of $f_1(y,u)$ with respect to $u$ be $F_1(y,u)$. That is $\frac{\partial}{\partial u}F_(y,u)=f_1(y,u)$. Then 
+    \[\begin{split}
+        &\int_{-1}^1\int_{x=-\sqrt{1-y^2}}^{x=\sqrt{1-y^2}}-f_1(y,u)\,du\,dy\\
+        =&\int_{-1}^1\intvert{-F_1(y,u)}_{x=-\sqrt{1-y^2}}^{x=\sqrt{1-y^2}}\,dy=\int_{-1}^1\intvert{-F_1(y,\sqrt{1-y^2-x^2})}_{-\sqrt{1-y^2}}^{\sqrt{1-y^2}}\,dy\\
+        =&\int_{-1}^1\para{-F_1(y,\sqrt{1-y^2-(\sqrt{1-y^2})^2})}-\para{-F_1(y,\sqrt{1-y^2-(-\sqrt{1-y^2})^2})}\,dy\\
+        =&\int_{-1}^10\,dy=0.
+    \end{split}\]
+    
+    \item The same computation applies. Then \[\iint_{x^2+y^2\leq1}\frac{f_2(x,z)y}{\sqrt{1-x^2-y^2}}\,dx\,dy=0.\]
+    
+    
+    \item \[\iint_{x^2+y^2\leq 1}f_3(x,y)\,dx\,dy.\]Let us keep this for a while. 
+\end{enumerate}
+Therefore we have
+\[\iint_{S^+}\para{f_1(y,z),f_2(x,z),f_3(x,y)}\cdot\,d\textbf{S}=\iint_{x^2+y^2\leq1}f_3(x,y)\,dx\,dy.\]
+
+For $S^-$, the parametrization of $S^-$ is given by
+\[x=x,\quad y=y,\quad z=0,\quad\text{ for }x^2+y^2\leq1.\]
+Then \[\textbf{T}_x=\para{1,0,0},\quad \textbf{T}_y=\para{0,1,0},\]
+and \[\textbf{T}_x\times\textbf{T}_y=\para{0,0,1}.\]
+Since the normal vector points downwards on $S^-$, the normal vector we need is
+\[\textbf{n}=(0,0,-1).\]
+Then \[\begin{split}
+    \iint_{S^-}\para{f_1(y,z),f_2(x,z),f_3(x,y)}\cdot\,d\textbf{S}=&\iint_{x^2+y^2\leq1}-f_3(x,y)\,dx\,dy.
+\end{split}\]
+To sum up, 
+\[\begin{split}
+    &\iint_{S}\para{f_1(y,z),f_2(x,z),f_3(x,y)}\cdot\,d\textbf{S}\\
+    =&\iint_{S^+}\para{f_1(y,z),f_2(x,z),f_3(x,y)}\cdot\,d\textbf{S}+\iint_{S^-}\para{f_1(y,z),f_2(x,z),f_3(x,y)}\cdot\,d\textbf{S}\\
+    =&\iint_{x^2+y^2\leq1}f_3(x,y)\,dx\,dy+\iint_{x^2+y^2\leq1}-f_3(x,y)\,dx\,dy=0.
+\end{split}\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $C$ be the circle with center $(0,0)$ and radius $R$, oriented counterclockwise. Evaluate
+\[\int_C(xy^2)\,dx+(-yx^2)\,dy\]in two different ways.
+%
+\begin{solution}%
+
+\begin{itemize}
+    \item (Method 1: Path integral): $C$ is sketched below:
+    \[\tikz{\begin{axis}[axis equal,axis lines=middle,
+    xmin=-1.5,xmax=1.5,ymin=-1.5,ymax=1.5,ticks=none,
+    scale=0.8]
+    \addplot[-{Stealth},thick,domain=0:360]({cos(x)},{sin(x)});
+    \draw  node at (axis cs: 0.5,0.5) {$D$};
+  \draw  node at (axis cs: 1,1) {$C$};
+    \end{axis}}\]
+    Evaluating path integral: the parametrization of $C$ is \[x=R\cos\theta,\quad y=R\sin\theta,\quad\text{ for }0\leq\theta\leq 2\pi.\]
+    Then \[\begin{split}
+        \int_C(xy^2)\,dx+(-yx^2)\,dy=&\int_0^{2\pi}R\cos\theta(R\sin\theta)^2R(-\sin\theta)\,d\theta+(-R\sin\theta(R\cos\theta)^2)R\cos\theta\,d\theta\\
+        =&\int_0^{2\pi}-R^4\sin\theta\cos\theta\,d\theta=\intvert{R^4\frac{\cos(2\theta)}{4}}_{0}^{2\pi}=0.
+    \end{split}\]
+    
+    
+    \bigskip
+    
+    \item (Method 2: Green's Theorem): Let $D$ be the region bounded by $C$. Then by Green's Theorem,
+    \[\begin{split}
+        \int_C(xy^2)\,dx+(-yx^2)\,dy=&\iint_D\para{\frac{\partial (-yx^2)}{\partial x}-\frac{\partial xy^2}{\partial y}}\,dx\,dy=\iint_D\para{-2xy-2xy}\,dx\,dy\\
+        =&-4\iint_{D}{xy}\,dx\,dy.
+    \end{split}\]
+    Use polar coordinates. Let 
+    \[x=r\cos\theta,\quad y=r\sin\theta,\quad \text{ for }0\leq r\leq R,\ 0\leq \theta\leq2\pi.\]
+    Therefore
+    \[\begin{split}
+        -4\iint_{D}{xy}\,dx\,dy=&-4\int_0^{2\pi}\int_{0}^R\para{r\cos\theta r\sin\theta}r\,dr\,d\theta\\
+        =&-4\int_0^{2\pi}\frac{R^4}{4}\cos\theta\sin\theta\,d\theta=\intvert{-R^4\frac{\cos(2\theta)}{4}}_0^{2\pi}=0.
+    \end{split}\]
+\end{itemize}
+%
+\end{solution}
+\newpage
+\question%
+
+Let $S$ be the surface of a sphere defined by $x^2+y^2+z^2=1$ and $x+y+z\geq1$, with an outer norm. Let $\textbf{F}=\textbf{r}\times(\textbf{i}+\textbf{j}+\textbf{k})$, with $\textbf{r}=x\textbf{i}+y\textbf{j}+z\textbf{k}$. Evaluate\[\iint_S(\curl\textbf{F})\cdot\,d\textbf{S}.\]
+%
+\begin{solution}%
+
+The field is
+\[\textbf{F}=\textbf{r}\times(\textbf{i}+\textbf{j}+\textbf{k})=(y-z,z-x,x-y).\]
+The boundary of $S$ is the intersection of the two surfaces:
+\[x^2+y^2+z^2=1,\quad x+y+z=1.\]
+The solution is the curve:
+\[\begin{cases}
+x^2+y^2+(1-x-y)^2=1,\\
+z=1-x-y.
+\end{cases}\]
+To setup the parametrization of it, we first let $x=u+v$ and $y=u-v$. Then we have
+\[x^2+y^2+(1-x-y)^2=1\ \Rightarrow \ (u+v)^2+(u-v)^2+(1-u-v-u+v)^2=1\ \Rightarrow \ 3u^2+v^2-2u=0.\]
+Then we let \[u=\frac13\cos\theta+\frac13,\quad v=\frac{1}{\sqrt3}\sin\theta,\quad\text{ for }0\leq\theta\leq2\pi.\]
+Therefore by $x=u+v$, $y=u-v$, $z=1-x-y$, we have
+\[\begin{cases}
+x=\frac13\cos\theta+\frac{1}{\sqrt3}\sin\theta+\frac13,\\
+y=\frac13\cos\theta-\frac{1}{\sqrt3}\sin\theta+\frac13,\\
+z=-\frac23\cos\theta+\frac13,
+\end{cases}\]
+for $0\leq\theta\leq2\pi$. This is the parametrization of $\partial S$. 
+\begin{remark}
+\color{red}The idea of the parametrization is divided into two steps. First we have a curve \[x^2+y^2+(1-x-y)^2=1.\] It is a conic curve with a mixed term $xy$. To deal with this term we need to ``rotate'' the graph. Therefore we give the first change of variables $x=u+v$, $y=u-v$ which is coming from ``rotating the graph by 45 degree''. After the process the mixed term $xy$ disappears. Then we have \[3u^2+v^2-2u=0\] which is an ellipse. Therefore we change it into the standard form of the ellipse:
+\[3u^2+v^2-2u=0\ \Rightarrow 3(u-\frac13)^2+v^2=\frac13\ \Rightarrow \frac{(u-\frac13)^2}{(\frac13)^2}+\frac{v^2}{(\frac{1}{\sqrt3})^2}=1.\]
+Then by the standard polar coordinate formula of ellipse, we have
+\[u=\frac13\cos\theta+\frac13,\quad v=\frac{1}{\sqrt3}\sin\theta.\]
+\end{remark}
+To test the orientation, we need to find the normal vector along the curve. The tangent vector is
+\[x'=-\frac13\sin\theta+\frac{1}{\sqrt3}\cos\theta,\quad y'=-\frac13\sin\theta-\frac{1}{\sqrt3}\cos\theta,\quad z'=\frac23\sin\theta.\]
+Let $\theta=0$ and $\theta=\pi/2$, we have two tangent vectors $(\frac{1}{\sqrt3},-\frac{1}{\sqrt3},0)$ and $(-\frac13,-\frac13,\frac23)$, and \[(\frac{1}{\sqrt3},-\frac{1}{\sqrt3},0)\times(-\frac13,-\frac13,\frac23)=-\frac{2}{3\sqrt3}(1,1,1).\]
+The vector points to the negative direction which is a wrong direction since $S$ is the part where $x+y+z\leq1$. Therefore the parametrziation of $\partial S$ should go from $2\pi$ to $0$.
+
+Then by Stokes' Theorem, 
+\[\begin{split}
+    &\iint_S(\nabla\times \textbf{F})\cdot\,d\textbf{S}=\int_{\partial S}\textbf{F}\cdot\,d\textbf{s}\\
+    =&\int^0_{2\pi}\para{y-z,z-x,x-y}\cdot\para{-\frac13\sin\theta+\frac{1}{\sqrt3}\cos\theta,-\frac13\sin\theta-\frac{1}{\sqrt3}\cos\theta,\frac23\sin\theta}\,d\theta\\
+    =&\int_{2\pi}^0\frac{2}{\sqrt3}\,d\theta=-\frac{4\pi}{\sqrt3}.
+\end{split}\]
+\clearpage
+%
+\end{solution}
+\newpage
+\question%
+
+Determine whether $\textbf{F}(x, y) = 3x\textbf{i} + 3y\textbf{j}$ in the plane is the gradient of a scalar function $f$.
+%
+\begin{solution}%
+
+If $f$ exists, it should satisfy the equation
+\[\frac{\partial f}{\partial x}=3x,\quad \frac{\partial f}{\partial y}=3y.\]
+Considering $\frac{\partial f}{\partial x}=3x$, we have \[f=\frac32x^2+C_1(y) \quad\text{for some function $C_1(y)$ of $y$.}\]
+Considering $\frac{\partial f}{\partial y}=3y$, we have \[f=\frac32y^2+C_2(x) \quad\text{for some function $C_2(x)$ of $x$.}\]
+Therefore $C_1(y)=\frac32y^2+C$ and $C_2(x)=\frac32x^2+C$ and 
+\[f=\frac32x^2+\frac32y^2+C\quad \text{for some constant $C$}.\]
+%
+\end{solution}
+\newpage
+\question%
+
+Let $W$ be defined by $x^2+y^2\leq z\leq 1$ and $x\geq0$. Evaluate
+\[\iint_{\partial W}(y\textbf{i}+9z\textbf{j}+4xz\textbf{k})\cdot\,d\textbf{S}.\]
+%
+\begin{solution}%
+
+The region is sketched below.
+\[\tikz{\begin{axis}[xmin=-1,xmax=1,ymin=-1,ymax=1,zmin=0,zmax=1,view={120}{30},
+scale=1]
+\addplot3[surf,domain=-90:90,domain y=0:1,opacity=0.2]({y*cos(x)},{y*sin(x)},{y^2});
+\addplot3[surf,domain=-90:90,domain y=0:1,opacity=0.2]({y*cos(x)},{y*sin(x)},{1});
+\end{axis}}\]
+By Gauss' Divergence Theorem, 
+\[\iint_{\partial W}\para{y,9z,4xz}\cdot\,d\textbf{S}=\iiint_W\para{\pd{y}{x}+\pd{9z}{y}+\pd{4xz}{z}}\,dV=\iiint_W4x\,dx\,dy\,dz.\]
+Use cylindrical coordinates, $W$ is parametrized by
+\[x=r\cos\theta,\quad y=r\sin\theta,\quad z=z\quad\text{for }0\leq r\leq \sqrt{z},\ -\frac{\pi}{2}\leq\theta\leq\frac{\pi}{2},\ 0\leq z\leq 1.\]
+Therefore
+\[\begin{split}
+    \iiint_W4x\,dx\,dy\,dz=&\int_0^1\int_{-\pi/2}^{\pi}\int_0^{\sqrt{z}}4r\cos\theta r\,dr\,d\theta\,dz=\frac{16}{15}.
+\end{split}\]
+\clearpage
+%
+\end{solution}
+\newpage

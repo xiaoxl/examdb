@@ -1,0 +1,31 @@
+\[\iint_R\cos(x)\sin(y)\,dx\,dy\]where $R=[0,\pi/2]\times[0,\pi/2]$.
+------------------------------
+{\color{red}{(You don't need to draw graph here. But it is better to know what the region look like.)}}
+\[\begin{tikzpicture}
+\begin{axis}[
+	xmin=-1,   xmax=2,
+	ymin=-1,   ymax=2,
+	extra x ticks={0,1.57},
+	extra x tick labels={$0$,$\frac{\pi}{2}$},
+	extra y ticks={0,1.57},
+	extra y tick labels={$0$,$\frac{\pi}{2}$},
+	extra tick style={grid=major},
+	scale=0.5,
+	xlabel=$x$, ylabel=$y$]
+\addplot[fill=blue,opacity=0.2] coordinates{(0,0)(0,1.57)(1.57,1.57)(1.57,0)(0,0)};
+\end{axis}
+\end{tikzpicture}\]
+$R$ is the shaded region above. We can setup the formula directly.\[\iint_R\cos(x)\sin(y)\,dx\,dy=\int_{0}^{\pi/2}\int_{0}^{\pi/2}\cos(x)\sin(y)\,dx\,dy=\int_{0}^{\pi/2}\int_{0}^{\pi/2}\cos(x)\sin(y)\,dy\,dx.\]
+Evaluate: since the integrand is a product of a function of $x$ and a function of $y$, and the region is a rectangle region, we can apply the trick to solve it.\[
+\begin{split}
+    \int_{0}^{\pi/2}\int_{0}^{\pi/2}\cos(x)\sin(y)\,dx\,dy&=\int_{0}^{\pi/2}\cos(x)\,dx\int_{0}^{\pi/2}\sin(y)\,dy\\
+    &=\left(\left.\sin(x)\right\rvert_{0}^{\pi/2}\right)\left(\left.-\cos(y)\right\rvert_{0}^{\pi/2}\right)=1.
+\end{split}\]
+------------------------------
+5.1
+5.2
+rectangle region
+multi variables
+integration
+------------------------------
+MVC_10B_Integration
