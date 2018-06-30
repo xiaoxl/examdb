@@ -12,7 +12,9 @@
 # from examDB.dbOP import dbOp
 # import difflib
 from examdb.MyDB import MyDB
-#
+from examdb.MyDB import QuestionItem
+
+import random
 # class EnvParts(Environment):
 #     _latex_name='parts'
 #
@@ -34,9 +36,22 @@ from tinydb import Query
 if __name__ == '__main__':
     # Basic document
 
-    dbname='Exam1.json'
+    dbname='Exam2.json'
     db=MyDB(dbname)
+    # s= {"master_question": "main instructions",
+    #        "parts": [{"question": "_var0_+asdfasdfasf+_var0_-asdfasdf",
+    #                   "solutions": ["_var1_--------", "solution2"]}
+    #                  ],
+    #        "varchange": ["_var0_=random.choice(range(10))|2","_var1_=_var0_**2|100"],
+    #        "tags": ["tag1", "tag2"],
+    #        "course": "course"
+    #        }
+    s=db.get(doc_id=1)
+    Q=QuestionItem(s)
+    print(Q.latexify())
+    # print("_var1_"+str(1.222+2))
     #
+    # #
     # filename='10B/5.1-5.2.tex'
     # db.import_from_latex_btype(filename,["5.1-5.2","rectangle region","multi variables",'double integration',"integration"],"MVC_10B_Integration")
     #
@@ -85,17 +100,17 @@ if __name__ == '__main__':
     # filename='10B/8.4.tex'
     # db.import_from_latex_btype(filename,["8.4","surface integral of vector fields","triple integral","Gauss' Theorem","Divergence Theorem","integration"],"MVC_10B_Integration")
 
+    #
+    # tags=["5.1-5.2","5.3",["general region","double integral"],"6.2","7.2","7.5","7.6","8.1","8.2","8.3","8.4"]
+    #
+    # db.dump_randompick("e.txt",tags,r'\newpage')
 
-    tags=["5.1-5.2","5.3",["general region","double integral"],"6.2","7.2","7.5","7.6","8.1","8.2","8.3","8.4"]
 
-    db.dump_randompick("e.txt",tags,r'\newpage')
-
-
-    filename='test.txt'
-    idnum=4
-    # db.display_by_id(filename,idnum)
-
-    db.update_by_id2(filename,idnum)
+    # filename='test.txt'
+    # idnum=4
+    # # db.display_by_id(filename,idnum)
+    #
+    # db.update_by_id2(filename,idnum)
 
     #print(q1)
     #

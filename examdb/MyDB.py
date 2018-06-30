@@ -3,15 +3,165 @@ from tinydb.operations import delete
 import tinydb
 import re
 import json
-import difflib
+# import difflib
 from examdb.LatexSnippt import *
 import random
+from pylatex.utils import NoEscape
+
 
 '''
 Based on TinyDB.
 
 To change to other databases only this file need to be updated.
 '''
+
+
+class QuestionItem():
+    '''
+    The structure to store questions.
+    The problem words are stored in "master_question"(str) and "parts"(list).
+    Each item in "parts"(list) contains a "question"(str) section and a "solutions"(list) section.
+    So the problem should look like:
+    [master_question]: The main instruction of the question:
+    part1: [parts->question]: The instruction of the first part;
+           [parts->solutions]: solution (method 1)
+                               solution (method 2)
+                               solution (method 3)
+                               ...
+    part2: [parts->question]: The instruction of the first part;
+           [parts->solutions]: solution (method 1)
+                               solution (method 2)
+                               solution (method 3)
+                               ...
+    ...
+    if there are only one part, the "part" label won't be shown.
+
+    "varchange"(list) is a list storing the randomized numbers in the problem.
+
+    "tags"(list) and "course"(str) are labels to characterize the problem.
+
+    "requiredpackages"(list) and "preambleheader"(list) tell us how to run the code without any errors.
+
+    The item should look like this:
+    {"master_question": "main instructions",
+    "parts": [{"question": "instructions to part1",
+              "solutions": ["solution1", "solution2", ...]},
+              {"question": "instructions to part1",
+              "solutions": ["solution1", "solution2", ...]},
+              ...
+              ],
+    "varchange": ["_var1_=1","_var2_=2",...],
+    "tags": ["tag1", "tag2", ...],
+    "course": "course",
+    "requiredpackages":[],
+    "preambleheader":[]
+    }
+    '''
+
+    def __init__(self):
+        self.master_question=""
+        default_list={"question":"",
+              "solutions":[]}
+        self.parts=[default_list]
+        self.varchange=[]
+        self.tags=[]
+        self.course=""
+        self.requiredpackages=[],
+        self.preambleheader=[]
+        self.flag=0             #flag=0 means the variable will be randomized. flag~=0 means the variable will use the default value.
+        self.setdefaultpattern()
+
+    def __init__(self,input_data):
+        self.master_question=input_data["master_question"]
+        self.parts=list(input_data["parts"])
+        self.varchange=list(input_data["varchange"])
+        self.tags=list(input_data["tags"])
+        self.course=input_data["course"]
+        self.requiredpackages=[],
+        self.preambleheader=[]
+        self.flag=0             #flag=0 means the variable will be randomized. flag~=0 means the variable will use the default value.
+        self.setdefaultpattern()
+
+    def setdefaultpattern(self):
+        self.preamble_que=r"\question"
+        self.postamble_que=""
+        self.preamble_sol=r"\begin{solution}"
+        self.postamble_sol=r"\end{solution}"
+        self.preamble_part=r"\begin{parts}"
+        self.postamble_part=r"\end{parts}"
+        self.separator_part=r"\part"
+
+    def latexify(self):
+        '''
+        :return:  a latex code string based on the "pattern".
+        '''
+        res=self.preamble_que+'\n'+self.master_question+' '
+        num=len(self.parts)
+        if num==1:  #if there is only one part, the "part" label won't be shown.
+            current_part=self.parts[0]
+            res=res+current_part["question"]+'\n'
+            for sol in current_part["solutions"]:
+                res=res+'\n'+self.preamble_sol+'\n'+sol+'\n'+self.postamble_sol+'\n'
+        else: #otherwise show "parts" labels
+            res=res+'\n'+self.preamble_part+'\n'
+            for current_part in self.parts:
+                res=res+self.separator_part+' '+current_part["question"]+'\n'
+                for sol in current_part["solutions"]:
+                    res=res+'\n'+self.preamble_sol+'\n'+sol+'\n'+self.postamble_sol+'\n'
+            res=res+self.postamble_part
+        res=res+'\n'+self.postamble_que+'\n'
+        varlist=self.runthevariables()
+        numofvar=len(varlist)
+        for i in range(numofvar):
+            varname="_var"+str(i)+"_"
+            res=res.replace(varname,str(varlist[i]))
+        return res
+
+    def runthevariables(self):
+        '''
+        :param flag: if flag==0, randomize the code. if flag is not 0, use the default value.
+        :return: a list of variable vaules.
+        '''
+        val=[]
+        num=len(self.varchange)
+        for i in range(num):
+            varname='_var'+str(i)+'_'
+            cont=self.varchange[i].split('|')[0]
+            if self.flag==0:
+                exec(cont)
+                val.append(eval(varname))
+            else:
+                pass
+                # varname=raw.split('=')[0]
+                # val.append(exec(varname+'='+cont[1]))
+        return val
+
+
+    def dump(self):
+        res={"master_question": self.master_question,
+             "parts":self.parts,
+             "varchange":self.varchange,
+             "tags":self.tags,
+             "course":self.course}
+        return res
+
+    def dumps(self):
+        res=self.dump()
+        return json.dumps(res)
+
+    def load(self,input_data):
+        self.question=input_data["question"]
+        self.parts=list(input_data["parts"])
+        self.varchange=list(input_data["varchange"])
+        self.tags=list(input_data["tags"])
+        self.course=input_data["course"]
+
+
+
+
+
+
+
 
 class MyDB(TinyDB):
     THRESHOLD=0.95
@@ -39,10 +189,11 @@ class MyDB(TinyDB):
         course=input_course
         for i in range(num)[1:]:
             piece=re.split(r'\\end{'+separete_symbol+r'}',raw[i])
-            question=piece[0]
+            master_question=piece[0]
             solutions=re.findall(r'begin{solution}(.*?)\\end{solution}',piece[1],re.S)
-            item={"question": question,
-                  "solutions": solutions,
+            item={"master_question": master_question,
+                  "parts":[{"question":"","solutions": solutions}],
+                  "varchange": [],
                   "tags":tags,
                   "course":course
                   }
