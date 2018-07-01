@@ -39,18 +39,20 @@ if __name__ == '__main__':
 
     dbname='Exam2.json'
     db=MyDB(dbname)
-    s= {"master_question": "main instructions",
-           "parts": [{"question": "_var0_+asdfasdfasf+_var0_-asdfasdf",
-                      "solutions": ["_var1_--------", "solution2"]}
-                     ],
-           "varchange": ["_var0_=random.choice(range(10))|2","_var1_=_var0_**2|100"],
-           "tags": ["tag1", "tag2"],
-           "course": "course",
-           "packages":[],
-           "packagesettings": [],
-           "macros":[]
-        }
-    # s=db.get(doc_id=1)
+    # s= {"master_question": "main instructions",
+    #        "parts": [{"question": "_var0_+asdfasdfasf+_var0_-asdfasdf",
+    #                   "solutions": ["_var1_--------", "solution2"]},
+    #                  {"question": "_var0_+asdfasdfasf+_var0_-asdfasdf",
+    #                   "solutions": ["_var1_--------", "solution2"]}
+    #                  ],
+    #        "varchange": ["_var0_=random.choice(range(10))|2","_var1_=_var0_**2|100"],
+    #        "tags": ["tag1", "tag2"],
+    #        "course": "course",
+    #        "packages":[],
+    #        "packagesettings": [],
+    #        "macros":[]
+    #     }
+    s=db.get(doc_id=1)
     Q=QuestionItem(s)
     print(Q.latexify())
     # print("_var1_"+str(1.222+2))

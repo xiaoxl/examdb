@@ -92,26 +92,12 @@ class QuestionItem():
         self.setdefaultpattern()
 
     def setdefaultpattern(self):
-        # self.preamble_que=r"\question"
-        # self.postamble_que=""
-        # self.preamble_sol=r"\begin{solution}"
-        # self.postamble_sol=r"\end{solution}"
-        # self.preamble_part=r"\begin{parts}"
-        # self.postamble_part=r"\end{parts}"
-        # self.separator_part=r"\part"
-        self.pattern_whole=r'''\question
-        [master_question]
-        [parts]
-        '''
-        self.pattern_parts=r'''\begin{parts}
-        \part[*] [part] 
-        [solutions]
-        \end{parts}
-        '''
-        self.pattern_solutions=r'''\begin{solution} \textbf{(Solution [*])}
-        [solution]
-        \end{solution}
-        '''
+        self.pattern_whole=r'\question'+'\n[master_question]\n\\begin{parts}[parts]\\end{parts}'
+        self.pattern_parts=r'\part[*] [part]'+'\n\\begin{solution}[solutions]\n\\end{solution}\n'
+        self.pattern_solutions='\n'+r'\textbf{(Solution [*])}'+' [solution]\n'
+        self.pattern_whole_nopart=r'\question'+'\n\\begin{solution}[solutions]\n\\end{solution}'
+        self.pattern_solutions_nopart='\n'+r'\textbf{(Solution [*])}'+' [solution]\n'
+
 
     def latexify(self):
         '''
@@ -120,29 +106,29 @@ class QuestionItem():
 
         #first based on patterns generate the main body of the questions and solutions
 
-        res=self.pattern_whole
         num=len(self.parts)
         if num==1:  #if there is only one part, the "part" label won't be shown.
-            current_question=self.pattern_whole
-            current_question=current_question.replace("[master_question]",self.master_question)
+            current_question=self.pattern_whole_nopart
+            current_question=current_question.replace("[master_question]",self.master_question+'\n'+self.parts[0]["question"])
 
-            current_part=""
-            nofpart=len(self.parts)
-            for j in range(nofpart):
-                eachpart=self.parts[j]
-                part_pattern=self.pattern_parts
-                part_pattern=part_pattern.replace("[part]",eachpart["question"])
-                part_pattern=part_pattern.replace("[*]",str(j+1))
-                nofsol=len(eachpart["solutions"])
-                current_sol=""
-                for i in range(nofsol):
-                    current_pattern=self.pattern_solutions
-                    current_pattern=current_pattern.replace("[solution]",eachpart["solutions"][i])
-                    current_pattern=current_pattern.replace("[*]",str(i+1))
-                    current_sol=current_sol+current_pattern
-                part_pattern=part_pattern.replace("[solutions]",current_sol)
-                current_part=current_part+part_pattern
-            current_question=current_question.replace("[parts]",current_part)
+            # current_part=""
+            # nofpart=len(self.parts)
+            # for j in range(nofpart):
+            #     eachpart=self.parts[j]
+            #     part_pattern=self.pattern_parts
+            #     part_pattern=part_pattern.replace("[part]",eachpart["question"])
+            #     part_pattern=part_pattern.replace("[*]",str(j+1))
+            eachpart=self.parts[0]
+            nofsol=len(eachpart["solutions"])
+            current_sol=""
+            for i in range(nofsol):
+                current_pattern=self.pattern_solutions
+                current_pattern=current_pattern.replace("[solution]",eachpart["solutions"][i])
+                current_pattern=current_pattern.replace("[*]",str(i+1))
+                current_sol=current_sol+current_pattern
+            # part_pattern=part_pattern.replace("[solutions]",current_sol)
+            # current_part=current_part+part_pattern
+            current_question=current_question.replace("[solutions]",current_sol)
         else: #otherwise show "parts" labels
             current_question=self.pattern_whole
             current_question=current_question.replace("[master_question]",self.master_question)
@@ -215,7 +201,10 @@ class QuestionItem():
              "parts":self.parts,
              "varchange":self.varchange,
              "tags":self.tags,
-             "course":self.course}
+             "course":self.course,
+             "packages":self.packages,
+             "packagesettings": self.packagesettings,
+             "macros":self.macros}
         return res
 
     def dumps(self):
