@@ -40,7 +40,7 @@ class QuestionItem():
 
     "tags"(list) and "course"(str) are labels to characterize the problem.
 
-    "requiredpackages"(list) and "preambleheader"(list) tell us how to run the code without any errors.
+    "packages"(list) and "packagesettings"(list) and "macros"(list) tell us how to run the code without any errors.
 
     The item should look like this:
     {"master_question": "main instructions",
@@ -53,12 +53,14 @@ class QuestionItem():
     "varchange": ["_var1_=1","_var2_=2",...],
     "tags": ["tag1", "tag2", ...],
     "course": "course",
-    "requiredpackages":[],
-    "preambleheader":[]
+    "packages":[],
+    "packagesettings": [],
+    "macros":[]
     }
     '''
 
     def __init__(self):
+        # first are five basic contents
         self.master_question=""
         default_list={"question":"",
               "solutions":[]}
@@ -66,56 +68,127 @@ class QuestionItem():
         self.varchange=[]
         self.tags=[]
         self.course=""
-        self.requiredpackages=[],
-        self.preambleheader=[]
+        # then the required packages and macros
+        self.packages=[]
+        self.packagesettings=[]
+        self.macros=[]
+        # last are flags and patterns
         self.flag=0             #flag=0 means the variable will be randomized. flag~=0 means the variable will use the default value.
         self.setdefaultpattern()
 
     def __init__(self,input_data):
+        # first are five basic contents
         self.master_question=input_data["master_question"]
         self.parts=list(input_data["parts"])
         self.varchange=list(input_data["varchange"])
         self.tags=list(input_data["tags"])
         self.course=input_data["course"]
-        self.requiredpackages=[],
-        self.preambleheader=[]
+        # then the required packages and macros
+        self.packages=[]
+        self.packagesettings=[]
+        self.macros=[]
+        # last are flags and patterns
         self.flag=0             #flag=0 means the variable will be randomized. flag~=0 means the variable will use the default value.
         self.setdefaultpattern()
 
     def setdefaultpattern(self):
-        self.preamble_que=r"\question"
-        self.postamble_que=""
-        self.preamble_sol=r"\begin{solution}"
-        self.postamble_sol=r"\end{solution}"
-        self.preamble_part=r"\begin{parts}"
-        self.postamble_part=r"\end{parts}"
-        self.separator_part=r"\part"
+        # self.preamble_que=r"\question"
+        # self.postamble_que=""
+        # self.preamble_sol=r"\begin{solution}"
+        # self.postamble_sol=r"\end{solution}"
+        # self.preamble_part=r"\begin{parts}"
+        # self.postamble_part=r"\end{parts}"
+        # self.separator_part=r"\part"
+        self.pattern_whole=r'''\question
+        [master_question]
+        [parts]
+        '''
+        self.pattern_parts=r'''\begin{parts}
+        \part[*] [part] 
+        [solutions]
+        \end{parts}
+        '''
+        self.pattern_solutions=r'''\begin{solution} \textbf{(Solution [*])}
+        [solution]
+        \end{solution}
+        '''
 
     def latexify(self):
         '''
         :return:  a latex code string based on the "pattern".
         '''
-        res=self.preamble_que+'\n'+self.master_question+' '
+
+        #first based on patterns generate the main body of the questions and solutions
+
+        res=self.pattern_whole
         num=len(self.parts)
         if num==1:  #if there is only one part, the "part" label won't be shown.
-            current_part=self.parts[0]
-            res=res+current_part["question"]+'\n'
-            for sol in current_part["solutions"]:
-                res=res+'\n'+self.preamble_sol+'\n'+sol+'\n'+self.postamble_sol+'\n'
+            current_question=self.pattern_whole
+            current_question=current_question.replace("[master_question]",self.master_question)
+
+            current_part=""
+            nofpart=len(self.parts)
+            for j in range(nofpart):
+                eachpart=self.parts[j]
+                part_pattern=self.pattern_parts
+                part_pattern=part_pattern.replace("[part]",eachpart["question"])
+                part_pattern=part_pattern.replace("[*]",str(j+1))
+                nofsol=len(eachpart["solutions"])
+                current_sol=""
+                for i in range(nofsol):
+                    current_pattern=self.pattern_solutions
+                    current_pattern=current_pattern.replace("[solution]",eachpart["solutions"][i])
+                    current_pattern=current_pattern.replace("[*]",str(i+1))
+                    current_sol=current_sol+current_pattern
+                part_pattern=part_pattern.replace("[solutions]",current_sol)
+                current_part=current_part+part_pattern
+            current_question=current_question.replace("[parts]",current_part)
         else: #otherwise show "parts" labels
-            res=res+'\n'+self.preamble_part+'\n'
-            for current_part in self.parts:
-                res=res+self.separator_part+' '+current_part["question"]+'\n'
-                for sol in current_part["solutions"]:
-                    res=res+'\n'+self.preamble_sol+'\n'+sol+'\n'+self.postamble_sol+'\n'
-            res=res+self.postamble_part
-        res=res+'\n'+self.postamble_que+'\n'
+            current_question=self.pattern_whole
+            current_question=current_question.replace("[master_question]",self.master_question)
+
+            current_part=""
+            nofpart=len(self.parts)
+            for j in range(nofpart):
+                eachpart=self.parts[j]
+                part_pattern=self.pattern_parts
+                part_pattern=part_pattern.replace("[part]",eachpart["question"])
+                part_pattern=part_pattern.replace("[*]",str(j+1))
+                nofsol=len(eachpart["solutions"])
+                current_sol=""
+                for i in range(nofsol):
+                    current_pattern=self.pattern_solutions
+                    current_pattern=current_pattern.replace("[solution]",eachpart["solutions"][i])
+                    current_pattern=current_pattern.replace("[*]",str(i+1))
+                    current_sol=current_sol+current_pattern
+                part_pattern=part_pattern.replace("[solutions]",current_sol)
+                current_part=current_part+part_pattern
+            current_question=current_question.replace("[parts]",current_part)
+
+        #
+        # res=self.preamble_que+'\n'+self.master_question+' '
+        # num=len(self.parts)
+        # if num==1:  #if there is only one part, the "part" label won't be shown.
+        #     current_part=self.parts[0]
+        #     res=res+current_part["question"]+'\n'
+        #     for sol in current_part["solutions"]:
+        #         res=res+'\n'+self.preamble_sol+'\n'+sol+'\n'+self.postamble_sol+'\n'
+        # else: #otherwise show "parts" labels
+        #     res=res+'\n'+self.preamble_part+'\n'
+        #     for current_part in self.parts:
+        #         res=res+self.separator_part+' '+current_part["question"]+'\n'
+        #         for sol in current_part["solutions"]:
+        #             res=res+'\n'+self.preamble_sol+'\n'+sol+'\n'+self.postamble_sol+'\n'
+        #     res=res+self.postamble_part
+        # res=res+'\n'+self.postamble_que+'\n'
+        #
+        #then replace all variables by numbers based on varchange
         varlist=self.runthevariables()
         numofvar=len(varlist)
         for i in range(numofvar):
             varname="_var"+str(i)+"_"
-            res=res.replace(varname,str(varlist[i]))
-        return res
+            current_question=current_question.replace(varname,str(varlist[i]))
+        return current_question
 
     def runthevariables(self):
         '''
