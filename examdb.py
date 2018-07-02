@@ -11,10 +11,10 @@
 # from examDB.latexSnippt import LatexSnippt
 # from examDB.dbOP import dbOp
 # import difflib
-from examdb.MyDB import MyDB
-from examdb.MyDB import QuestionItem
-
-import random
+from examdb.mydb import MyDB
+from examdb.questionitem import QuestionItem
+# import json
+# import random
 # class EnvParts(Environment):
 #     _latex_name='parts'
 #
@@ -33,28 +33,59 @@ from tinydb import Query
 
 
 
+
 # user=Query()
 if __name__ == '__main__':
     # Basic document
 
+
+    # a=random.uniform(3,4,2)
+    # print(a)
     dbname='Exam2.json'
     db=MyDB(dbname)
-    # s= {"master_question": "main instructions",
-    #        "parts": [{"question": "_var0_+asdfasdfasf+_var0_-asdfasdf",
-    #                   "solutions": ["_var1_--------", "solution2"]},
-    #                  {"question": "_var0_+asdfasdfasf+_var0_-asdfasdf",
-    #                   "solutions": ["_var1_--------", "solution2"]}
-    #                  ],
-    #        "varchange": ["_var0_=random.choice(range(10))|2","_var1_=_var0_**2|100"],
-    #        "tags": ["tag1", "tag2"],
-    #        "course": "course",
-    #        "packages":[],
-    #        "packagesettings": [],
-    #        "macros":[]
-    #     }
+    d= {"master_question": "main instructions",
+           "parts": [{"question": "_var0_+asdfasdfasf+_var1_-asdfasdf",
+                      "solutions": []}
+                     ],
+           "varchange": ["_var0_=random.choice(range(10))|1","_var1_=_var0_**2|100"],
+           "tags": ["tag1", "tag2"],
+           "course": "course",
+           "packages":["tikz","tikz-3dplot"],
+           "packagesettings": [r'\usetikzlibrary{arrows.meta,angles}',r'\usepgfplotslibrary{fillbetween}',r'\pgfplotsset{compat=1.8}'],
+           "macros":[r'\newcommand{\para}[1]{\left(#1\right)}',r'\newcommand{\intvert}[1]{\left.#1\right\rvert}',r'\newcommand{\vecfield}[1]{\left\langle#1\right\rangle}']
+        }
+    g= {"master_question": "main instructions",
+        "parts": [{"question": "_var0_+asdfasdfasf+_var1_-asdfasdf",
+                   "solutions": []}
+                  ],
+        "varchange": ["_var0_=random.choice(range(10))|1","_var1_=_var0_**2|100"],
+        "tags": ["tag1", "tag2"],
+        "course": "course",
+        "packages":["tikz","tikz-3dplot","sss"],
+        "packagesettings": [r'\usetikzlibrarssy{arrows.meta,angles}',r'\usepgfplotslibrary{fillbetween}',r'\pgfplotsset{compat=1.8}'],
+        "macros":[r'\newcommand{\para}[1]{\left(#1\right)}',r'\newcommand{\intvert}[1]{\left.#1\right\rvert}',r'\newcommand{\vecfield}[1]{\left\langle#1\right\rangle}']
+        }
     s=db.get(doc_id=1)
-    Q=QuestionItem(s)
-    print(Q.latexify())
+    Q=QuestionItem(d)
+    P=QuestionItem(g)
+    # f=json.dumps(d)
+    # Q.loads(f)
+    Q.setdefaultpattern3()
+    print(Q.latexheader())
+    print('-----------------')
+    print(P.latexheader())
+    print('-----------------')
+    print(P.latexheader([Q]))
+    print('-----------------')
+    print(Q.latexheader([P,Q]))
+    print(Q.latexheader())
+
+    print(Q.compareheader(P))
+    #
+    # m=[r'\newcommand{\para}[1]{\left(#1\right)}',r'\newcommand{\qntvert}[1]{\left.#1\right\rvert}',r'\newcommand{\vecfield}[1]{\left\langle#1\right\rangle}']
+    # print(r'\newcommand{\para}[1]{\left(#1\right)}' not in m)
+    # # k="\n".join(m)
+    # print(Q.latexheader())
     # print("_var1_"+str(1.222+2))
     #
     # #

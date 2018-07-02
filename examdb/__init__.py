@@ -1,2 +1,2 @@
 
-__all__ = ('latexSnippt.py', 'mydb.py')
+__all__ = ('latexSnippt.py', 'mydb.py', 'questionitem.py')
