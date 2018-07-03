@@ -14,7 +14,7 @@
 from examdb.mydb import MyDB
 from examdb.questionitem import QuestionItem
 # import json
-# import random
+import numpy
 # class EnvParts(Environment):
 #     _latex_name='parts'
 #
@@ -50,37 +50,53 @@ if __name__ == '__main__':
            "varchange": ["_var0_=random.choice(range(10))|1","_var1_=_var0_**2|100"],
            "tags": ["tag1", "tag2"],
            "course": "course",
+           "level": 1,
            "packages":["tikz","tikz-3dplot"],
            "packagesettings": [r'\usetikzlibrary{arrows.meta,angles}',r'\usepgfplotslibrary{fillbetween}',r'\pgfplotsset{compat=1.8}'],
            "macros":[r'\newcommand{\para}[1]{\left(#1\right)}',r'\newcommand{\intvert}[1]{\left.#1\right\rvert}',r'\newcommand{\vecfield}[1]{\left\langle#1\right\rangle}']
         }
     g= {"master_question": "main instructions",
         "parts": [{"question": "_var0_+asdfasdfasf+_var1_-asdfasdf",
-                   "solutions": []}
+                   "solutions": ["asdfasdfasf", "asdfasdfasdfasf"]},
+                  {"question": "_var0_+asdfasdfasf+_var1_-asdfasdf",
+                   "solutions": ["asdfasdfasf", "asdfasdfasdfasf"]}
                   ],
         "varchange": ["_var0_=random.choice(range(10))|1","_var1_=_var0_**2|100"],
         "tags": ["tag1", "tag2"],
         "course": "course",
+        "level": 1,
         "packages":["tikz","tikz-3dplot","sss"],
         "packagesettings": [r'\usetikzlibrarssy{arrows.meta,angles}',r'\usepgfplotslibrary{fillbetween}',r'\pgfplotsset{compat=1.8}'],
         "macros":[r'\newcommand{\para}[1]{\left(#1\right)}',r'\newcommand{\intvert}[1]{\left.#1\right\rvert}',r'\newcommand{\vecfield}[1]{\left\langle#1\right\rangle}']
         }
     s=db.get(doc_id=1)
-    Q=QuestionItem(d)
+    Q=QuestionItem()
+    # Q.load(d)
     P=QuestionItem(g)
     # f=json.dumps(d)
     # Q.loads(f)
-    Q.setdefaultpattern3()
-    print(Q.latexheader())
-    print('-----------------')
-    print(P.latexheader())
-    print('-----------------')
-    print(P.latexheader([Q]))
-    print('-----------------')
-    print(Q.latexheader([P,Q]))
-    print(Q.latexheader())
-
-    print(Q.compareheader(P))
+    ll=dict({"master_question": "",
+          "parts": {"question":"",
+                    "solutions":[]},
+          "varchange": [],
+          "tags": [],
+          "course": "",
+          "level": 1,
+          "packages": [],
+          "packagesettings": [],
+          "macros": []})
+    Q.setdefaultpattern()
+    print(Q.latexify())
+    # print('-----------------')
+    # print(P.latexheader())
+    # print('-----------------')
+    # print(P.latexheader([Q]))
+    # print('-----------------')
+    # print(Q.latexheader([P,Q]))
+    # print(Q.latexheader())
+    #
+    print(numpy.random.choice(4))
+    # print(Q.compareheader(P))
     #
     # m=[r'\newcommand{\para}[1]{\left(#1\right)}',r'\newcommand{\qntvert}[1]{\left.#1\right\rvert}',r'\newcommand{\vecfield}[1]{\left\langle#1\right\rangle}']
     # print(r'\newcommand{\para}[1]{\left(#1\right)}' not in m)

@@ -123,25 +123,35 @@ compareheader: compare latexheader to others'
 
 class QuestionItem:
 
-    def __init__(self):
-        # first are five basic contents
-        self.master_question=""
-        default_list={"question":"",
-                      "solutions":[]}
-        self.parts=[default_list]
-        self.varchange=[]
-        self.tags=[]
-        self.course=""
-        self.level=1
-        # then the required packages and macros
-        self.packages=[]
-        self.packagesettings=[]
-        self.macros=[]
-        # last are flags and patterns
-        self.setdefaultpattern()
+    # def __init__(self):
+    #     # first are five basic contents
+    #     self.master_question=""
+    #     default_list={"question":"",
+    #                   "solutions":[]}
+    #     self.parts=[default_list]
+    #     self.varchange=[]
+    #     self.tags=[]
+    #     self.course=""
+    #     self.level=1
+    #     # then the required packages and macros
+    #     self.packages=[]
+    #     self.packagesettings=[]
+    #     self.macros=[]
+    #     # last are flags and patterns
+    #     self.setdefaultpattern()
 
-
-    def __init__(self,input_data):
+    def __init__(self,input_data=None):
+        if input_data is None:
+            input_data={"master_question": "",
+                             "parts": [{"question":"",
+                                        "solutions":[]}],
+                             "varchange": [],
+                             "tags": [],
+                             "course": "",
+                             "level": 1,
+                             "packages": [],
+                             "packagesettings": [],
+                             "macros": []}
         # first are five basic contents
         self.master_question=input_data["master_question"]
         self.parts=list(input_data["parts"])
@@ -264,7 +274,6 @@ class QuestionItem:
             val.append(eval(varname))
         return val
 
-
     def dump(self):
         res={"master_question": self.master_question,
              "parts":self.parts,
@@ -295,7 +304,6 @@ class QuestionItem:
     def loads(self,input_json):
         dict=json.loads(input_json)
         self.load(dict)
-
 
     def latexheader(self,listofquestions_QI=[]):
         listofpackages=list([o.packages for o in listofquestions_QI])
@@ -341,3 +349,6 @@ class QuestionItem:
             return True
         else:
             return False
+
+    def loadfromlatex(self,src):
+        pass
