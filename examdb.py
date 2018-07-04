@@ -13,8 +13,10 @@
 # import difflib
 from examdb.mydb import MyDB
 from examdb.questionitem import QuestionItem
+from examdb.exitem import ExItem
 # import json
 import numpy
+import re
 # class EnvParts(Environment):
 #     _latex_name='parts'
 #
@@ -69,24 +71,45 @@ if __name__ == '__main__':
         "packagesettings": [r'\usetikzlibrarssy{arrows.meta,angles}',r'\usepgfplotslibrary{fillbetween}',r'\pgfplotsset{compat=1.8}'],
         "macros":[r'\newcommand{\para}[1]{\left(#1\right)}',r'\newcommand{\intvert}[1]{\left.#1\right\rvert}',r'\newcommand{\vecfield}[1]{\left\langle#1\right\rangle}']
         }
-    s=db.get(doc_id=1)
-    Q=QuestionItem()
-    # Q.load(d)
+
+
+    # s=db.get(doc_id=1)
+    Q=QuestionItem(d)
+    # # Q.load(d)
     P=QuestionItem(g)
-    # f=json.dumps(d)
-    # Q.loads(f)
-    ll=dict({"master_question": "",
-          "parts": {"question":"",
-                    "solutions":[]},
-          "varchange": [],
-          "tags": [],
-          "course": "",
-          "level": 1,
-          "packages": [],
-          "packagesettings": [],
-          "macros": []})
-    Q.setdefaultpattern()
+    R=QuestionItem(d)
+    S=ExItem([Q,P])
+    S.append(R)
+    # S.remove(1)
+    # S.setpattern(3)
+    # print(S.randget().latexify())
+    # # f=json.dumps(d)
+    # # Q.loads(f)
+    # ll=dict({"master_question": "",
+    #       "parts": {"question":"",
+    #                 "solutions":[]},
+    #       "varchange": [],
+    #       "tags": [],
+    #       "course": "",
+    #       "level": 1,
+    #       "packages": [],
+    #       "packagesettings": [],
+    #       "macros": []})
+    #
+    filename='e.txt'
+    with open(filename,'r') as file:
+        res=file.read()
+
+    Q.loadfromlatex_pattern4(res,course="sss",tags=["1,","2"])
+    # Q.setdefaultpattern2()
     print(Q.latexify())
+    # t=re.findall(r'\\begin{question}(.*?)\\end{solution}(?!.*solution)',res,re.S)
+    #
+    #
+    # print(t)
+    # print(len(t))
+    # Q.setdefaultpattern()
+    # print(Q.latexify())
     # print('-----------------')
     # print(P.latexheader())
     # print('-----------------')
@@ -95,7 +118,7 @@ if __name__ == '__main__':
     # print(Q.latexheader([P,Q]))
     # print(Q.latexheader())
     #
-    print(numpy.random.choice(4))
+    # print(numpy.random.choice(4))
     # print(Q.compareheader(P))
     #
     # m=[r'\newcommand{\para}[1]{\left(#1\right)}',r'\newcommand{\qntvert}[1]{\left.#1\right\rvert}',r'\newcommand{\vecfield}[1]{\left\langle#1\right\rangle}']

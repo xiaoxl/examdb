@@ -107,7 +107,26 @@ So far there are three default patterns:
     ...
     .....
     \end{exercise}
-
+4. \question
+    instructions to questions
+    \begin{parts}
+    \part instructions.
+    \begin{solution}
+    (Solution 1)...........
+    \end{solution}
+    \begin{solution}
+    (Solution 2)...........
+    \end{solution}
+    ...
+    \part instructions.
+    \begin{solution}
+    (Solution 1)...........
+    \end{solution}
+    \begin{solution}
+    (Solution 2)...........
+    \end{solution}
+    ...
+    .....
 latetemplate: output the template
 
 latexify: latexify will output a string with randomized numbers from "varchange" based on the template from latextemplate
@@ -140,6 +159,19 @@ class QuestionItem:
     #     # last are flags and patterns
     #     self.setdefaultpattern()
 
+    PATTERN_WHOLE_DB=['\\question\n[master_question]\n<\\begin{parts}>[parts]<\\end{parts}>',
+                      '\\question\n[master_question]\n<\\begin{parts}>[parts]<\\end{parts}>',
+                      '\\begin{exercise}\n[master_question]\n<\\begin{parts}>[parts]<\\end{parts}>\\end{exercise}',
+                      '\\question\n[master_question]\n<\\begin{parts}>[parts]<\\end{parts}>']
+    PATTERN_PARTS_DB=['<\\part > [part]\n\\begin{solution}[solutions]\n\\end{solution}\n',
+                           '<\\part > [part]\n[solutions]\n',
+                           '<\\part > [part]\n[solutions]\n',
+                           '<\\part > [part]\n[solutions]\n']
+    PATTERN_SOLUTIONS_DB=['\n<\\textbf{(Solution [*])}> [solution]\n',
+                               '\\begin{solution}\n[solution]\n\\end{solution}\n',
+                               '\\begin{solution}\n[solution]\n\\end{solution}\n',
+                               '\\begin{solution}\n<\\textbf{(Solution [*])}> [solution]\n\\end{solution}\n']
+
     def __init__(self,input_data=None):
         if input_data is None:
             input_data={"master_question": "",
@@ -166,20 +198,13 @@ class QuestionItem:
         # last are flags and patterns
         self.setdefaultpattern()
 
-    def setdefaultpattern(self,environmenttoken='question'):
-        self.pattern_whole='\\'+environmenttoken+'\n[master_question]\n<\\begin{parts}>[parts]<\\end{parts}>'
-        self.pattern_parts=r'<\part[*]> [part]'+'\n\\begin{solution}[solutions]\n\\end{solution}\n'
-        self.pattern_solutions='\n'+r'<\textbf{(Solution [*])}>'+' [solution]\n'
+    def setpattern(self,id):
+        self.pattern_whole=self.PATTERN_WHOLE_DB[id]
+        self.pattern_parts=self.PATTERN_PARTS_DB[id]
+        self.pattern_solutions=self.PATTERN_SOLUTIONS_DB[id]
 
-    def setdefaultpattern2(self,environmenttoken='question'):
-        self.pattern_whole='\\'+environmenttoken+'\n[master_question]\n<\\begin{parts}>[parts]<\\end{parts}>'
-        self.pattern_parts=r'<\part[*]> [part]'+'\n[solutions]\n'
-        self.pattern_solutions=r'\begin{solution}'+'\n[solution]\n'+r'\end{solution}'+'\n'
-
-    def setdefaultpattern3(self,environmenttoken='exercise'):
-        self.pattern_whole=r'\begin{'+environmenttoken+'}'+'\n[master_question]\n<\\begin{parts}>[parts]<\\end{parts}>'+r'\end{'+environmenttoken+'}'
-        self.pattern_parts=r'<\part[*]> [part]'+'\n[solutions]\n'
-        self.pattern_solutions=r'\begin{solution}'+'\n[solution]\n'+r'\end{solution}'+'\n'
+    def setdefaultpattern(self):
+        self.setpattern(1)
 
     def setpatternto_onepart(self):
         pattern_parts_now = re.sub('<(.*?)>', '', self.pattern_parts)
@@ -305,7 +330,9 @@ class QuestionItem:
         dict=json.loads(input_json)
         self.load(dict)
 
-    def latexheader(self,listofquestions_QI=[]):
+    def latexheader(self,listofquestions_QI=None):
+        if listofquestions_QI == None:
+            listofquestions_QI=[]
         listofpackages=list([o.packages for o in listofquestions_QI])
         listofsettings=list([o.packagesettings for o in listofquestions_QI])
         listofmacros=list([o.macros for o in listofquestions_QI])
@@ -350,5 +377,264 @@ class QuestionItem:
         else:
             return False
 
-    def loadfromlatex(self,src):
-        pass
+    def loadfromlatex_pattern0(self,src,tags=None,course="",level=1,packages=None,settings=None,macros=None,varchange=None):
+        '''
+        \begin{question}\end{question}
+        \begin{solution}\end{solution}
+        :param src:
+        :return:
+        '''
+        if tags is None:
+            tags=[]
+        if packages is None:
+            packages=[]
+        if settings is None:
+            settings=[]
+        if macros is None:
+            macros=[]
+        if varchange is None:
+            varchange=[]
+
+        src=self.cleanfile(src)
+
+        q=re.findall(r'\\begin{question}(.*?)\\end{question}',src,re.S)
+        s=re.findall(r'\\begin{solution}(.*?)\\end{solution}',src,re.S)
+
+        part={"question": "",
+              "solutions": [s[0]]}
+        res={"master_question": q[0],
+             "parts": [part],
+             "varchange": varchange,
+             "tags": tags,
+             "course": course,
+             "level": level,
+             "packages": sorted(packages),
+             "packagesettings": sorted(settings),
+             "macros": sorted(macros)}
+        self.load(res)
+
+    def cleanfile(self,file):
+        file=re.sub(r'%(.*)\n','\n',file)
+        file=re.sub(r'[\n]+','\n',file)
+        file=re.sub(r'^[\n]+','',file)
+        return file
+
+    def loadfromlatex_pattern1(self, src, tags=None, course="", level=1, packages=None, settings=None, macros=None, varchange=None):
+        '''
+        \question
+        \begin{solution}\end{solution}
+        \begin{solution}\end{solution}
+        :param src:
+        :return:
+        '''
+        if tags is None:
+            tags=list(self.tags)
+        if packages is None:
+            packages=list(self.packages)
+        if settings is None:
+            settings=list(self.packagesettings)
+        if macros is None:
+            macros=list(self.macros)
+        if varchange is None:
+            varchange=list(self.varchange)
+
+        src=self.cleanfile(src)
+
+
+        q=re.findall(r'\\question(.*?)\\begin{parts}',src,re.S)
+        if q == []:
+            q = re.findall(r'\\question(.*?)\\begin{solution}',src,re.S)
+            s1 = self.cleanfile(re.findall(r'\\begin{solution}(.*?)\\end{solution}',src,re.S)[0])
+            if r'\textbf{(Solution' in s1:
+                s = re.split(r'\\textbf{\(Solution \d\)}', s1, re.S)[1:]
+            else:
+                s=[s1]
+            part = [{"question": "",
+                     "solutions": s}]
+        else:
+            part=[]
+            p=self.cleanfile(re.findall(r'\\begin{parts}(.*?)\\end{parts}',src,re.S)[0])
+            # p=re.sub(r'^([.|\n]*?)(?=\\part)','',p)
+            tempparts = p.split(r'\part')[1:]
+            for pa in tempparts:
+                cq=re.findall(r'^(.*?)\\begin{solution}',pa,re.S)[0]
+                ts=self.cleanfile(re.findall(r'\\begin{solution}(.*?)\\end{solution}',pa,re.S)[0])
+                if r'\textbf{(Solution' in ts:
+                    cs = re.split(r'\\textbf{\(Solution \d\)}', ts, re.S)[1:]
+                else:
+                    cs=[ts]
+                part.append({"question": cq,
+                             "solutions": cs})
+
+        res={"master_question": q[0],
+             "parts": part,
+             "varchange": varchange,
+             "tags": tags,
+             "course": course,
+             "level": level,
+             "packages": sorted(packages),
+             "packagesettings": sorted(settings),
+             "macros": sorted(macros)}
+        self.load(res)
+
+    def loadfromlatex_pattern2(self, src, tags=None, course="", level=1, packages=None, settings=None, macros=None, varchange=None):
+        '''
+        \question
+        \begin{solution}\end{solution}
+        \begin{solution}\end{solution}
+        :param src:
+        :return:
+        '''
+        if tags is None:
+            tags=list(self.tags)
+        if packages is None:
+            packages=list(self.packages)
+        if settings is None:
+            settings=list(self.packagesettings)
+        if macros is None:
+            macros=list(self.macros)
+        if varchange is None:
+            varchange=list(self.varchange)
+
+        src=self.cleanfile(src)
+
+
+        q=re.findall(r'\\question(.*?)\\begin{parts}',src,re.S)
+        if q == []:
+            q = re.findall(r'\\question(.*?)\\begin{solution}',src,re.S)
+            s = re.findall(r'\\begin{solution}(.*?)\\end{solution}',src,re.S)
+            part = [{"question": "",
+                     "solutions": s}]
+        else:
+            part=[]
+            p=re.findall(r'\\begin{parts}(.*?)\\end{parts}',src,re.S)[0]
+            # p=re.sub(r'^([.|\n]*?)(?=\\part)','',p)
+            tempparts = p.split(r'\part')[1:]
+            for pa in tempparts:
+                cq=re.findall(r'^(.*?)\\begin{solution}',pa,re.S)[0]
+                cs=re.findall(r'\\begin{solution}(.*?)\\end{solution}',pa,re.S)
+                part.append({"question": cq,
+                             "solutions": cs})
+
+        res={"master_question": q[0],
+             "parts": part,
+             "varchange": varchange,
+             "tags": tags,
+             "course": course,
+             "level": level,
+             "packages": sorted(packages),
+             "packagesettings": sorted(settings),
+             "macros": sorted(macros)}
+        self.load(res)
+
+    def loadfromlatex_pattern3(self, src, tags=None, course="", level=1, packages=None, settings=None, macros=None, varchange=None):
+        '''
+        \question
+        \begin{solution}\end{solution}
+        \begin{solution}\end{solution}
+        :param src:
+        :return:
+        '''
+        if tags is None:
+            tags=list(self.tags)
+        if packages is None:
+            packages=list(self.packages)
+        if settings is None:
+            settings=list(self.packagesettings)
+        if macros is None:
+            macros=list(self.macros)
+        if varchange is None:
+            varchange=list(self.varchange)
+
+        src=self.cleanfile(src)
+
+
+        q=re.findall(r'\\begin{exercise}(.*?)\\begin{parts}',src,re.S)
+        if q == []:
+            q = re.findall(r'\\begin{exercise}(.*?)\\begin{solution}',src,re.S)
+            s = re.findall(r'\\begin{solution}(.*?)\\end{solution}',src,re.S)
+            part = [{"question": "",
+                     "solutions": s}]
+        else:
+            part=[]
+            p=re.findall(r'\\begin{parts}(.*?)\\end{parts}',src,re.S)[0]
+            # p=re.sub(r'^([.|\n]*?)(?=\\part)','',p)
+            tempparts = p.split(r'\part')[1:]
+            for pa in tempparts:
+                cq=re.findall(r'^(.*?)\\begin{solution}',pa,re.S)[0]
+                cs=re.findall(r'\\begin{solution}(.*?)\\end{solution}',pa,re.S)
+                part.append({"question": cq,
+                 "solutions": cs})
+
+        res={"master_question": q[0],
+             "parts": part,
+             "varchange": varchange,
+             "tags": tags,
+             "course": course,
+             "level": level,
+             "packages": sorted(packages),
+             "packagesettings": sorted(settings),
+             "macros": sorted(macros)}
+        self.load(res)
+
+    def loadfromlatex_pattern4(self, src, tags=None, course="", level=1, packages=None, settings=None, macros=None, varchange=None):
+        '''
+        \question
+        \begin{solution}\end{solution}
+        \begin{solution}\end{solution}
+        :param src:
+        :return:
+        '''
+        if tags is None:
+            tags=list(self.tags)
+        if packages is None:
+            packages=list(self.packages)
+        if settings is None:
+            settings=list(self.packagesettings)
+        if macros is None:
+            macros=list(self.macros)
+        if varchange is None:
+            varchange=list(self.varchange)
+
+        src=self.cleanfile(src)
+
+
+        q=re.findall(r'\\question(.*?)\\begin{parts}',src,re.S)
+        if q == []:
+            q = re.findall(r'\\question(.*?)\\begin{solution}',src,re.S)
+            s = re.findall(r'\\textbf{\(Solution \d\)}(.*?)\\end{solution}',src,re.S)
+            part = [{"question": "",
+                     "solutions": s}]
+        else:
+            part=[]
+            p=re.findall(r'\\begin{parts}(.*?)\\end{parts}',src,re.S)[0]
+            # p=re.sub(r'^([.|\n]*?)(?=\\part)','',p)
+            tempparts = p.split(r'\part')[1:]
+            for pa in tempparts:
+                cq=re.findall(r'^(.*?)\\begin{solution}',pa,re.S)[0]
+                cs=re.findall(r'\\textbf{\(Solution \d\)}(.*?)\\end{solution}',pa,re.S)
+                part.append({"question": cq,
+                             "solutions": cs})
+
+        res={"master_question": q[0],
+             "parts": part,
+             "varchange": varchange,
+             "tags": tags,
+             "course": course,
+             "level": level,
+             "packages": sorted(packages),
+             "packagesettings": sorted(settings),
+             "macros": sorted(macros)}
+        self.load(res)
+
+    def loadfromlatex(self, src, tags=None, course="", level=1, packages=None, settings=None, macros=None, varchange=None, pattern=1):
+        if pattern==0:
+            self.loadfromlatex_pattern1(src, tags, course, level, packages, settings, macros, varchange)
+        if pattern==1:
+            self.loadfromlatex_pattern2(src, tags, course, level, packages, settings, macros, varchange)
+        if pattern==2:
+            self.loadfromlatex_pattern3(src, tags, course, level, packages, settings, macros, varchange)
+        if pattern==3:
+            self.loadfromlatex_pattern4(src, tags, course, level, packages, settings, macros, varchange)
+        if pattern==-1:
+            self.loadfromlatex_pattern0(src, tags, course, level, packages, settings, macros, varchange)
